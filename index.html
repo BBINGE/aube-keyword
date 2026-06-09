@@ -697,6 +697,15 @@ var CLAUDE_DISEASES=[
   {id:'c246',cat:'성형외과',name:'안면거상',vol:'med',note:'40~60대 수요. 미니거상 연계.',src:'claude'},
   {id:'c247',cat:'성형외과',name:'눈재수술',vol:'med',note:'고난도. 재수술 전문성 소구 유효.',src:'claude'},
   {id:'c248',cat:'성형외과',name:'양악수술',vol:'low',note:'검색량 낮음. 고관여. 전문성 콘텐츠 필수.',src:'claude'},
+  // 암/면역/요양
+  {id:'c260',cat:'암',name:'항암치료 후유증',vol:'med',note:'암 환자 회복기 수요. 가족이 검색하는 경향.',src:'claude'},
+  {id:'c261',cat:'암',name:'암 요양',vol:'med',note:'회복기 입원 수요. 가족 주도 검색.',src:'claude'},
+  {id:'c262',cat:'암',name:'항암 한방치료',vol:'med',note:'면역 강화·부작용 완화 소구. 한방병원 특화.',src:'claude'},
+  {id:'c263',cat:'암',name:'면역력 강화',vol:'high',note:'전 연령 수요. 암 예방·회복 연계.',src:'claude'},
+  {id:'c264',cat:'암',name:'암 입원치료',vol:'med',note:'장기 입원 수요. 가족이 검색하는 경향.',src:'claude'},
+  {id:'c265',cat:'암',name:'수술 후 재활',vol:'med',note:'암 수술 후 회복. 한방병원·요양병원 특화.',src:'claude'},
+  {id:'c266',cat:'암',name:'완화의료',vol:'low',note:'말기암·호스피스 연계. 전문성 소구 필수.',src:'claude'},
+  {id:'c267',cat:'암',name:'암성통증',vol:'low',note:'암 환자 통증 관리. 한방 침치료 연계.',src:'claude'},
   // 재활
   {id:'c250',cat:'재활',name:'수술 후 재활',vol:'med',note:'무릎·어깨·척추 수술 후 수요.',src:'claude'},
   {id:'c251',cat:'재활',name:'스포츠 재활',vol:'med',note:'스포츠 손상 회복. 발목·무릎·어깨 연계.',src:'claude'},
@@ -822,6 +831,12 @@ var CLAUDE_PRODUCTS=[
   {id:'cp152',type:'성형외과',cat:'성형외과',name:'지방흡입',match:'지방흡입,가슴성형',note:'부위별 구분 권장. 복부·허벅지·팔뚝 각각 콘텐츠 필요.',src:'claude'},
   {id:'cp153',type:'성형외과',cat:'성형외과',name:'안면거상',match:'안면거상,쁘띠성형',note:'40~60대 타깃. 미니거상 비교 소구 유효.',src:'claude'},
   {id:'cp154',type:'성형외과',cat:'성형외과',name:'양악수술',match:'양악수술,안면윤곽',note:'고관여 수술. 신뢰·경력 중심 콘텐츠 필수. 가격 비교 지양.',src:'claude'},
+  // 한방병원/요양병원 암 관련
+  {id:'cp170',type:'한방병원',cat:'암',name:'항암 한방치료',match:'항암치료 후유증,항암 한방치료,면역력 강화,암성통증',note:'면역 강화·부작용 완화 소구. 침·한약 병행. 효과 과장 금지.',src:'claude'},
+  {id:'cp171',type:'한방병원',cat:'암',name:'암 요양 입원',match:'암 요양,암 입원치료,수술 후 재활,완화의료',note:'장기 입원 케어. 가족 상담 연계. 입원 환경·의료진 신뢰 소구.',src:'claude'},
+  {id:'cp172',type:'한방병원',cat:'암',name:'면역 한약',match:'면역력 강화,항암치료 후유증,암 요양',note:'면역 강화 기전 설명 소구. 효과 수치 과장 금지.',src:'claude'},
+  {id:'cp173',type:'요양병원',cat:'암',name:'암 요양 입원',match:'암 요양,암 입원치료,수술 후 재활,완화의료,항암치료 후유증',note:'장기 입원 케어. 가족 상담 연계. 입원 환경·의료진 신뢰 소구.',src:'claude'},
+  {id:'cp174',type:'요양병원',cat:'암',name:'완화의료',match:'완화의료,암성통증',note:'호스피스·완화 케어 전문성 소구. 가족 안심 콘텐츠 유효.',src:'claude'},
   // 재활의학과 시술
   {id:'cp160',type:'재활의학과',cat:'재활',name:'도수치료',match:'도수치료,수술 후 재활,운동치료',note:'2026년 관리급여 이슈. 단순 시술명 노출보다 치료 필요성 설명 구조 필수.',src:'claude'},
   {id:'cp161',type:'재활의학과',cat:'재활',name:'스포츠 재활',match:'스포츠 재활,회전근개손상,족저근막염',note:'스포츠 손상 특화. 복귀 시기 안내 콘텐츠 유효.',src:'claude'},
@@ -1196,8 +1211,9 @@ function pickDept(){
 function pickDisease(cats){
   var all=getAllDiseases();
   var pool=cats&&cats.length?all.filter(function(d){return cats.indexOf(d.cat)>=0;}):all;
-  if(!pool.length)pool=all;
-  return pick(pool)||{name:'허리통증',vol:'high',note:''};
+  // 카테고리 매칭 질환 없으면 전체 fallback 안 함 — null 반환
+  if(!pool.length)return null;
+  return pick(pool)||null;
 }
 function pickProduct(diseaseName){
   if(!selectedClient)return null;
@@ -1220,7 +1236,7 @@ function roll(n){
   if(!selectedClient){alert('먼저 클라이언트를 선택해 주세요.');return;}
   if(n===1){var rc=pickRegionAndCats();ST.region=rc.region;ST.cats=rc.cats;document.getElementById('v1').textContent=rc.region;document.getElementById('s1').textContent=rc.cats.join(' · ');document.getElementById('btn1').classList.add('active');}
   if(n===2){var d=pickDept();ST.dept=d;document.getElementById('v2').textContent=d;document.getElementById('s2').textContent='병원 유형 연관 과목';document.getElementById('btn2').classList.add('active');}
-  if(n===3){var cats=ST.cats||ALL_CATS;var dis=pickDisease(cats);ST.disease=dis;document.getElementById('v3').textContent=dis.name;var vl={high:'검색량 높음 — 경쟁 주의',med:'검색량 중간',low:'검색량 낮음 — 조합 필수'};document.getElementById('s3').textContent=vl[dis.vol]||'';document.getElementById('btn3').classList.add('active');var pr=pickProduct(dis.name);ST.product=pr;if(pr){document.getElementById('v4').textContent=pr.name;document.getElementById('s4').textContent='질환 자동 매칭';document.getElementById('btn4').classList.add('active');}else{document.getElementById('v4').textContent='—';document.getElementById('s4').textContent='해당 시술 없음';document.getElementById('btn4').classList.remove('active');}}
+  if(n===3){var cats=ST.cats||ALL_CATS;var dis=pickDisease(cats);if(!dis){alert('해당 카테고리에 등록된 질환이 없습니다. DB를 확인해 주세요.');return;}ST.disease=dis;document.getElementById('v3').textContent=dis.name;var vl={high:'검색량 높음 — 경쟁 주의',med:'검색량 중간',low:'검색량 낮음 — 조합 필수'};document.getElementById('s3').textContent=vl[dis.vol]||'';document.getElementById('btn3').classList.add('active');var pr=pickProduct(dis.name);ST.product=pr;if(pr){document.getElementById('v4').textContent=pr.name;document.getElementById('s4').textContent='질환 자동 매칭';document.getElementById('btn4').classList.add('active');}else{document.getElementById('v4').textContent='—';document.getElementById('s4').textContent='해당 시술 없음';document.getElementById('btn4').classList.remove('active');}}
   if(n===4){var pr2=pickProduct((ST.disease||{name:''}).name);ST.product=pr2;if(pr2){document.getElementById('v4').textContent=pr2.name;document.getElementById('s4').textContent='매칭 재선택';document.getElementById('btn4').classList.add('active');}else{document.getElementById('v4').textContent='—';document.getElementById('s4').textContent='해당 시술 없음';document.getElementById('btn4').classList.remove('active');}}
   if(ST.region&&ST.dept&&ST.disease&&ST.product)showResult();
 }
@@ -1229,7 +1245,7 @@ function rollAll(){
   var rc=pickRegionAndCats();ST.region=rc.region;ST.cats=rc.cats;
   document.getElementById('v1').textContent=rc.region;document.getElementById('s1').textContent=rc.cats.join(' · ');document.getElementById('btn1').classList.add('active');
   var d=pickDept();ST.dept=d;document.getElementById('v2').textContent=d;document.getElementById('s2').textContent='병원 유형 연관 과목';document.getElementById('btn2').classList.add('active');
-  var dis=pickDisease(rc.cats);ST.disease=dis;document.getElementById('v3').textContent=dis.name;var vl={high:'검색량 높음 — 경쟁 주의',med:'검색량 중간',low:'검색량 낮음 — 조합 필수'};document.getElementById('s3').textContent=vl[dis.vol]||'';document.getElementById('btn3').classList.add('active');
+  var dis=pickDisease(rc.cats);if(!dis){alert('해당 카테고리에 등록된 질환이 없습니다.');return;}ST.disease=dis;document.getElementById('v3').textContent=dis.name;var vl={high:'검색량 높음 — 경쟁 주의',med:'검색량 중간',low:'검색량 낮음 — 조합 필수'};document.getElementById('s3').textContent=vl[dis.vol]||'';document.getElementById('btn3').classList.add('active');
   var pr=pickProduct(dis.name);ST.product=pr;document.getElementById('v4').textContent=pr.name;document.getElementById('s4').textContent='질환 자동 매칭';document.getElementById('btn4').classList.add('active');
   showResult();
 }
