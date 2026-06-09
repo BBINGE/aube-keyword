@@ -509,7 +509,7 @@ var CLAUDE_DISEASES=[
   {id:'c17',cat:'통증',name:'두통',vol:'high',note:'전 연령 수요. 편두통·긴장성두통으로 세분화 권장.',src:'claude'},
   // 교통사고
   {id:'c20',cat:'교통사고',name:'교통사고후유증',vol:'med',note:'자보 연계 수요. 보험 키워드. 합의 전 치료 유도 유효.',src:'claude'},
-  {id:'c21',cat:'교통사고',name:'교통사고 한의원',vol:'med',note:'교통사고 직후 검색 수요. 자동차보험 적용 강조.',src:'claude'},
+  {id:'c21',cat:'교통사고',name:'교통사고 후유증 한방',vol:'med',note:'교통사고 직후 검색 수요. 자동차보험 적용 강조.',src:'claude'},
   {id:'c22',cat:'교통사고',name:'목 교통사고',vol:'med',note:'경추 손상 수요. 경추염좌·목디스크와 함께 사용.',src:'claude'},
   // 다이어트
   {id:'c30',cat:'다이어트',name:'다이어트',vol:'high',note:'검색량 최상위. 단독 사용 시 경쟁 극심. 지역명 필수.',src:'claude'},
@@ -745,18 +745,18 @@ var CLAUDE_PRODUCTS=[
   {id:'cp21',type:'신경외과',cat:'통증',name:'신경차단술',match:'허리디스크,척추관협착증,좌골신경통',note:'전문 용어. 증상명 앞에 배치 권장.',src:'claude'},
   {id:'cp22',type:'신경외과',cat:'통증',name:'도수치료',match:'거북목,교통사고후유증,어깨통증,목통증',note:'2026년 관리급여 이슈. 키워드 전략 변경 전 관리자 확인 필수.',src:'claude'},
   {id:'cp23',type:'신경외과',cat:'통증',name:'내시경 디스크 수술',match:'허리디스크,목디스크',note:'수술 필요층 타깃. 비수술과 이분법 구조로 콘텐츠 구성 권장.',src:'claude'},
-  {id:'cp24',type:'신경외과',cat:'교통사고',name:'교통사고 신경외과',match:'교통사고후유증,목 교통사고',note:'자동차보험 적용. MRI·CT 검사 연계 소구 유효.',src:'claude'},
+  {id:'cp24',type:'신경외과',cat:'교통사고',name:'교통사고 후유증 신경외과',match:'교통사고후유증,목 교통사고',note:'자동차보험 적용. MRI·CT 검사 연계 소구 유효.',src:'claude'},
   // 통증의학과
   {id:'cp30',type:'통증의학과',cat:'통증',name:'프롤로주사',match:'퇴행성관절염,무릎통증,어깨통증,오십견,테니스엘보',note:'실손보험 연계 수요 높음. 보험 적용 여부 명시 권장.',src:'claude'},
   {id:'cp31',type:'통증의학과',cat:'통증',name:'DNA주사',match:'허리디스크,목디스크,퇴행성관절염',note:'PDRN주사 동의어. 재생치료 키워드로 성장 중.',src:'claude'},
   {id:'cp32',type:'통증의학과',cat:'통증',name:'체외충격파',match:'테니스엘보,오십견,근막통증,발목통증',note:'의협 가이드라인 4회 제한 고려.',src:'claude'},
   {id:'cp33',type:'통증의학과',cat:'통증',name:'신경차단술',match:'허리디스크,척추관협착증,좌골신경통',note:'전문 용어. 증상명 앞 배치 권장.',src:'claude'},
   {id:'cp34',type:'통증의학과',cat:'통증',name:'도수치료',match:'거북목,교통사고후유증,어깨통증',note:'2026년 관리급여 이슈. 키워드 전략 변경 전 관리자 확인 필수.',src:'claude'},
-  {id:'cp35',type:'통증의학과',cat:'교통사고',name:'교통사고 통증치료',match:'교통사고후유증,목 교통사고',note:'자동차보험 적용. 비급여 주사 치료 연계.',src:'claude'},
+  {id:'cp35',type:'통증의학과',cat:'교통사고',name:'교통사고 후유증 통증',match:'교통사고후유증,목 교통사고',note:'자동차보험 적용. 비급여 주사 치료 연계.',src:'claude'},
   // 정형외과
   {id:'cp40',type:'정형외과',cat:'통증',name:'관절내시경',match:'무릎통증,어깨통증,오십견',note:'최소침습 강조. 수술 공포층 타깃.',src:'claude'},
   {id:'cp41',type:'정형외과',cat:'통증',name:'인공관절수술',match:'퇴행성관절염,무릎통증',note:'60대 이상 타깃. 고관여 키워드. 신뢰 콘텐츠 필수.',src:'claude'},
-  {id:'cp42',type:'정형외과',cat:'교통사고',name:'교통사고 정형외과',match:'교통사고후유증',note:'자동차보험 적용. 골절·인대 손상 검사 연계.',src:'claude'},
+  {id:'cp42',type:'정형외과',cat:'교통사고',name:'교통사고 후유증 정형외과',match:'교통사고후유증',note:'자동차보험 적용. 골절·인대 손상 검사 연계.',src:'claude'},
   // 신경외과 특화 상품 확장
   {id:'cp50',type:'신경외과',cat:'척추',name:'비수술 척추치료',match:'허리디스크,목디스크,척추관협착증,허리디스크 재발,전방전위증,척추전방전위증,디스크내장증',note:'수술 공포층 타깃. 클릭률 높음. 비수술 범위와 한계 명시 필수.',src:'claude'},
   {id:'cp51',type:'신경외과',cat:'척추',name:'경막외 신경차단술',match:'허리디스크,척추관협착증,좌골신경통,후관절증후군,이상근증후군',note:'전문 용어. 증상명 앞 배치 권장. 시술 후 일상 복귀 빠름 소구 유효.',src:'claude'},
@@ -769,7 +769,7 @@ var CLAUDE_PRODUCTS=[
   {id:'cp58',type:'신경외과',cat:'두통/어지럼',name:'두통 클리닉',match:'편두통,군발두통,만성두통,긴장성두통',note:'원인 감별 진단 소구. 약물 의존도 줄이는 치료 강조 유효.',src:'claude'},
   {id:'cp59',type:'신경외과',cat:'두통/어지럼',name:'뇌혈관 정밀검사',match:'뇌경색,뇌졸중 후유증,어지럼증,만성두통',note:'예방 목적 수요. 가족력 있는 수요층 타깃. 조기 발견 소구.',src:'claude'},
   {id:'cp60',type:'신경외과',cat:'신경계',name:'안면신경 치료',match:'안면신경마비,삼차신경통',note:'돌발성 수요. 초기 내원 골든타임 소구 유효.',src:'claude'},
-  {id:'cp61',type:'신경외과',cat:'교통사고',name:'교통사고 신경외과',match:'교통사고후유증,목 교통사고',note:'자동차보험 적용. MRI·CT 정밀 검사 연계. 합의 전 치료 유도.',src:'claude'},
+  {id:'cp61',type:'신경외과',cat:'교통사고',name:'교통사고 후유증 신경외과',match:'교통사고후유증,목 교통사고',note:'자동차보험 적용. MRI·CT 정밀 검사 연계. 합의 전 치료 유도.',src:'claude'},
   // 피부과 시술
   {id:'cp70',type:'피부과',cat:'피부과',name:'레이저 토닝',match:'기미,색소침착,주근깨,홍조,여드름 흉터',note:'색소 개선 핵심 시술. 시술 횟수·비용 구체화 콘텐츠 유효.',src:'claude'},
   {id:'cp71',type:'피부과',cat:'피부과',name:'피코레이저',match:'기미,색소침착,문신제거,여드름 흉터,점 제거',note:'레이저 토닝보다 고가·고효율 소구. 색소·문신 타깃.',src:'claude'},
@@ -1196,7 +1196,11 @@ function pickRegionAndCats(){
   if(!groups.length)return{region:selectedClient.city,cats:ALL_CATS};
   var g=pick(groups);
   var places=g.places.split(',').map(function(x){return x.trim();}).filter(Boolean);
-  return{region:places.length?pick(places):selectedClient.city,cats:g.cats&&g.cats.length?g.cats:ALL_CATS};
+  var region=places.length?pick(places):selectedClient.city;
+  // "부천시" → "부천" 처럼 행정구역 명칭 제거
+  region=region.replace(/특별시$|광역시$|특별자치시$|특별자치도$/,'').replace(/([가-힣]{2,})[시군구]$/,function(m,p1){return p1;}).trim();
+  if(!region)region=selectedClient.city;
+  return{region:region,cats:g.cats&&g.cats.length?g.cats:ALL_CATS};
 }
 function pickDept(){
   if(!selectedClient)return '한의원';
@@ -1227,10 +1231,19 @@ function pickProduct(diseaseName){
   // 1순위: 질환명 직접 매칭
   var matched=typeProducts.filter(function(p){return p.match&&p.match.split(',').map(function(x){return x.trim();}).indexOf(diseaseName)>=0;});
   if(matched.length)return pick(matched);
-  // 2순위: 같은 카테고리 상품
+  // 2순위: 현재 선택된 카테고리(ST.cats) 내 상품 — 지역그룹 카테고리와 일치
   var dis=getAllDiseases().find(function(d){return d.name===diseaseName;});
-  if(dis){var catM=typeProducts.filter(function(p){return p.cat===dis.cat;});if(catM.length)return pick(catM);}
-  // 3순위: 없으면 null (엉뚱한 시술 표시 안 함)
+  var disCat=dis?dis.cat:null;
+  if(disCat){
+    var catM=typeProducts.filter(function(p){return p.cat===disCat;});
+    if(catM.length)return pick(catM);
+  }
+  // 3순위: ST.cats 카테고리 내 상품
+  if(ST.cats&&ST.cats.length){
+    var catsM=typeProducts.filter(function(p){return ST.cats.indexOf(p.cat)>=0;});
+    if(catsM.length)return pick(catsM);
+  }
+  // 매칭 없으면 null
   return null;
 }
 
@@ -1259,6 +1272,10 @@ function resetBtns(){
 function showResult(){
   try{
   var r=ST.region,dept=ST.dept,dis=ST.disease,prod=ST.product;
+  // 매번 결과 초기화 후 새로 그리기
+  document.getElementById('issue-alerts').innerHTML='';
+  document.getElementById('advice-area').innerHTML='';
+  document.getElementById('combo-chips').innerHTML='';
   document.getElementById('combo-main').textContent=r+' '+dept+' '+dis.name;
   var variants=[
     {t:r+' '+dis.name+' '+dept,star:true},
