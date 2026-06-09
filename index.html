@@ -241,6 +241,10 @@
           </div>
           <div class="fg"><label>특이사항 / 금지 표현</label><input type="text" id="cf-note" placeholder="원장님 선호 키워드, 금지 표현 등"/></div>
         </div>
+        <div class="row2">
+          <div class="fg"><label>제외 시술 <span style="font-size:10px;color:var(--text3);font-weight:400">— 키워드 생성에서 제외할 상품/시술명 (쉼표 구분)</span></label><input type="text" id="cf-exclude" placeholder="약침, 봉침, 도수치료"/></div>
+          <div class="fg"><label>허용 카테고리 전체 <span style="font-size:10px;color:var(--text3);font-weight:400">— 비워두면 지역 그룹 설정 따름</span></label><input type="text" id="cf-cats" placeholder="비워두세요 (지역 그룹으로 제어)"/></div>
+        </div>
         <div style="margin:4px 0 8px">
           <label style="font-size:11px;font-weight:600;color:var(--text2);letter-spacing:.04em;display:block;margin-bottom:8px">지역 그룹별 카테고리 설정 <span style="font-size:10px;color:var(--text3);font-weight:400">— 지역마다 다른 카테고리 지정 가능</span></label>
           <div id="rg-groups"></div>
@@ -505,13 +509,13 @@ var CLAUDE_PRODUCTS=[
 ];
 
 var CLAUDE_DEPTS=[
-  {id:'cd1',type:'한의원',depts:'한의원,한방치료,한방,한방의원'},
-  {id:'cd2',type:'한방병원',depts:'한방병원,한방,요양병원'},
-  {id:'cd3',type:'신경외과',depts:'신경외과,척추전문,척추클리닉,정형외과'},
-  {id:'cd4',type:'정형외과',depts:'정형외과,신경외과,재활의학과,관절전문'},
-  {id:'cd5',type:'통증의학과',depts:'통증의학과,마취통증의학과,통증클리닉,통증센터'},
-  {id:'cd6',type:'재활의학과',depts:'재활의학과,물리치료,정형외과,재활센터'},
-  {id:'cd7',type:'요양병원',depts:'요양병원,한방병원,재활병원,요양원'}
+  {id:'cd1',type:'한의원',depts:'한의원'},
+  {id:'cd2',type:'한방병원',depts:'한방병원,요양병원'},
+  {id:'cd3',type:'요양병원',depts:'요양병원,재활병원'},
+  {id:'cd4',type:'신경외과',depts:'신경외과,정형외과'},
+  {id:'cd5',type:'정형외과',depts:'정형외과,신경외과'},
+  {id:'cd6',type:'통증의학과',depts:'통증의학과,마취통증의학과,정형외과'},
+  {id:'cd7',type:'재활의학과',depts:'재활의학과,정형외과'}
 ];
 
 var CLAUDE_ISSUES=[
@@ -621,6 +625,7 @@ function parseClientInput(){
   document.getElementById('cf-city').value=guessCity(txt);
   document.getElementById('cf-type').value=guessType(txt);
   document.getElementById('cf-note').value=parts.slice(3).join('. ')||'';
+  document.getElementById('cf-exclude').value='';
   editingClientId=null;
   document.getElementById('client-form-title').textContent='✅ 파싱 결과 — 수정 후 저장';
   rgGroups=[{places:'',cats:['통증']}];
@@ -635,6 +640,7 @@ function openEditClient(id){
   document.getElementById('cf-city').value=c.city;
   document.getElementById('cf-type').value=c.type;
   document.getElementById('cf-note').value=c.note||'';
+  document.getElementById('cf-exclude').value=(c.exclude||[]).join(', ');
   rgGroups=c.rgGroups?JSON.parse(JSON.stringify(c.rgGroups)):[{places:'',cats:['통증']}];
   renderRgEditor();
   document.getElementById('client-form-title').textContent='✏️ 클라이언트 수정';
@@ -643,7 +649,9 @@ function openEditClient(id){
 }
 function saveClientForm(){
   var clients=load(KEY_CLIENTS,[]);
-  var obj={id:editingClientId||nextId(clients),name:document.getElementById('cf-name').value,city:document.getElementById('cf-city').value,type:document.getElementById('cf-type').value,note:document.getElementById('cf-note').value,rgGroups:JSON.parse(JSON.stringify(rgGroups))};
+  var excludeRaw=document.getElementById('cf-exclude').value;
+  var excludeArr=excludeRaw?excludeRaw.split(',').map(function(x){return x.trim();}).filter(Boolean):[];
+  var obj={id:editingClientId||nextId(clients),name:document.getElementById('cf-name').value,city:document.getElementById('cf-city').value,type:document.getElementById('cf-type').value,note:document.getElementById('cf-note').value,exclude:excludeArr,rgGroups:JSON.parse(JSON.stringify(rgGroups))};
   if(editingClientId){var idx=clients.findIndex(function(c){return c.id===editingClientId;});if(idx>=0)clients[idx]=obj;else clients.push(obj);}
   else clients.push(obj);
   save(KEY_CLIENTS,clients);closeClientForm();renderClientCards();renderClientList();
@@ -750,7 +758,8 @@ function renderClientCards(){
   if(!clients.length){el.innerHTML='<div class="empty">등록된 클라이언트가 없습니다.</div>';return;}
   el.innerHTML=clients.map(function(c){
     var rgHtml=(c.rgGroups||[]).map(function(g){return '<span class="rg-tag">📍 '+(g.places||'—')+' → '+(g.cats.join('·')||'전체')+'</span>';}).join('');
-    return '<div class="db-card"><div class="db-card-header"><div style="flex:1"><div class="db-card-title">'+c.name+'</div><div class="db-card-meta">'+c.city+' · '+c.type+(c.note?' · '+c.note:'')+'</div><div style="margin-top:6px;line-height:2">'+rgHtml+'</div></div><div class="db-card-actions"><button class="btn btn-sm btn-edit" onclick="openEditClient('+c.id+')">수정</button><button class="btn btn-sm btn-danger" onclick="deleteClient('+c.id+')">삭제</button></div></div></div>';
+    var exHtml=c.exclude&&c.exclude.length?'<div class="db-card-meta" style="margin-top:4px">❌ 제외 시술: '+c.exclude.join(', ')+'</div>':'';
+    return '<div class="db-card"><div class="db-card-header"><div style="flex:1"><div class="db-card-title">'+c.name+'</div><div class="db-card-meta">'+c.city+' · '+c.type+(c.note?' · '+c.note:'')+'</div><div style="margin-top:6px;line-height:2">'+rgHtml+'</div>'+exHtml+'</div><div class="db-card-actions"><button class="btn btn-sm btn-edit" onclick="openEditClient('+c.id+')">수정</button><button class="btn btn-sm btn-danger" onclick="deleteClient('+c.id+')">삭제</button></div></div></div>';
   }).join('');
 }
 function renderDiseaseCards(){
@@ -852,7 +861,11 @@ function pickDisease(cats){
 function pickProduct(diseaseName){
   if(!selectedClient)return{name:'해당 시술',match:'',note:''};
   var all=getAllProducts();
-  var typeProducts=all.filter(function(p){return p.type===selectedClient.type;});
+  var excludes=selectedClient.exclude||[];
+  // 제외 시술 필터링
+  var typeProducts=all.filter(function(p){
+    return p.type===selectedClient.type && excludes.indexOf(p.name)<0;
+  });
   var matched=typeProducts.filter(function(p){return p.match&&p.match.split(',').map(function(x){return x.trim();}).indexOf(diseaseName)>=0;});
   if(matched.length)return pick(matched);
   var dis=getAllDiseases().find(function(d){return d.name===diseaseName;});
