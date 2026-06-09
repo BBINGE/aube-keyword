@@ -219,7 +219,7 @@
         <div class="chat-examples">
           <span class="ex-chip">자연방한의원, 평택시, 한의원</span>
           <span class="ex-chip">동탄신경외과의원, 화성시, 신경외과</span>
-          <span class="ex-chip">디어한의원, 서울 서초, 한의원, 다이어트 전문</span>
+
         </div>
         <div class="chat-row">
           <textarea id="client-free-input" placeholder="병원명, 지역, 유형, 특이사항을 자유롭게 입력하세요."></textarea>
@@ -936,7 +936,9 @@ function renderClientList(){
   var clients=load(KEY_CLIENTS,[]);
   var el=document.getElementById('client-list');
   if(!clients.length){el.innerHTML='<div class="empty">등록된 클라이언트가 없습니다. 관리자 페이지에서 추가해 주세요.</div>';return;}
-  el.innerHTML=clients.map(function(c){
+  // 한글 가나다 정렬
+  var sorted=clients.slice().sort(function(a,b){return a.name.localeCompare(b.name,'ko');});
+  el.innerHTML=sorted.map(function(c){
     return '<div class="client-item" onclick="selectClient('+c.id+')" id="ci-'+c.id+'"><div class="client-name">'+c.name+'</div><div class="client-meta">'+c.city+' · '+c.type+'</div></div>';
   }).join('');
 }
