@@ -1143,7 +1143,7 @@ function renderIssueCards(){
     // ci로 시작하면 Claude 내장, u로 시작하면 커스텀
     var isCustom=String(iss.id).startsWith('u');
     var safeId=String(iss.id);
-    var act=isCustom?'<div class="db-card-actions"><button class="btn btn-sm btn-edit" onclick="openEditIssue(''+safeId+'')">수정</button><button class="btn btn-sm btn-danger" onclick="deleteIssue(''+safeId+'')">삭제</button></div>':'<div class="db-card-actions"><span class="db-source-badge db-source-claude">Claude</span></div>';
+    var act=isCustom?'<div class="db-card-actions"><button class="btn btn-sm btn-edit" onclick="openEditIssue(&quot;'+safeId+'&quot;)">수정</button><button class="btn btn-sm btn-danger" onclick="deleteIssue(&quot;'+safeId+'&quot;)">삭제</button></div>':'<div class="db-card-actions"><span class="db-source-badge db-source-claude">Claude</span></div>';
     return '<div class="db-card"><div class="db-card-header"><div><div class="db-card-title"><span class="badge '+(lb[iss.level]||'badge-accent')+'">'+(lt[iss.level]||iss.level)+'</span> '+iss.title+'</div><div class="db-card-meta">트리거: '+iss.kw+(iss.src?' · '+iss.src:'')+'</div><div class="db-card-meta">'+(iss.msg||'').substring(0,80)+'...</div></div>'+act+'</div></div>';
   }).join('');
 }
