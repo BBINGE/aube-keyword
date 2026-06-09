@@ -239,6 +239,14 @@
               <option value="신경외과">신경외과</option><option value="정형외과">정형외과</option>
               <option value="통증의학과">통증의학과/마취통증</option><option value="재활의학과">재활의학과</option>
               <option value="요양병원">요양병원</option>
+              <option value="치과">치과</option>
+              <option value="피부과">피부과/미용의원</option>
+              <option value="성형외과">성형외과</option>
+              <option value="내과">내과/가정의학과</option>
+              <option value="이비인후과">이비인후과</option>
+              <option value="안과">안과</option>
+              <option value="산부인과">산부인과/여성의원</option>
+              <option value="비뇨기과">비뇨기과/남성의원</option>
             </select>
           </div>
           <div class="fg"><label>특이사항 / 금지 표현</label><input type="text" id="cf-note" placeholder="원장님 선호 키워드, 금지 표현 등"/></div>
@@ -394,7 +402,7 @@
 <script>
 var ADMIN_PW='aube2026';
 var isAdmin=false;
-var ALL_CATS=['통증','교통사고','다이어트','소아성장','피부','공황/불면','산후','척추','말초신경','두통/어지럼','신경계'];
+var ALL_CATS=['통증','교통사고','다이어트','소아성장','피부','공황/불면','산후','척추','말초신경','두통/어지럼','신경계','피부과','미용','치과','내과','이비인후과','안과','산부인과','비뇨기과','성형외과','여성질환','재활'];
 
 // ===== Google Sheets 연동 =====
 var GAS_URL='https://script.google.com/macros/s/AKfycbypw0GFkiolkEr01_sSxezilDAxp239GupMjCkFtcYaPd06JKXfdGmV5xJQTBLs9rEq/exec';
@@ -562,7 +570,140 @@ var CLAUDE_DISEASES=[
   {id:'c101',cat:'신경계',name:'삼차신경통',vol:'low',note:'검색량 낮음. 극심한 안면통증 수요. 전문성 소구.',src:'claude'},
   {id:'c102',cat:'신경계',name:'손떨림',vol:'med',note:'중장년 수요. 파킨슨병 우려층 타깃.',src:'claude'},
   {id:'c103',cat:'신경계',name:'보행장애',vol:'low',note:'고령 수요. 가족이 검색하는 경향.',src:'claude'},
-  {id:'c104',cat:'신경계',name:'근력저하',vol:'low',note:'다양한 원인. 증상형 콘텐츠 접근 권장.',src:'claude'}
+  {id:'c104',cat:'신경계',name:'근력저하',vol:'low',note:'다양한 원인. 증상형 콘텐츠 접근 권장.',src:'claude'},
+  // 피부과 질환
+  {id:'c110',cat:'피부과',name:'여드름 흉터',vol:'high',note:'20~30대 수요. 레이저 시술 연계 수요 높음.',src:'claude'},
+  {id:'c111',cat:'피부과',name:'색소침착',vol:'high',note:'전 연령 여성 수요. 기미·잡티·점 구분 권장.',src:'claude'},
+  {id:'c112',cat:'피부과',name:'기미',vol:'high',note:'30~50대 여성 핵심 수요. 레이저·필링 연계.',src:'claude'},
+  {id:'c113',cat:'피부과',name:'주근깨',vol:'med',note:'20~40대 수요. 레이저 연계.',src:'claude'},
+  {id:'c114',cat:'피부과',name:'모공',vol:'high',note:'20~30대 수요. 피부결·모공축소 키워드 병용.',src:'claude'},
+  {id:'c115',cat:'피부과',name:'피부노화',vol:'med',note:'40대 이상 수요. 리프팅·보톡스 연계.',src:'claude'},
+  {id:'c116',cat:'피부과',name:'주름',vol:'high',note:'40~60대 수요. 보톡스·필러 연계 수요 높음.',src:'claude'},
+  {id:'c117',cat:'피부과',name:'피부탄력',vol:'med',note:'30~50대 여성 수요. 리프팅 시술 연계.',src:'claude'},
+  {id:'c118',cat:'피부과',name:'홍조',vol:'med',note:'전 연령 수요. 레이저 토닝·IPL 연계.',src:'claude'},
+  {id:'c119',cat:'피부과',name:'모세혈관확장증',vol:'low',note:'검색량 낮음. 홍조와 함께 사용.',src:'claude'},
+  {id:'c120',cat:'피부과',name:'튼살',vol:'med',note:'산후·급격한 체중변화 수요. 여성 타깃.',src:'claude'},
+  {id:'c121',cat:'피부과',name:'제모',vol:'high',note:'전 연령 수요. 영구제모·레이저제모 구분 권장.',src:'claude'},
+  {id:'c122',cat:'피부과',name:'왁싱',vol:'med',note:'10~30대 수요. 제모 연계.',src:'claude'},
+  {id:'c123',cat:'피부과',name:'점 제거',vol:'high',note:'전 연령 수요. 레이저 점 제거 키워드 병용.',src:'claude'},
+  {id:'c124',cat:'피부과',name:'쥐젖',vol:'med',note:'중장년 수요. 레이저 제거 연계.',src:'claude'},
+  {id:'c125',cat:'피부과',name:'사마귀',vol:'med',note:'전 연령 수요. 냉동치료·레이저 연계.',src:'claude'},
+  {id:'c126',cat:'피부과',name:'티눈',vol:'med',note:'발바닥 수요. 냉동치료 연계.',src:'claude'},
+  {id:'c127',cat:'피부과',name:'무좀',vol:'high',note:'전 연령 남성 수요. 여름철 급증.',src:'claude'},
+  {id:'c128',cat:'피부과',name:'습진',vol:'high',note:'전 연령 수요. 접촉성·아토피성 구분 권장.',src:'claude'},
+  {id:'c129',cat:'피부과',name:'지루성피부염',vol:'med',note:'두피·얼굴 수요. 탈모와 연계.',src:'claude'},
+  {id:'c130',cat:'피부과',name:'탈모',vol:'high',note:'30~50대 남성 수요. 여성탈모 별도 소구 유효.',src:'claude'},
+  {id:'c131',cat:'피부과',name:'원형탈모',vol:'med',note:'스트레스성 수요. 면역 이상 연계.',src:'claude'},
+  {id:'c132',cat:'피부과',name:'두피염',vol:'med',note:'탈모 전 단계 수요. 두피 관리 연계.',src:'claude'},
+  {id:'c133',cat:'피부과',name:'네일 무좀',vol:'low',note:'검색량 낮음. 손발톱 무좀과 함께 사용.',src:'claude'},
+  {id:'c134',cat:'피부과',name:'백반증',vol:'low',note:'만성 피부질환. 전문성 소구 콘텐츠 유효.',src:'claude'},
+  {id:'c135',cat:'피부과',name:'켈로이드',vol:'low',note:'흉터 체질 수요. 레이저·주사 병행.',src:'claude'},
+  {id:'c136',cat:'피부과',name:'흉터',vol:'med',note:'수술·사고 후 수요. 레이저·필러 연계.',src:'claude'},
+  {id:'c137',cat:'피부과',name:'비립종',vol:'low',note:'검색량 낮음. 눈가 주변 수요.',src:'claude'},
+  {id:'c138',cat:'피부과',name:'한관종',vol:'low',note:'검색량 낮음. 눈가·볼 수요.',src:'claude'},
+  {id:'c139',cat:'미용',name:'보톡스',vol:'high',note:'전 연령 여성 수요. 주름·사각턱·종아리 구분 권장.',src:'claude'},
+  {id:'c140',cat:'미용',name:'필러',vol:'high',note:'30~50대 여성 수요. 팔자주름·눈밑·입술 구분 권장.',src:'claude'},
+  {id:'c141',cat:'미용',name:'리프팅',vol:'high',note:'40~60대 여성 핵심 수요. 실리프팅·울쎄라·써마지 구분.',src:'claude'},
+  {id:'c142',cat:'미용',name:'피부 관리',vol:'high',note:'전 연령 여성 수요. 수분·모공·미백 구분 권장.',src:'claude'},
+  {id:'c143',cat:'미용',name:'레이저 토닝',vol:'high',note:'20~40대 여성 수요. 기미·색소 연계.',src:'claude'},
+  {id:'c144',cat:'미용',name:'피코레이저',vol:'med',note:'색소·문신 제거 수요. 레이저 토닝보다 고가.',src:'claude'},
+  {id:'c145',cat:'미용',name:'IPL',vol:'med',note:'혈관·색소 복합 수요. 홍조·기미 연계.',src:'claude'},
+  {id:'c146',cat:'미용',name:'써마지',vol:'med',note:'리프팅 수요. 40대 이상 타깃.',src:'claude'},
+  {id:'c147',cat:'미용',name:'울쎄라',vol:'med',note:'고강도 리프팅. 40~60대 타깃.',src:'claude'},
+  {id:'c148',cat:'미용',name:'실리프팅',vol:'med',note:'즉각적 리프팅 효과. 30~50대 타깃.',src:'claude'},
+  {id:'c149',cat:'미용',name:'물광주사',vol:'high',note:'20~40대 여성 수요. 수분·광채 피부 소구.',src:'claude'},
+  {id:'c150',cat:'미용',name:'피부과 다이어트',vol:'high',note:'지방분해주사·지방흡입 등. 피부과 특화 다이어트.',src:'claude'},
+  {id:'c151',cat:'미용',name:'지방분해주사',vol:'med',note:'부분비만 수요. 복부·턱·팔뚝 구분 권장.',src:'claude'},
+  {id:'c152',cat:'미용',name:'눈밑지방재배치',vol:'med',note:'30~50대 수요. 애교살 연계.',src:'claude'},
+  {id:'c153',cat:'미용',name:'쁘띠성형',vol:'med',note:'보톡스·필러 복합 수요. 비수술 성형 소구.',src:'claude'},
+  // 치과
+  {id:'c160',cat:'치과',name:'임플란트',vol:'high',note:'검색량 최상위. 경쟁 극심. 지역+임플란트 조합 필수.',src:'claude'},
+  {id:'c161',cat:'치과',name:'임플란트 재수술',vol:'med',note:'고난도 케이스. 전문성 소구 유효.',src:'claude'},
+  {id:'c162',cat:'치과',name:'뼈이식',vol:'med',note:'임플란트 연계. 난이도 설명 콘텐츠 유효.',src:'claude'},
+  {id:'c163',cat:'치과',name:'치아교정',vol:'high',note:'검색량 높음. 성인교정·청소년교정 구분 권장.',src:'claude'},
+  {id:'c164',cat:'치과',name:'투명교정',vol:'high',note:'20~40대 수요. 인비절라인 연계.',src:'claude'},
+  {id:'c165',cat:'치과',name:'부분교정',vol:'med',note:'앞니 위주 교정 수요.',src:'claude'},
+  {id:'c166',cat:'치과',name:'크라운',vol:'med',note:'충치 치료 후 연계. 지르코니아 크라운 소구 유효.',src:'claude'},
+  {id:'c167',cat:'치과',name:'라미네이트',vol:'med',note:'심미 치료. 20~40대 여성 수요.',src:'claude'},
+  {id:'c168',cat:'치과',name:'치아미백',vol:'high',note:'전 연령 수요. 비교적 저렴. 패키지 소구 유효.',src:'claude'},
+  {id:'c169',cat:'치과',name:'사랑니 발치',vol:'high',note:'10~30대 수요. 발치 후 관리 콘텐츠 유효.',src:'claude'},
+  {id:'c170',cat:'치과',name:'스케일링',vol:'high',note:'전 연령 수요. 건강보험 적용. 초진 유입 유효.',src:'claude'},
+  {id:'c171',cat:'치과',name:'신경치료',vol:'med',note:'충치 심화 수요. 통증 해소 소구 유효.',src:'claude'},
+  {id:'c172',cat:'치과',name:'틀니',vol:'med',note:'60대 이상 수요. 임플란트 비교 콘텐츠 유효.',src:'claude'},
+  {id:'c173',cat:'치과',name:'수면치료',vol:'low',note:'치과 공포증 수요. 차별화 소구 유효.',src:'claude'},
+  {id:'c174',cat:'치과',name:'턱관절치료',vol:'med',note:'개구장애·턱통증 수요. 신경외과와 수요 겹침.',src:'claude'},
+  {id:'c175',cat:'치과',name:'소아치과',vol:'med',note:'부모 주도 검색. 충치예방·불소도포 연계.',src:'claude'},
+  // 내과/가정의학과
+  {id:'c180',cat:'내과',name:'건강검진',vol:'high',note:'전 연령 수요. 국가검진·직장검진·종합검진 구분 권장.',src:'claude'},
+  {id:'c181',cat:'내과',name:'위내시경',vol:'high',note:'40대 이상 수요. 수면내시경 소구 유효.',src:'claude'},
+  {id:'c182',cat:'내과',name:'대장내시경',vol:'high',note:'40대 이상 수요. 수면내시경 소구 유효.',src:'claude'},
+  {id:'c183',cat:'내과',name:'고혈압',vol:'high',note:'중장년 만성질환. 관리형 콘텐츠 유효.',src:'claude'},
+  {id:'c184',cat:'내과',name:'당뇨',vol:'high',note:'중장년 만성질환. 혈당관리·합병증 예방 소구.',src:'claude'},
+  {id:'c185',cat:'내과',name:'고지혈증',vol:'med',note:'중장년 수요. 고혈압·당뇨 연계.',src:'claude'},
+  {id:'c186',cat:'내과',name:'수액치료',vol:'med',note:'피로·면역 수요. 직장인 타깃.',src:'claude'},
+  {id:'c187',cat:'내과',name:'비만관리',vol:'med',note:'가정의학과 특화. 체중관리·식욕조절 소구.',src:'claude'},
+  {id:'c188',cat:'내과',name:'갑상선질환',vol:'med',note:'중장년 여성 수요. 검사 목적형 콘텐츠.',src:'claude'},
+  {id:'c189',cat:'내과',name:'위염',vol:'high',note:'전 연령 수요. 위식도역류 연계.',src:'claude'},
+  {id:'c190',cat:'내과',name:'과민성대장증후군',vol:'med',note:'20~40대 수요. 스트레스 연계.',src:'claude'},
+  {id:'c191',cat:'내과',name:'예방접종',vol:'med',note:'독감·대상포진·폐렴구균. 시즌형 콘텐츠 유효.',src:'claude'},
+  {id:'c192',cat:'내과',name:'금연상담',vol:'low',note:'가정의학과 특화. 금연 보조제 연계.',src:'claude'},
+  // 이비인후과
+  {id:'c200',cat:'이비인후과',name:'비염',vol:'high',note:'전 연령 수요. 알레르기·만성비염 구분 권장.',src:'claude'},
+  {id:'c201',cat:'이비인후과',name:'축농증',vol:'high',note:'만성 부비동염. 코막힘·두통 연계.',src:'claude'},
+  {id:'c202',cat:'이비인후과',name:'코막힘',vol:'high',note:'비중격만곡증·비후성비염 연계.',src:'claude'},
+  {id:'c203',cat:'이비인후과',name:'편도염',vol:'med',note:'소아·청소년 수요. 반복성 편도염 소구.',src:'claude'},
+  {id:'c204',cat:'이비인후과',name:'이석증',vol:'med',note:'어지럼증 원인 1위. 빠른 호전 소구 유효.',src:'claude'},
+  {id:'c205',cat:'이비인후과',name:'이명',vol:'med',note:'중장년 수요. 만성화 전 내원 유도.',src:'claude'},
+  {id:'c206',cat:'이비인후과',name:'난청',vol:'med',note:'고령 수요. 보청기 연계.',src:'claude'},
+  {id:'c207',cat:'이비인후과',name:'수면무호흡',vol:'med',note:'코골이 동반. 양압기·비강수술 연계.',src:'claude'},
+  {id:'c208',cat:'이비인후과',name:'역류성인후두염',vol:'med',note:'목 이물감 수요. 내과와 수요 겹침.',src:'claude'},
+  // 안과
+  {id:'c210',cat:'안과',name:'라식',vol:'high',note:'검색량 높음. 라섹·스마일라식과 비교 콘텐츠 유효.',src:'claude'},
+  {id:'c211',cat:'안과',name:'라섹',vol:'high',note:'각막 두께 부족 수요. 라식과 비교 소구.',src:'claude'},
+  {id:'c212',cat:'안과',name:'스마일라식',vol:'high',note:'프리미엄 시력교정. 회복 빠름 소구.',src:'claude'},
+  {id:'c213',cat:'안과',name:'백내장',vol:'high',note:'60대 이상 수요. 다초점 인공수정체 연계.',src:'claude'},
+  {id:'c214',cat:'안과',name:'노안교정',vol:'med',note:'40~50대 수요. 백내장 동반 소구.',src:'claude'},
+  {id:'c215',cat:'안과',name:'드림렌즈',vol:'med',note:'청소년 근시 진행 억제. 부모 주도 검색.',src:'claude'},
+  {id:'c216',cat:'안과',name:'안구건조증',vol:'high',note:'전 연령 수요. 라식 후 건조감 연계.',src:'claude'},
+  {id:'c217',cat:'안과',name:'녹내장',vol:'med',note:'40대 이상 예방 목적 수요. 정기검사 소구.',src:'claude'},
+  {id:'c218',cat:'안과',name:'황반변성',vol:'med',note:'고령 수요. 조기발견 소구 유효.',src:'claude'},
+  {id:'c219',cat:'안과',name:'렌즈삽입술',vol:'med',note:'고도근시·각막 얇은 수요. ICL 연계.',src:'claude'},
+  // 산부인과
+  {id:'c220',cat:'산부인과',name:'여성검진',vol:'high',note:'전 연령 여성 수요. 자궁경부암·초음파 연계.',src:'claude'},
+  {id:'c221',cat:'산부인과',name:'질염',vol:'high',note:'전 연령 여성 수요. 민감한 주제. 차분한 콘텐츠 접근.',src:'claude'},
+  {id:'c222',cat:'산부인과',name:'생리통',vol:'high',note:'10~40대 여성 수요.',src:'claude'},
+  {id:'c223',cat:'산부인과',name:'생리불순',vol:'high',note:'10~40대 여성 수요. 호르몬 이상 연계.',src:'claude'},
+  {id:'c224',cat:'산부인과',name:'HPV예방접종',vol:'med',note:'10~40대 여성 수요. 시즌형 캠페인 유효.',src:'claude'},
+  {id:'c225',cat:'산부인과',name:'난임',vol:'med',note:'30~40대 부부 수요. 임신준비 연계.',src:'claude'},
+  {id:'c226',cat:'산부인과',name:'자궁근종',vol:'med',note:'30~50대 여성 수요. 초음파 연계.',src:'claude'},
+  {id:'c227',cat:'산부인과',name:'갱년기',vol:'high',note:'40~60대 여성 수요. 호르몬치료 연계.',src:'claude'},
+  {id:'c228',cat:'산부인과',name:'피임상담',vol:'med',note:'20~40대 여성 수요. 경구피임·시술 구분.',src:'claude'},
+  // 비뇨기과
+  {id:'c230',cat:'비뇨기과',name:'전립선비대증',vol:'high',note:'50대 이상 남성 수요. 배뇨장애 연계.',src:'claude'},
+  {id:'c231',cat:'비뇨기과',name:'전립선염',vol:'med',note:'20~50대 남성 수요. 만성전립선염 소구.',src:'claude'},
+  {id:'c232',cat:'비뇨기과',name:'요로결석',vol:'high',note:'전 연령 수요. 옆구리 통증·혈뇨 연계.',src:'claude'},
+  {id:'c233',cat:'비뇨기과',name:'발기부전',vol:'high',note:'30~60대 남성 수요. 민감한 주제. 익명 상담 소구.',src:'claude'},
+  {id:'c234',cat:'비뇨기과',name:'성병검사',vol:'high',note:'20~40대 수요. 프라이버시 강조 콘텐츠 유효.',src:'claude'},
+  {id:'c235',cat:'비뇨기과',name:'남성갱년기',vol:'med',note:'40~60대 수요. 테스토스테론 연계.',src:'claude'},
+  {id:'c236',cat:'비뇨기과',name:'요실금',vol:'med',note:'중장년 여성 수요. 산부인과와 수요 겹침.',src:'claude'},
+  {id:'c237',cat:'비뇨기과',name:'포경수술',vol:'med',note:'10~30대 남성 수요. 부모 주도 소아 포경 연계.',src:'claude'},
+  // 성형외과
+  {id:'c240',cat:'성형외과',name:'쌍꺼풀',vol:'high',note:'10~30대 여성 수요. 매몰법·절개법 구분 권장.',src:'claude'},
+  {id:'c241',cat:'성형외과',name:'코성형',vol:'high',note:'10~30대 수요. 콧대·코끝·매부리코 구분.',src:'claude'},
+  {id:'c242',cat:'성형외과',name:'코재수술',vol:'med',note:'고난도. 전문성 소구 핵심.',src:'claude'},
+  {id:'c243',cat:'성형외과',name:'안면윤곽',vol:'med',note:'광대·사각턱·턱끝 수요.',src:'claude'},
+  {id:'c244',cat:'성형외과',name:'지방흡입',vol:'high',note:'복부·허벅지·팔뚝 수요. 여성 타깃.',src:'claude'},
+  {id:'c245',cat:'성형외과',name:'가슴성형',vol:'med',note:'고관여 수요. 신뢰 콘텐츠 필수.',src:'claude'},
+  {id:'c246',cat:'성형외과',name:'안면거상',vol:'med',note:'40~60대 수요. 미니거상 연계.',src:'claude'},
+  {id:'c247',cat:'성형외과',name:'눈재수술',vol:'med',note:'고난도. 재수술 전문성 소구 유효.',src:'claude'},
+  {id:'c248',cat:'성형외과',name:'양악수술',vol:'low',note:'검색량 낮음. 고관여. 전문성 콘텐츠 필수.',src:'claude'},
+  // 재활
+  {id:'c250',cat:'재활',name:'수술 후 재활',vol:'med',note:'무릎·어깨·척추 수술 후 수요.',src:'claude'},
+  {id:'c251',cat:'재활',name:'스포츠 재활',vol:'med',note:'스포츠 손상 회복. 발목·무릎·어깨 연계.',src:'claude'},
+  {id:'c252',cat:'재활',name:'도수치료',vol:'high',note:'2026년 관리급여 이슈. 콘텐츠 전략 재검토 필요.',src:'claude'},
+  {id:'c253',cat:'재활',name:'운동치료',vol:'med',note:'재활 연계. 코어운동·관절운동 소구.',src:'claude'},
+  {id:'c254',cat:'재활',name:'족저근막염',vol:'med',note:'러너·직장인 수요. 체외충격파 연계.',src:'claude'},
+  {id:'c255',cat:'재활',name:'회전근개손상',vol:'med',note:'스포츠·중장년 수요. 어깨통증 연계.',src:'claude'}
 ];
 
 var CLAUDE_PRODUCTS=[
@@ -617,7 +758,75 @@ var CLAUDE_PRODUCTS=[
   {id:'cp58',type:'신경외과',cat:'두통/어지럼',name:'두통 클리닉',match:'편두통,군발두통,만성두통,긴장성두통',note:'원인 감별 진단 소구. 약물 의존도 줄이는 치료 강조 유효.',src:'claude'},
   {id:'cp59',type:'신경외과',cat:'두통/어지럼',name:'뇌혈관 정밀검사',match:'뇌경색,뇌졸중 후유증,어지럼증,만성두통',note:'예방 목적 수요. 가족력 있는 수요층 타깃. 조기 발견 소구.',src:'claude'},
   {id:'cp60',type:'신경외과',cat:'신경계',name:'안면신경 치료',match:'안면신경마비,삼차신경통',note:'돌발성 수요. 초기 내원 골든타임 소구 유효.',src:'claude'},
-  {id:'cp61',type:'신경외과',cat:'교통사고',name:'교통사고 신경외과',match:'교통사고후유증,목 교통사고',note:'자동차보험 적용. MRI·CT 정밀 검사 연계. 합의 전 치료 유도.',src:'claude'}
+  {id:'cp61',type:'신경외과',cat:'교통사고',name:'교통사고 신경외과',match:'교통사고후유증,목 교통사고',note:'자동차보험 적용. MRI·CT 정밀 검사 연계. 합의 전 치료 유도.',src:'claude'},
+  // 피부과 시술
+  {id:'cp70',type:'피부과',cat:'피부과',name:'레이저 토닝',match:'기미,색소침착,주근깨,홍조,여드름 흉터',note:'색소 개선 핵심 시술. 시술 횟수·비용 구체화 콘텐츠 유효.',src:'claude'},
+  {id:'cp71',type:'피부과',cat:'피부과',name:'피코레이저',match:'기미,색소침착,문신제거,여드름 흉터,점 제거',note:'레이저 토닝보다 고가·고효율 소구. 색소·문신 타깃.',src:'claude'},
+  {id:'cp72',type:'피부과',cat:'피부과',name:'IPL',match:'홍조,모세혈관확장증,기미,색소침착',note:'혈관·색소 복합 치료. 여름 전후 수요 높음.',src:'claude'},
+  {id:'cp73',type:'피부과',cat:'피부과',name:'프락셀',match:'여드름 흉터,흉터,모공,피부노화',note:'재생 레이저. 흉터·모공 타깃. 다운타임 안내 필수.',src:'claude'},
+  {id:'cp74',type:'피부과',cat:'피부과',name:'여드름 치료',match:'여드름 흉터,모공,피부노화',note:'압출·약물·레이저 병행 소구. 재발 방지 콘텐츠 유효.',src:'claude'},
+  {id:'cp75',type:'피부과',cat:'피부과',name:'레이저 점 제거',match:'점 제거,쥐젖,비립종,한관종',note:'당일 시술·빠른 회복 소구. 가격 안내 콘텐츠 유효.',src:'claude'},
+  {id:'cp76',type:'피부과',cat:'피부과',name:'냉동치료',match:'사마귀,티눈,쥐젖',note:'비교적 저렴. 재발 가능성 안내 필수.',src:'claude'},
+  {id:'cp77',type:'피부과',cat:'피부과',name:'레이저 제모',match:'제모,왁싱',note:'영구제모 소구. 부위별 가격 안내 콘텐츠 유효.',src:'claude'},
+  {id:'cp78',type:'피부과',cat:'피부과',name:'탈모 치료',match:'탈모,원형탈모,두피염',note:'약물·주사·레이저 병행. 남성형·여성형 구분 소구.',src:'claude'},
+  {id:'cp79',type:'피부과',cat:'피부과',name:'두피 주사',match:'탈모,원형탈모,두피염',note:'모발 재생 소구. 탈모 초기 타깃.',src:'claude'},
+  {id:'cp80',type:'피부과',cat:'피부과',name:'흉터 치료',match:'흉터,켈로이드,여드름 흉터,튼살',note:'레이저·주사·필러 병행. 켈로이드는 별도 안내 필수.',src:'claude'},
+  // 미용/피부과 시술
+  {id:'cp81',type:'피부과',cat:'미용',name:'보톡스',match:'보톡스,주름,피부노화,쁘띠성형',note:'주름·사각턱·종아리 부위별 구분 권장. 가격 안내 콘텐츠 유효.',src:'claude'},
+  {id:'cp82',type:'피부과',cat:'미용',name:'필러',match:'필러,주름,피부노화,쁘띠성형,눈밑지방재배치',note:'팔자·눈밑·입술 부위별 구분 권장. 유지 기간 안내 유효.',src:'claude'},
+  {id:'cp83',type:'피부과',cat:'미용',name:'실리프팅',match:'리프팅,피부탄력,피부노화,주름',note:'즉각적 리프팅 효과 소구. 30~50대 타깃.',src:'claude'},
+  {id:'cp84',type:'피부과',cat:'미용',name:'울쎄라',match:'리프팅,피부탄력,피부노화,주름',note:'고강도 리프팅. 40~60대 타깃. 시술 후 유지 기간 소구.',src:'claude'},
+  {id:'cp85',type:'피부과',cat:'미용',name:'써마지',match:'리프팅,피부탄력,모공,피부노화',note:'전체적 피부 탄력 개선. 모공 축소 병용 소구.',src:'claude'},
+  {id:'cp86',type:'피부과',cat:'미용',name:'물광주사',match:'물광주사,피부 관리,피부탄력',note:'수분·광채 피부 소구. 시술 주기 안내 유효.',src:'claude'},
+  {id:'cp87',type:'피부과',cat:'미용',name:'지방분해주사',match:'지방분해주사,피부과 다이어트',note:'부분비만 타깃. 복부·턱·팔뚝 부위별 안내 유효.',src:'claude'},
+  {id:'cp88',type:'피부과',cat:'미용',name:'레이저 토닝',match:'레이저 토닝,기미,색소침착,피부 관리',note:'미용 목적 피부 관리. 정기 관리 패키지 소구 유효.',src:'claude'},
+  // 치과 시술
+  {id:'cp90',type:'치과',cat:'치과',name:'임플란트',match:'임플란트,임플란트 재수술,뼈이식,틀니',note:'지역명+임플란트 조합 필수. 가격 비교 환자 대응 콘텐츠 유효.',src:'claude'},
+  {id:'cp91',type:'치과',cat:'치과',name:'치아교정',match:'치아교정,투명교정,부분교정',note:'성인교정·청소년교정 구분 권장. 투명교정 비교 콘텐츠 유효.',src:'claude'},
+  {id:'cp92',type:'치과',cat:'치과',name:'크라운/보철',match:'크라운,신경치료',note:'지르코니아 크라운 소구. 내구성·심미성 강조.',src:'claude'},
+  {id:'cp93',type:'치과',cat:'치과',name:'라미네이트',match:'라미네이트,치아미백',note:'심미치료. 전후 사진 콘텐츠 유효. 의료광고법 준수.',src:'claude'},
+  {id:'cp94',type:'치과',cat:'치과',name:'사랑니 발치',match:'사랑니 발치',note:'당일 발치 소구. 발치 후 주의사항 콘텐츠 유효.',src:'claude'},
+  {id:'cp95',type:'치과',cat:'치과',name:'수면치료',match:'수면치료,소아치과',note:'치과 공포증 타깃. 편안한 진료 분위기 소구.',src:'claude'},
+  {id:'cp96',type:'치과',cat:'치과',name:'턱관절 치료',match:'턱관절치료',note:'개구장애·턱통증. 보톡스 연계 가능.',src:'claude'},
+  // 내과/가정의학과 시술
+  {id:'cp100',type:'내과',cat:'내과',name:'건강검진 패키지',match:'건강검진,갑상선질환',note:'국가검진·직장검진·종합검진 구분 소구. 예약 편의성 강조.',src:'claude'},
+  {id:'cp101',type:'내과',cat:'내과',name:'수면내시경',match:'위내시경,대장내시경,위염,과민성대장증후군',note:'수면내시경 소구. 당일 검사 가능 안내 유효.',src:'claude'},
+  {id:'cp102',type:'내과',cat:'내과',name:'만성질환 관리',match:'고혈압,당뇨,고지혈증',note:'정기 관리 콘텐츠. 약물치료+생활습관 교정 소구.',src:'claude'},
+  {id:'cp103',type:'내과',cat:'내과',name:'수액치료',match:'수액치료,비만관리',note:'피로·면역 수요. 직장인 타깃 콘텐츠 유효.',src:'claude'},
+  {id:'cp104',type:'내과',cat:'내과',name:'예방접종',match:'예방접종',note:'시즌형 콘텐츠. 독감·대상포진·폐렴구균 각각 구분 권장.',src:'claude'},
+  // 이비인후과 시술
+  {id:'cp110',type:'이비인후과',cat:'이비인후과',name:'비염 치료',match:'비염,코막힘,축농증',note:'알레르기 검사 연계. 면역치료 소구 가능.',src:'claude'},
+  {id:'cp111',type:'이비인후과',cat:'이비인후과',name:'이석증 치료',match:'이석증,어지럼증',note:'이석정복술. 빠른 호전 소구 유효.',src:'claude'},
+  {id:'cp112',type:'이비인후과',cat:'이비인후과',name:'수면클리닉',match:'수면무호흡,코막힘',note:'양압기·비강수술 연계. 수면의 질 개선 소구.',src:'claude'},
+  {id:'cp113',type:'이비인후과',cat:'이비인후과',name:'보청기 상담',match:'난청,이명',note:'청력검사 연계. 브랜드별 비교 콘텐츠 유효.',src:'claude'},
+  {id:'cp114',type:'이비인후과',cat:'이비인후과',name:'편도 수술',match:'편도염',note:'반복성 편도염 타깃. 수술 기준 설명 콘텐츠 필수.',src:'claude'},
+  // 안과 시술
+  {id:'cp120',type:'안과',cat:'안과',name:'라식/라섹',match:'라식,라섹,스마일라식',note:'비교 콘텐츠 필수. 각막 두께·직업·생활패턴 기준 설명 유효.',src:'claude'},
+  {id:'cp121',type:'안과',cat:'안과',name:'스마일라식',match:'스마일라식,렌즈삽입술',note:'프리미엄 시력교정. 회복 빠름·통증 적음 소구.',src:'claude'},
+  {id:'cp122',type:'안과',cat:'안과',name:'백내장 수술',match:'백내장,노안교정',note:'다초점 인공수정체 소구. 노안 동시교정 강조.',src:'claude'},
+  {id:'cp123',type:'안과',cat:'안과',name:'드림렌즈',match:'드림렌즈,안구건조증',note:'청소년 근시 진행 억제. 렌즈 관리 교육 콘텐츠 유효.',src:'claude'},
+  {id:'cp124',type:'안과',cat:'안과',name:'녹내장/망막 검진',match:'녹내장,황반변성',note:'40대 이상 정기검진 소구. 조기발견 강조.',src:'claude'},
+  // 산부인과 시술
+  {id:'cp130',type:'산부인과',cat:'산부인과',name:'여성검진',match:'여성검진,자궁근종,HPV예방접종',note:'자궁경부암+초음파+유방검진 패키지 소구. 국가검진 연계.',src:'claude'},
+  {id:'cp131',type:'산부인과',cat:'산부인과',name:'질염 치료',match:'질염,생리불순,생리통',note:'민감한 주제. 차분하고 공감형 콘텐츠 접근 필수.',src:'claude'},
+  {id:'cp132',type:'산부인과',cat:'산부인과',name:'난임 검사',match:'난임,갱년기',note:'임신준비 검사 패키지. 부부 동반 검사 소구 유효.',src:'claude'},
+  {id:'cp133',type:'산부인과',cat:'산부인과',name:'HPV 예방접종',match:'HPV예방접종,피임상담',note:'시즌형 캠페인. 9~45세 접종 가능 안내.',src:'claude'},
+  // 비뇨기과 시술
+  {id:'cp140',type:'비뇨기과',cat:'비뇨기과',name:'전립선 치료',match:'전립선비대증,전립선염',note:'배뇨장애 개선 소구. 약물치료+시술 병행 안내.',src:'claude'},
+  {id:'cp141',type:'비뇨기과',cat:'비뇨기과',name:'체외충격파쇄석술',match:'요로결석',note:'비수술 결석 제거. 당일 시술 소구 유효.',src:'claude'},
+  {id:'cp142',type:'비뇨기과',cat:'비뇨기과',name:'성병 검사',match:'성병검사,발기부전',note:'프라이버시 강조. 익명 상담 연계. 당일 검사 결과 소구.',src:'claude'},
+  {id:'cp143',type:'비뇨기과',cat:'비뇨기과',name:'남성갱년기 치료',match:'남성갱년기,발기부전',note:'테스토스테론 검사 연계. 중장년 삶의 질 소구.',src:'claude'},
+  // 성형외과 시술
+  {id:'cp150',type:'성형외과',cat:'성형외과',name:'눈성형',match:'쌍꺼풀,눈재수술',note:'매몰·절개법 비교 콘텐츠 유효. 재수술 전문성 소구.',src:'claude'},
+  {id:'cp151',type:'성형외과',cat:'성형외과',name:'코성형',match:'코성형,코재수술,안면윤곽',note:'콧대·코끝·매부리코 구분 권장. 재수술 케이스 콘텐츠 강점.',src:'claude'},
+  {id:'cp152',type:'성형외과',cat:'성형외과',name:'지방흡입',match:'지방흡입,가슴성형',note:'부위별 구분 권장. 복부·허벅지·팔뚝 각각 콘텐츠 필요.',src:'claude'},
+  {id:'cp153',type:'성형외과',cat:'성형외과',name:'안면거상',match:'안면거상,쁘띠성형',note:'40~60대 타깃. 미니거상 비교 소구 유효.',src:'claude'},
+  {id:'cp154',type:'성형외과',cat:'성형외과',name:'양악수술',match:'양악수술,안면윤곽',note:'고관여 수술. 신뢰·경력 중심 콘텐츠 필수. 가격 비교 지양.',src:'claude'},
+  // 재활의학과 시술
+  {id:'cp160',type:'재활의학과',cat:'재활',name:'도수치료',match:'도수치료,수술 후 재활,운동치료',note:'2026년 관리급여 이슈. 단순 시술명 노출보다 치료 필요성 설명 구조 필수.',src:'claude'},
+  {id:'cp161',type:'재활의학과',cat:'재활',name:'스포츠 재활',match:'스포츠 재활,회전근개손상,족저근막염',note:'스포츠 손상 특화. 복귀 시기 안내 콘텐츠 유효.',src:'claude'},
+  {id:'cp162',type:'재활의학과',cat:'재활',name:'체외충격파',match:'족저근막염,회전근개손상',note:'비수술. 빠른 시술 소구. 의협 가이드라인 주의.',src:'claude'},
+  {id:'cp163',type:'재활의학과',cat:'재활',name:'운동치료 프로그램',match:'운동치료,수술 후 재활',note:'1:1 맞춤 운동치료 소구. 재발 방지 강조.',src:'claude'}
 ];
 
 var CLAUDE_DEPTS=[
@@ -627,7 +836,15 @@ var CLAUDE_DEPTS=[
   {id:'cd4',type:'신경외과',depts:'신경외과,정형외과'},
   {id:'cd5',type:'정형외과',depts:'정형외과,신경외과'},
   {id:'cd6',type:'통증의학과',depts:'통증의학과,마취통증의학과,정형외과'},
-  {id:'cd7',type:'재활의학과',depts:'재활의학과,정형외과'}
+  {id:'cd7',type:'재활의학과',depts:'재활의학과,정형외과'},
+  {id:'cd8',type:'치과',depts:'치과,치과의원'},
+  {id:'cd9',type:'피부과',depts:'피부과,미용의원,피부미용'},
+  {id:'cd10',type:'성형외과',depts:'성형외과,미용성형'},
+  {id:'cd11',type:'내과',depts:'내과,가정의학과'},
+  {id:'cd12',type:'이비인후과',depts:'이비인후과'},
+  {id:'cd13',type:'안과',depts:'안과'},
+  {id:'cd14',type:'산부인과',depts:'산부인과,여성의원,여성클리닉'},
+  {id:'cd15',type:'비뇨기과',depts:'비뇨의학과,비뇨기과,남성의원'}
 ];
 
 var CLAUDE_ISSUES=[
@@ -923,9 +1140,10 @@ function renderIssueCards(){
   var lb={'danger':'badge-red','warn':'badge-amber','info':'badge-accent'};
   var lt={'danger':'경고','warn':'주의','info':'안내'};
   el.innerHTML=all.map(function(iss){
-    var actions=String(iss.id).startsWith('u')||String(iss.id).startsWith('ci')?'':'';
-    var isCustom=!String(iss.id).startsWith('ci');
-    var act=isCustom?'<div class="db-card-actions"><button class="btn btn-sm btn-edit" onclick="openEditIssue(\''+iss.id+'\')">수정</button><button class="btn btn-sm btn-danger" onclick="deleteIssue(\''+iss.id+'\')">삭제</button></div>':'<div class="db-card-actions"><span class="db-source-badge db-source-claude">Claude</span></div>';
+    // ci로 시작하면 Claude 내장, u로 시작하면 커스텀
+    var isCustom=String(iss.id).startsWith('u');
+    var safeId=String(iss.id);
+    var act=isCustom?'<div class="db-card-actions"><button class="btn btn-sm btn-edit" onclick="openEditIssue(''+safeId+'')">수정</button><button class="btn btn-sm btn-danger" onclick="deleteIssue(''+safeId+'')">삭제</button></div>':'<div class="db-card-actions"><span class="db-source-badge db-source-claude">Claude</span></div>';
     return '<div class="db-card"><div class="db-card-header"><div><div class="db-card-title"><span class="badge '+(lb[iss.level]||'badge-accent')+'">'+(lt[iss.level]||iss.level)+'</span> '+iss.title+'</div><div class="db-card-meta">트리거: '+iss.kw+(iss.src?' · '+iss.src:'')+'</div><div class="db-card-meta">'+(iss.msg||'').substring(0,80)+'...</div></div>'+act+'</div></div>';
   }).join('');
 }
