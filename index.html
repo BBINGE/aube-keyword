@@ -1211,8 +1211,14 @@ function pickRegionAndCats(){
   var g=pick(groups);
   var places=g.places.split(',').map(function(x){return x.trim();}).filter(Boolean);
   var region=places.length?pick(places):selectedClient.city;
-  // "부천시" → "부천" 처럼 행정구역 명칭 제거
-  region=region.replace(/특별시$|광역시$|특별자치시$|특별자치도$/,'').replace(/([가-힣]{2,})[시군구]$/,function(m,p1){return p1;}).trim();
+  // 시/도/읍 제거, 구/동은 유지
+  // 잘못된 예: 대전광역시, 금산읍 → 잘된 예: 대전, 금산
+  // 유지: 금천구, 둔산동, 강남구
+  region=region
+    .replace(/특별시$|광역시$|특별자치시$|특별자치도$|도$/,'')  // 광역 행정구역 제거
+    .replace(/([가-힣]{2,})시$/,function(m,p1){return p1;})      // ~시 제거 (부천시→부천)
+    .replace(/([가-힣]{2,})읍$/,function(m,p1){return p1;})      // ~읍 제거 (금산읍→금산)
+    .trim();
   if(!region)region=selectedClient.city;
   return{region:region,cats:g.cats&&g.cats.length?g.cats:ALL_CATS};
 }
