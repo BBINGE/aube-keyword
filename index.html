@@ -147,6 +147,8 @@
   <div class="nav-right">오늘의브랜딩 기획부 제작 및 문의<br><strong>박성호 기획팀장</strong></div>
 </nav>
 
+<div id="sync-status" style="display:none;background:var(--accent);color:#fff;font-size:12px;text-align:center;padding:6px;position:sticky;top:56px;z-index:99">구글 시트 동기화 중...</div>
+
 <!-- 키워드 생성 -->
 <div class="page active" id="page-gen">
   <div class="page-header">
@@ -394,15 +396,86 @@ var ADMIN_PW='aube2026';
 var isAdmin=false;
 var ALL_CATS=['통증','교통사고','다이어트','소아성장','피부','공황/불면','산후','척추','말초신경','두통/어지럼','신경계'];
 
-// ===== localStorage 키 — 절대 변경 금지 =====
-var KEY_CLIENTS='aube_clients';
-var KEY_CUSTOM_DISEASES='aube_custom_diseases';
-var KEY_CUSTOM_PRODUCTS='aube_custom_products';
-var KEY_CUSTOM_DEPTS='aube_custom_depts';
-var KEY_ISSUES='aube_issues';
+// ===== Google Sheets 연동 =====
+var GAS_URL='https://script.google.com/macros/s/AKfycbypw0GFkiolkEr01_sSxezilDAxp239GupMjCkFtcYaPd06JKXfdGmV5xJQTBLs9rEq/exec';
+var KEY_CLIENTS='clients';
+var KEY_CUSTOM_DISEASES='custom_diseases';
+var KEY_CUSTOM_PRODUCTS='custom_products';
+var KEY_CUSTOM_DEPTS='custom_depts';
+var KEY_ISSUES='issues';
 
-function load(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
-function save(k,v){localStorage.setItem(k,JSON.stringify(v));}
+// 로컬 캐시 (빠른 렌더링용)
+var _cache={};
+
+function load(k,d){
+  if(_cache[k]!==undefined) return _cache[k];
+  try{var v=localStorage.getItem('aube_'+k);var r=v?JSON.parse(v):d;_cache[k]=r;return r;}
+  catch(e){return d;}
+}
+function save(k,v){
+  _cache[k]=v;
+  localStorage.setItem('aube_'+k,JSON.stringify(v));
+  // 구글 시트에 비동기 저장
+  fetch(GAS_URL,{
+    method:'POST',
+    body:JSON.stringify({action:'write',sheet:k,data:Array.isArray(v)?v:[v]})
+  }).catch(function(e){console.warn('시트 저장 실패:',e);});
+}
+
+// 구글 시트에서 데이터 로드 (초기화 시 1회)
+function syncFromSheet(k,callback){
+  fetch(GAS_URL+'?action=read&sheet='+k)
+    .then(function(r){return r.json();})
+    .then(function(res){
+      if(res.ok && res.data && res.data.length){
+        // rgGroups 등 JSON 문자열 파싱
+        var parsed=res.data.map(function(row){
+          Object.keys(row).forEach(function(key){
+            if(typeof row[key]==='string' && (row[key].startsWith('[') || row[key].startsWith('{'))){
+              try{row[key]=JSON.parse(row[key]);}catch(e){}
+            }
+            if(row[key]==='TRUE'||row[key]===true) row[key]=true;
+            if(row[key]==='FALSE'||row[key]===false) row[key]=false;
+            if(key==='id' && !isNaN(row[key]) && row[key]!=='') row[key]=Number(row[key]);
+          });
+          return row;
+        });
+        _cache[k]=parsed;
+        localStorage.setItem('aube_'+k,JSON.stringify(parsed));
+        if(callback) callback(parsed);
+      } else {
+        if(callback) callback(load(k,[]));
+      }
+    })
+    .catch(function(){
+      // 오프라인이면 로컬 캐시 사용
+      if(callback) callback(load(k,[]));
+    });
+}
+
+// 앱 시작 시 구글 시트 동기화
+function initSync(){
+  showSyncStatus('구글 시트 동기화 중...');
+  var keys=[KEY_CLIENTS,KEY_CUSTOM_DISEASES,KEY_CUSTOM_PRODUCTS,KEY_CUSTOM_DEPTS,KEY_ISSUES];
+  var done=0;
+  keys.forEach(function(k){
+    syncFromSheet(k,function(){
+      done++;
+      if(done===keys.length){
+        hideSyncStatus();
+        renderClientList();
+      }
+    });
+  });
+}
+function showSyncStatus(msg){
+  var el=document.getElementById('sync-status');
+  if(el){el.textContent=msg;el.style.display='block';}
+}
+function hideSyncStatus(){
+  var el=document.getElementById('sync-status');
+  if(el) el.style.display='none';
+}
 function nextId(arr){return arr.length?Math.max.apply(null,arr.map(function(x){return x.id;}))+1:1;}
 function pick(arr){return arr[Math.floor(Math.random()*arr.length)];}
 
@@ -978,7 +1051,7 @@ function copyResult(){
   var btn=document.querySelector('.copy-btn');btn.textContent='복사됨 ✓';setTimeout(function(){btn.textContent='전체 복사';},2000);
 }
 
-renderClientList();
+initSync();
 </script>
 </body>
 </html>
