@@ -1272,7 +1272,7 @@ function showResult(){
   document.getElementById('combo-chips').innerHTML=variants.map(function(v){
     return '<span class="chip'+(v.star?' star':'')+'" onclick="copyChip(this)">'+v.t+'</span>';
   }).join('');
-  var allKws=[r,dept,dis.name,prod.name].join(' ').toLowerCase();
+  var allKws=[r,dept,dis.name,prod?prod.name:''].join(' ').toLowerCase();
   var triggered=getAllIssues().filter(function(iss){return iss.kw.split(',').map(function(k){return k.trim();}).some(function(k){return allKws.includes(k.toLowerCase());});});
   document.getElementById('issue-alerts').innerHTML=triggered.map(function(iss){
     var isW=iss.level==='warn';var isD=iss.level==='danger';
@@ -1281,7 +1281,7 @@ function showResult(){
   var advHtml='';
   if(dis.vol==='low')advHtml+='<div class="adv warn"><div class="adv-title">검색량 주의</div><div class="adv-msg"><b>'+dis.name+'</b>은 단독 검색량이 낮습니다. 지역+과목+증상 구체화 조합으로 롱테일을 공략하세요.'+(dis.note?' '+dis.note:'')+'</div></div>';
   if(dis.vol==='high')advHtml+='<div class="adv"><div class="adv-title">경쟁도 안내</div><div class="adv-msg"><b>'+dis.name+'</b>은 검색량이 높은 만큼 경쟁도도 높습니다. 정보 격차형 제목이나 지역+증상 구체화로 차별화하세요.'+(dis.note?' '+dis.note:'')+'</div></div>';
-  if(prod.note&&!triggered.some(function(t){return t.msg.includes(prod.name);})){advHtml+='<div class="adv'+(prod.note.includes('금지')||prod.note.includes('위반')||prod.note.includes('주의')?' warn':'')+'"><div class="adv-title">상품 키워드 제언</div><div class="adv-msg">'+prod.note+'</div></div>';}
+  if(prod&&prod.note&&!triggered.some(function(t){return t.msg.includes(prod.name);})){advHtml+='<div class="adv'+(prod.note.includes('금지')||prod.note.includes('위반')||prod.note.includes('주의')?' warn':'')+'"><div class="adv-title">상품 키워드 제언</div><div class="adv-msg">'+prod.note+'</div></div>';}
   if(ST.cats)advHtml+='<div class="adv"><div class="adv-title">지역 전략</div><div class="adv-msg"><b>'+r+'</b> 지역 — <b>'+ST.cats.join('·')+'</b> 카테고리 설정</div></div>';
   if(!advHtml)advHtml='<div class="adv"><div class="adv-title">조합 적합도 양호</div><div class="adv-msg">지역+과목+질환 구조로 안정적인 조합입니다.</div></div>';
   document.getElementById('advice-area').innerHTML=advHtml;
