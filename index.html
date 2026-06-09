@@ -455,8 +455,8 @@ function syncFromSheet(k,callback){
         if(callback) callback(load(k,[]));
       }
     })
-    .catch(function(){
-      // 오프라인이면 로컬 캐시 사용
+    .catch(function(e){
+      console.warn('시트 동기화 실패 (로컬 캐시 사용):', e);
       if(callback) callback(load(k,[]));
     });
 }
@@ -1255,6 +1255,7 @@ function resetBtns(){
   document.getElementById('result-card').style.display='none';
 }
 function showResult(){
+  try{
   var r=ST.region,dept=ST.dept,dis=ST.disease,prod=ST.product;
   document.getElementById('combo-main').textContent=r+' '+dept+' '+dis.name;
   var variants=[
@@ -1286,6 +1287,7 @@ function showResult(){
   if(!advHtml)advHtml='<div class="adv"><div class="adv-title">조합 적합도 양호</div><div class="adv-msg">지역+과목+질환 구조로 안정적인 조합입니다.</div></div>';
   document.getElementById('advice-area').innerHTML=advHtml;
   document.getElementById('result-card').style.display='block';
+  }catch(e){console.error('showResult 오류:',e);alert('결과 표시 중 오류: '+e.message);}
 }
 function copyChip(el){
   navigator.clipboard.writeText(el.textContent);
