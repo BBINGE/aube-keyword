@@ -6,168 +6,139 @@
 <title>AUBE KOREA — 병의원 키워드 생성기</title>
 <style>
   :root {
-    --bg: #f9f9f7;
-    --surface: #ffffff;
-    --surface2: #f4f4f2;
-    --border: #e8e8e4;
-    --border2: #d4d4ce;
-    --text: #1a1a18;
-    --text2: #6b6b67;
-    --text3: #a0a09c;
-    --green: #1a7a52;
-    --green-bg: #edf7f2;
-    --green-border: #a8d8c0;
-    --amber: #7a5a1a;
-    --amber-bg: #fef8ed;
-    --amber-border: #f0d080;
-    --red: #8a2020;
-    --red-bg: #fdf0f0;
-    --red-border: #f0a8a8;
-    --radius: 10px;
-    --radius-sm: 6px;
+    --bg: #f9f9f7; --surface: #ffffff; --surface2: #f4f4f2;
+    --border: #e8e8e4; --border2: #d4d4ce;
+    --text: #1a1a18; --text2: #6b6b67; --text3: #a0a09c;
+    --green: #1a7a52; --green-bg: #edf7f2; --green-border: #a8d8c0;
+    --amber: #7a5a1a; --amber-bg: #fef8ed; --amber-border: #f0d080;
+    --red: #8a2020; --red-bg: #fdf0f0; --red-border: #f0a8a8;
+    --radius: 10px; --radius-sm: 6px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, 'Pretendard', 'Apple SD Gothic Neo', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+  body { font-family: -apple-system,'Pretendard','Apple SD Gothic Neo',sans-serif; background:var(--bg); color:var(--text); font-size:14px; line-height:1.6; }
 
-  /* NAV */
-  nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 52px; position: sticky; top: 0; z-index: 100; }
-  .nav-logo { font-size: 13px; font-weight: 600; letter-spacing: .08em; color: var(--text); }
-  .nav-logo span { color: var(--green); }
-  .nav-tabs { display: flex; gap: 2px; }
-  .nav-tab { padding: 6px 14px; border-radius: var(--radius-sm); font-size: 13px; color: var(--text2); cursor: pointer; border: none; background: none; transition: all .15s; }
-  .nav-tab:hover { background: var(--surface2); color: var(--text); }
-  .nav-tab.active { background: var(--text); color: #fff; }
-  .nav-right { font-size: 12px; color: var(--text3); }
+  nav { background:var(--surface); border-bottom:1px solid var(--border); padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:52px; position:sticky; top:0; z-index:100; }
+  .nav-logo { font-size:13px; font-weight:600; letter-spacing:.08em; }
+  .nav-logo span { color:var(--green); }
+  .nav-tabs { display:flex; gap:2px; }
+  .nav-tab { padding:6px 14px; border-radius:var(--radius-sm); font-size:13px; color:var(--text2); cursor:pointer; border:none; background:none; transition:all .15s; }
+  .nav-tab:hover { background:var(--surface2); color:var(--text); }
+  .nav-tab.active { background:var(--text); color:#fff; }
+  .nav-right { font-size:12px; color:var(--text3); }
 
-  /* LAYOUT */
-  .page { display: none; max-width: 860px; margin: 0 auto; padding: 32px 24px; }
-  .page.active { display: block; }
+  .page { display:none; max-width:860px; margin:0 auto; padding:32px 24px; }
+  .page.active { display:block; }
 
-  /* CARDS */
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 16px; }
-  .card-title { font-size: 12px; font-weight: 600; letter-spacing: .06em; color: var(--text3); text-transform: uppercase; margin-bottom: 14px; }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px 24px; margin-bottom:16px; }
+  .card-title { font-size:12px; font-weight:600; letter-spacing:.06em; color:var(--text3); text-transform:uppercase; margin-bottom:14px; }
 
-  /* FORM */
-  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-  .fg { display: flex; flex-direction: column; gap: 5px; }
-  .fg label { font-size: 11px; font-weight: 600; color: var(--text2); letter-spacing: .04em; }
-  input[type=text], input[type=password], select, textarea {
-    padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
-    background: var(--surface2); color: var(--text); font-size: 13px; width: 100%;
-    transition: border .15s; font-family: inherit;
-  }
-  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--green); background: var(--surface); }
-  textarea { resize: vertical; min-height: 70px; }
+  .row2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+  .row3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:12px; }
+  .fg { display:flex; flex-direction:column; gap:5px; }
+  .fg label { font-size:11px; font-weight:600; color:var(--text2); letter-spacing:.04em; }
+  input[type=text],input[type=password],select,textarea { padding:8px 12px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--surface2); color:var(--text); font-size:13px; width:100%; transition:border .15s; font-family:inherit; }
+  input:focus,select:focus,textarea:focus { outline:none; border-color:var(--green); background:var(--surface); }
+  textarea { resize:vertical; min-height:70px; }
 
-  /* BUTTONS */
-  .btn { padding: 8px 18px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--text); transition: all .12s; font-family: inherit; }
-  .btn:hover { background: var(--surface2); }
-  .btn-primary { background: var(--text); color: #fff; border-color: var(--text); }
-  .btn-primary:hover { background: #333; }
-  .btn-green { background: var(--green); color: #fff; border-color: var(--green); }
-  .btn-green:hover { background: #155e40; }
-  .btn-sm { padding: 5px 12px; font-size: 12px; }
-  .btn-danger { background: var(--red-bg); color: var(--red); border-color: var(--red-border); }
-  .btn-danger:hover { background: #fde0e0; }
-  .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+  .btn { padding:8px 18px; border-radius:var(--radius-sm); font-size:13px; font-weight:500; cursor:pointer; border:1px solid var(--border); background:var(--surface); color:var(--text); transition:all .12s; font-family:inherit; }
+  .btn:hover { background:var(--surface2); }
+  .btn-primary { background:var(--text); color:#fff; border-color:var(--text); }
+  .btn-primary:hover { background:#333; }
+  .btn-green { background:var(--green); color:#fff; border-color:var(--green); }
+  .btn-green:hover { background:#155e40; }
+  .btn-sm { padding:5px 12px; font-size:12px; }
+  .btn-danger { background:var(--red-bg); color:var(--red); border-color:var(--red-border); }
+  .btn-danger:hover { background:#fde0e0; }
+  .btn-edit { background:var(--amber-bg); color:var(--amber); border-color:var(--amber-border); }
+  .btn-edit:hover { background:#feecc0; }
+  .btn-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:4px; }
 
-  /* KW BUTTONS */
-  .kw-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-  .kw-btn {
-    background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 14px 16px; cursor: pointer; text-align: left; transition: all .12s; min-height: 80px;
-  }
-  .kw-btn:hover { border-color: var(--border2); background: var(--surface); }
-  .kw-btn.active { border-color: var(--green); background: var(--green-bg); }
-  .kw-btn .kl { font-size: 10px; font-weight: 600; letter-spacing: .06em; color: var(--text3); margin-bottom: 6px; text-transform: uppercase; }
-  .kw-btn .kv { font-size: 15px; font-weight: 600; color: var(--text); min-height: 22px; }
-  .kw-btn.active .kv { color: var(--green); }
-  .kw-btn .ks { font-size: 11px; color: var(--text3); margin-top: 4px; }
-  .kw-btn.active .ks { color: #2a9a6a; }
+  .kw-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
+  .kw-btn { background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; cursor:pointer; text-align:left; transition:all .12s; min-height:80px; }
+  .kw-btn:hover { border-color:var(--border2); background:var(--surface); }
+  .kw-btn.active { border-color:var(--green); background:var(--green-bg); }
+  .kw-btn .kl { font-size:10px; font-weight:600; letter-spacing:.06em; color:var(--text3); margin-bottom:6px; text-transform:uppercase; }
+  .kw-btn .kv { font-size:15px; font-weight:600; color:var(--text); min-height:22px; }
+  .kw-btn.active .kv { color:var(--green); }
+  .kw-btn .ks { font-size:11px; color:var(--text3); margin-top:4px; }
+  .kw-btn.active .ks { color:#2a9a6a; }
 
-  /* RESULT */
-  .combo-main { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 12px; line-height: 1.4; letter-spacing: -.02em; }
-  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
-  .chip { font-size: 12px; padding: 4px 12px; border-radius: 99px; border: 1px solid var(--border); color: var(--text2); background: var(--surface2); }
-  .chip.star { background: var(--green-bg); border-color: var(--green-border); color: var(--green); font-weight: 600; }
-  .divider { height: 1px; background: var(--border); margin: 16px 0; }
+  .combo-main { font-size:22px; font-weight:700; color:var(--text); margin-bottom:12px; line-height:1.4; letter-spacing:-.02em; }
+  .chips { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:16px; }
+  .chip { font-size:12px; padding:4px 12px; border-radius:99px; border:1px solid var(--border); color:var(--text2); background:var(--surface2); }
+  .chip.star { background:var(--green-bg); border-color:var(--green-border); color:var(--green); font-weight:600; }
+  .divider { height:1px; background:var(--border); margin:16px 0; }
 
-  /* ADVICE */
-  .adv { border-left: 3px solid var(--green); padding: 10px 14px; margin-bottom: 10px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; background: var(--green-bg); }
-  .adv.warn { border-left-color: #c89020; background: var(--amber-bg); }
-  .adv.danger { border-left-color: #c03030; background: var(--red-bg); }
-  .adv-title { font-size: 11px; font-weight: 700; color: var(--green); letter-spacing: .04em; margin-bottom: 4px; text-transform: uppercase; }
-  .adv.warn .adv-title { color: var(--amber); }
-  .adv.danger .adv-title { color: var(--red); }
-  .adv-msg { font-size: 12px; color: var(--text2); line-height: 1.7; }
+  .adv { border-left:3px solid var(--green); padding:10px 14px; margin-bottom:10px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; background:var(--green-bg); }
+  .adv.warn { border-left-color:#c89020; background:var(--amber-bg); }
+  .adv.danger { border-left-color:#c03030; background:var(--red-bg); }
+  .adv-title { font-size:11px; font-weight:700; color:var(--green); letter-spacing:.04em; margin-bottom:4px; text-transform:uppercase; }
+  .adv.warn .adv-title { color:var(--amber); }
+  .adv.danger .adv-title { color:var(--red); }
+  .adv-msg { font-size:12px; color:var(--text2); line-height:1.7; }
 
-  /* ISSUE ALERT */
-  .issue-alert { background: var(--red-bg); border: 1px solid var(--red-border); border-radius: var(--radius); padding: 14px 18px; margin-bottom: 10px; }
-  .issue-alert-title { font-size: 11px; font-weight: 700; color: var(--red); letter-spacing: .04em; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
-  .issue-alert-msg { font-size: 12px; color: #6a2020; line-height: 1.7; }
-  .issue-badge { display: inline-block; font-size: 10px; padding: 2px 7px; border-radius: 99px; background: var(--red); color: #fff; }
+  .issue-alert { background:var(--red-bg); border:1px solid var(--red-border); border-radius:var(--radius); padding:14px 18px; margin-bottom:10px; }
+  .issue-alert-title { font-size:11px; font-weight:700; color:var(--red); letter-spacing:.04em; margin-bottom:4px; display:flex; align-items:center; gap:6px; }
+  .issue-alert-msg { font-size:12px; color:#6a2020; line-height:1.7; }
+  .issue-badge { display:inline-block; font-size:10px; padding:2px 7px; border-radius:99px; background:var(--red); color:#fff; }
 
-  /* ADMIN TABLES */
-  .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  .data-table th { text-align: left; padding: 8px 12px; border-bottom: 2px solid var(--border); font-size: 11px; font-weight: 600; color: var(--text3); letter-spacing: .04em; text-transform: uppercase; }
-  .data-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; }
-  .data-table tr:last-child td { border-bottom: none; }
-  .data-table tr:hover td { background: var(--surface2); }
+  .badge { display:inline-block; font-size:10px; padding:2px 8px; border-radius:99px; font-weight:600; }
+  .badge-green { background:var(--green-bg); color:var(--green); border:1px solid var(--green-border); }
+  .badge-amber { background:var(--amber-bg); color:var(--amber); border:1px solid var(--amber-border); }
+  .badge-red { background:var(--red-bg); color:var(--red); border:1px solid var(--red-border); }
 
-  /* BADGES */
-  .badge { display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 99px; font-weight: 600; }
-  .badge-green { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
-  .badge-amber { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
-  .badge-red { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+  .client-list { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .client-item { background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; cursor:pointer; transition:all .12s; }
+  .client-item:hover { border-color:var(--green); background:var(--green-bg); }
+  .client-item.selected { border-color:var(--green); background:var(--green-bg); }
+  .client-name { font-weight:600; font-size:14px; color:var(--text); margin-bottom:3px; }
+  .client-meta { font-size:11px; color:var(--text3); }
 
-  /* CLIENT LIST */
-  .client-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .client-item { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; cursor: pointer; transition: all .12s; }
-  .client-item:hover { border-color: var(--green); background: var(--green-bg); }
-  .client-item.selected { border-color: var(--green); background: var(--green-bg); }
-  .client-name { font-weight: 600; font-size: 14px; color: var(--text); margin-bottom: 3px; }
-  .client-meta { font-size: 11px; color: var(--text3); }
+  .login-wrap { max-width:360px; margin:80px auto; }
+  .login-title { font-size:18px; font-weight:700; margin-bottom:6px; }
+  .login-sub { font-size:13px; color:var(--text2); margin-bottom:24px; }
 
-  /* LOGIN */
-  .login-wrap { max-width: 360px; margin: 80px auto; }
-  .login-title { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
-  .login-sub { font-size: 13px; color: var(--text2); margin-bottom: 24px; }
+  .empty { text-align:center; padding:40px; color:var(--text3); font-size:13px; }
 
-  /* EMPTY STATE */
-  .empty { text-align: center; padding: 40px; color: var(--text3); font-size: 13px; }
+  .section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+  .section-title { font-size:18px; font-weight:700; color:var(--text); }
+  .section-sub { font-size:13px; color:var(--text2); margin-top:2px; }
 
-  /* SECTION HEADER */
-  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-  .section-title { font-size: 18px; font-weight: 700; color: var(--text); }
-  .section-sub { font-size: 13px; color: var(--text2); margin-top: 2px; }
+  .page-header { margin-bottom:28px; }
+  .page-header h1 { font-size:22px; font-weight:700; letter-spacing:-.02em; }
+  .page-header p { font-size:13px; color:var(--text2); margin-top:4px; }
 
-  /* PAGE HEADER */
-  .page-header { margin-bottom: 28px; }
-  .page-header h1 { font-size: 22px; font-weight: 700; letter-spacing: -.02em; }
-  .page-header p { font-size: 13px; color: var(--text2); margin-top: 4px; }
+  .tab-row { display:flex; gap:2px; border-bottom:1px solid var(--border); margin-bottom:20px; }
+  .tab { padding:8px 16px; font-size:13px; color:var(--text2); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; transition:all .12s; }
+  .tab.active { color:var(--green); border-bottom-color:var(--green); font-weight:600; }
+  .tab-content { display:none; }
+  .tab-content.active { display:block; }
 
-  /* TABS */
-  .tab-row { display: flex; gap: 2px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
-  .tab { padding: 8px 16px; font-size: 13px; color: var(--text2); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all .12s; }
-  .tab.active { color: var(--green); border-bottom-color: var(--green); font-weight: 600; }
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
+  .copy-btn { font-size:12px; color:var(--text2); background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius-sm); padding:6px 14px; cursor:pointer; display:inline-flex; align-items:center; gap:5px; margin-top:12px; font-family:inherit; }
+  .copy-btn:hover { background:var(--border); }
 
-  /* COPY BTN */
-  .copy-btn { font-size: 12px; color: var(--text2); background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 6px 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; margin-top: 12px; font-family: inherit; }
-  .copy-btn:hover { background: var(--border); }
+  /* ===== 채팅형 입력 박스 ===== */
+  .chat-input-box { background:var(--surface); border:1px solid var(--green-border); border-radius:var(--radius); padding:20px 24px; margin-bottom:16px; }
+  .chat-guide { margin-bottom:14px; }
+  .chat-guide-title { font-size:13px; font-weight:600; color:var(--green); margin-bottom:10px; }
+  .chat-guide-examples { display:flex; flex-wrap:wrap; gap:6px; }
+  .ex-chip { font-size:11px; padding:5px 12px; border-radius:99px; background:var(--green-bg); border:1px solid var(--green-border); color:var(--green); cursor:default; line-height:1.5; }
 
-  /* ALERT BOX */
-  .alert { padding: 12px 16px; border-radius: var(--radius-sm); font-size: 13px; margin-bottom: 12px; }
-  .alert-success { background: var(--green-bg); border: 1px solid var(--green-border); color: var(--green); }
-  .alert-error { background: var(--red-bg); border: 1px solid var(--red-border); color: var(--red); }
+  /* ===== 인라인 카드 (수정/삭제) ===== */
+  .db-card { background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius-sm); padding:14px 16px; margin-bottom:8px; }
+  .db-card:last-child { margin-bottom:0; }
+  .db-card-header { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
+  .db-card-title { font-weight:600; font-size:14px; color:var(--text); }
+  .db-card-meta { font-size:11px; color:var(--text3); margin-top:3px; line-height:1.6; }
+  .db-card-actions { display:flex; gap:5px; flex-shrink:0; }
+  .db-card-edit { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); padding:14px 16px; margin-top:10px; display:none; }
 
-  @media(max-width:600px) {
-    .row2, .kw-grid, .client-list { grid-template-columns: 1fr; }
-    .row3 { grid-template-columns: 1fr 1fr; }
-    nav { padding: 0 16px; }
-    .page { padding: 20px 16px; }
+  @media(max-width:600px){
+    .row2,.kw-grid,.client-list{grid-template-columns:1fr;}
+    .row3{grid-template-columns:1fr 1fr;}
+    nav{padding:0 16px;}
+    .page{padding:20px 16px;}
+    .chat-guide-examples{flex-direction:column;}
   }
 </style>
 </head>
@@ -176,10 +147,10 @@
 <nav>
   <div class="nav-logo">AUBE <span>KOREA</span></div>
   <div class="nav-tabs">
-    <button class="nav-tab active" onclick="goPage('gen')">키워드 생성</button>
-    <button class="nav-tab" onclick="goPage('admin')">관리자</button>
+    <button class="nav-tab active" onclick="goPage('gen',this)">키워드 생성</button>
+    <button class="nav-tab" onclick="goPage('admin',this)">관리자</button>
   </div>
-  <div class="nav-right" id="nav-right">오늘의브랜딩</div>
+  <div class="nav-right">오늘의브랜딩</div>
 </nav>
 
 <!-- ===== 키워드 생성 페이지 ===== -->
@@ -188,45 +159,26 @@
     <h1>병의원 키워드 생성기</h1>
     <p>클라이언트를 선택하고 버튼을 눌러 키워드 조합을 생성하세요.</p>
   </div>
-
   <div class="card">
     <div class="card-title">클라이언트 선택</div>
     <div class="client-list" id="client-list">
       <div class="empty">등록된 클라이언트가 없습니다. 관리자 페이지에서 추가해 주세요.</div>
     </div>
   </div>
-
   <div id="gen-body" style="display:none">
     <div class="card">
       <div class="card-title">키워드 조합 생성</div>
       <div class="kw-grid">
-        <button class="kw-btn" id="btn1" onclick="roll(1)">
-          <div class="kl">① 지역</div>
-          <div class="kv" id="v1">클릭하여 생성</div>
-          <div class="ks" id="s1">—</div>
-        </button>
-        <button class="kw-btn" id="btn2" onclick="roll(2)">
-          <div class="kl">② 과목</div>
-          <div class="kv" id="v2">클릭하여 생성</div>
-          <div class="ks" id="s2">—</div>
-        </button>
-        <button class="kw-btn" id="btn3" onclick="roll(3)">
-          <div class="kl">③ 질환 / 증상</div>
-          <div class="kv" id="v3">클릭하여 생성</div>
-          <div class="ks" id="s3">—</div>
-        </button>
-        <button class="kw-btn" id="btn4" onclick="roll(4)">
-          <div class="kl">④ 핵심 상품 / 시술</div>
-          <div class="kv" id="v4">클릭하여 생성</div>
-          <div class="ks" id="s4">—</div>
-        </button>
+        <button class="kw-btn" id="btn1" onclick="roll(1)"><div class="kl">① 지역</div><div class="kv" id="v1">클릭하여 생성</div><div class="ks" id="s1">—</div></button>
+        <button class="kw-btn" id="btn2" onclick="roll(2)"><div class="kl">② 과목</div><div class="kv" id="v2">클릭하여 생성</div><div class="ks" id="s2">—</div></button>
+        <button class="kw-btn" id="btn3" onclick="roll(3)"><div class="kl">③ 질환 / 증상</div><div class="kv" id="v3">클릭하여 생성</div><div class="ks" id="s3">—</div></button>
+        <button class="kw-btn" id="btn4" onclick="roll(4)"><div class="kl">④ 핵심 상품 / 시술</div><div class="kv" id="v4">클릭하여 생성</div><div class="ks" id="s4">—</div></button>
       </div>
       <div class="btn-row">
         <button class="btn btn-green" onclick="rollAll()">전체 랜덤 생성</button>
         <button class="btn" onclick="resetBtns()">초기화</button>
       </div>
     </div>
-
     <div class="card" id="result-card" style="display:none">
       <div class="card-title">추천 키워드 조합</div>
       <div class="combo-main" id="combo-main"></div>
@@ -257,342 +209,805 @@
   <div id="admin-body" style="display:none">
     <div class="page-header">
       <div style="display:flex;align-items:center;justify-content:space-between">
-        <div>
-          <h1>관리자</h1>
-          <p>DB · 클라이언트 알고리즘 · 이슈 경보를 관리합니다.</p>
-        </div>
+        <div><h1>관리자</h1><p>자유롭게 입력하면 자동으로 파싱해서 저장합니다.</p></div>
         <button class="btn btn-sm" onclick="logout()">로그아웃</button>
       </div>
     </div>
 
     <div class="tab-row">
-      <div class="tab active" onclick="switchTab('clients')">클라이언트</div>
-      <div class="tab" onclick="switchTab('db')">기본 DB</div>
-      <div class="tab" onclick="switchTab('issues')">이슈 경보</div>
+      <div class="tab active" onclick="switchTab('clients',this)">클라이언트</div>
+      <div class="tab" onclick="switchTab('db',this)">기본 DB</div>
+      <div class="tab" onclick="switchTab('issues',this)">이슈 경보</div>
     </div>
 
     <!-- 클라이언트 탭 -->
     <div class="tab-content active" id="tab-clients">
-      <div class="section-header">
-        <div>
-          <div class="section-title">클라이언트 목록</div>
-          <div class="section-sub">클라이언트별 알고리즘 규칙을 설정합니다.</div>
+      <div class="chat-input-box">
+        <div class="chat-guide">
+          <div class="chat-guide-title">💬 클라이언트 자유 입력 — 아래 예시처럼 편하게 쓰세요</div>
+          <div class="chat-guide-examples">
+            <span class="ex-chip">자연방한의원, 평택 고덕, 한의원, 통증이랑 소아성장 위주야. 다이어트도 해</span>
+            <span class="ex-chip">강남 서초 디어한의원. 한의원. 다이어트, 갱년기 전문.</span>
+            <span class="ex-chip">동탄 명인마취통증의학과. 통증 전문. 프롤로, 도수치료 주력.</span>
+          </div>
         </div>
-        <button class="btn btn-green btn-sm" onclick="openClientForm()">+ 클라이언트 추가</button>
+        <div style="display:flex;gap:8px;align-items:flex-end">
+          <textarea id="client-free-input" placeholder="병원명, 지역, 유형, 주력 진료를 자유롭게 입력하세요. 쉼표나 문장 모두 OK." style="min-height:60px;flex:1;margin-bottom:0"></textarea>
+          <button class="btn btn-green" onclick="parseClientInput()" style="white-space:nowrap;padding:10px 18px">파싱 →</button>
+        </div>
       </div>
 
-      <div id="client-form" style="display:none" class="card">
-        <div class="card-title" id="client-form-title">클라이언트 추가</div>
+      <div id="client-preview" style="display:none" class="card">
+        <div class="card-title">✅ 파싱 결과 — 수정 후 저장</div>
         <div class="row2">
-          <div class="fg"><label>병원명</label><input type="text" id="cf-name" placeholder="자연방한의원" /></div>
-          <div class="fg"><label>시/군 (예: 평택시)</label><input type="text" id="cf-city" placeholder="평택시" /></div>
+          <div class="fg"><label>병원명</label><input type="text" id="cp-name" /></div>
+          <div class="fg"><label>시/군</label><input type="text" id="cp-city" /></div>
         </div>
         <div class="row2">
-          <div class="fg">
-            <label>병원 유형</label>
-            <select id="cf-type">
-              <option value="한의원">한의원</option>
-              <option value="한방병원">한방병원</option>
-              <option value="신경외과">신경외과</option>
-              <option value="정형외과">정형외과</option>
-              <option value="통증의학과">통증의학과/마취통증</option>
-              <option value="재활의학과">재활의학과</option>
+          <div class="fg"><label>병원 유형</label>
+            <select id="cp-type">
+              <option value="한의원">한의원</option><option value="한방병원">한방병원</option>
+              <option value="신경외과">신경외과</option><option value="정형외과">정형외과</option>
+              <option value="통증의학과">통증의학과/마취통증</option><option value="재활의학과">재활의학과</option>
               <option value="요양병원">요양병원</option>
             </select>
           </div>
-          <div class="fg">
-            <label>주력 진료</label>
-            <select id="cf-main">
-              <option value="통증">통증·근골격계</option>
-              <option value="다이어트">다이어트·비만</option>
-              <option value="소아성장">소아성장</option>
-              <option value="피부">피부질환·아토피</option>
-              <option value="암">암·면역·요양</option>
-              <option value="혼합">혼합(복수)</option>
+          <div class="fg"><label>주력 진료</label>
+            <select id="cp-main">
+              <option value="통증">통증·근골격계</option><option value="다이어트">다이어트·비만</option>
+              <option value="소아성장">소아성장</option><option value="피부">피부질환·아토피</option>
+              <option value="암">암·면역·요양</option><option value="혼합">혼합(복수)</option>
             </select>
           </div>
         </div>
-        <div class="fg" style="margin-bottom:12px">
-          <label>근거리 전략 메모 (예: 통증·급성 질환 집중)</label>
-          <input type="text" id="cf-near" placeholder="근거리 수요 특성" />
+        <div class="row2">
+          <div class="fg"><label>근거리 전략 메모</label><input type="text" id="cp-near" placeholder="통증·급성 질환 집중" /></div>
+          <div class="fg"><label>중거리 전략 메모</label><input type="text" id="cp-mid" placeholder="다이어트·소아성장" /></div>
         </div>
-        <div class="fg" style="margin-bottom:12px">
-          <label>중거리 전략 메모 (예: 다이어트·소아성장·피부)</label>
-          <input type="text" id="cf-mid" placeholder="중거리 수요 특성" />
-        </div>
-        <div class="fg" style="margin-bottom:16px">
-          <label>메모 / 특이사항</label>
-          <textarea id="cf-note" placeholder="원장님 선호 키워드, 금지 표현, 특기사항 등"></textarea>
-        </div>
+        <div class="fg" style="margin-bottom:16px"><label>특이사항 / 금지 표현</label><textarea id="cp-note" style="min-height:50px"></textarea></div>
         <div class="btn-row">
-          <button class="btn btn-green" onclick="saveClient()">저장</button>
-          <button class="btn" onclick="closeClientForm()">취소</button>
+          <button class="btn btn-green" onclick="saveClientFromPreview()">저장</button>
+          <button class="btn" onclick="document.getElementById('client-preview').style.display='none'">취소</button>
         </div>
       </div>
 
       <div class="card">
-        <table class="data-table" id="client-table">
-          <thead>
-            <tr>
-              <th>병원명</th>
-              <th>지역</th>
-              <th>유형</th>
-              <th>주력</th>
-              <th>메모</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="client-tbody"></tbody>
-        </table>
+        <div style="font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--text3);text-transform:uppercase;margin-bottom:14px">등록된 클라이언트</div>
+        <div id="client-cards"><div class="empty">등록된 클라이언트가 없습니다.</div></div>
       </div>
     </div>
 
     <!-- DB 탭 -->
     <div class="tab-content" id="tab-db">
       <div class="tab-row" style="border-bottom:none;margin-bottom:12px">
-        <div class="tab active" onclick="switchDbTab('region')">지역 DB</div>
-        <div class="tab" onclick="switchDbTab('dept')">과목 DB</div>
-        <div class="tab" onclick="switchDbTab('disease')">질환 DB</div>
-        <div class="tab" onclick="switchDbTab('product')">상품 DB</div>
+        <div class="tab active" onclick="switchDbTab('region',this)">지역 DB</div>
+        <div class="tab" onclick="switchDbTab('dept',this)">과목 DB</div>
+        <div class="tab" onclick="switchDbTab('disease',this)">질환 DB</div>
+        <div class="tab" onclick="switchDbTab('product',this)">상품 DB</div>
       </div>
 
+      <!-- 지역 -->
       <div class="tab-content active" id="dbtab-region">
-        <div class="section-header">
-          <div class="section-title">지역 DB</div>
-          <button class="btn btn-green btn-sm" onclick="openRegionForm()">+ 지역 추가</button>
-        </div>
-        <div id="region-form" style="display:none" class="card">
-          <div class="row2">
-            <div class="fg"><label>시/군</label><input type="text" id="rf-city" placeholder="평택시" /></div>
-            <div class="fg">
-              <label>유형</label>
-              <select id="rf-type">
-                <option value="근거리">근거리</option>
-                <option value="중거리">중거리</option>
-                <option value="광역">광역</option>
-              </select>
+        <div class="chat-input-box">
+          <div class="chat-guide">
+            <div class="chat-guide-title">💬 지역 자유 입력</div>
+            <div class="chat-guide-examples">
+              <span class="ex-chip">평택시 근거리: 평택, 비전동, 고덕, 고덕동, 세교동</span>
+              <span class="ex-chip">천안시 중거리: 천안, 아산, 성환, 직산, 배방, 온양</span>
             </div>
           </div>
-          <div class="fg" style="margin-bottom:12px">
-            <label>지명 목록 (쉼표 구분)</label>
-            <textarea id="rf-list" placeholder="평택, 평택역, 비전동, 고덕, 세교동, 안중..."></textarea>
-          </div>
-          <div class="btn-row">
-            <button class="btn btn-green" onclick="saveRegion()">저장</button>
-            <button class="btn" onclick="closeRegionForm()">취소</button>
+          <div style="display:flex;gap:8px;align-items:flex-end">
+            <textarea id="region-free-input" placeholder="시/군 + 근거리/중거리/광역 + 지명 목록을 자유롭게 입력" style="min-height:50px;flex:1;margin-bottom:0"></textarea>
+            <button class="btn btn-green" onclick="parseRegionInput()" style="white-space:nowrap;padding:10px 18px">파싱 →</button>
           </div>
         </div>
-        <div class="card"><table class="data-table"><thead><tr><th>시/군</th><th>유형</th><th>지명 목록</th><th></th></tr></thead><tbody id="region-tbody"></tbody></table></div>
-      </div>
-
-      <div class="tab-content" id="dbtab-dept">
-        <div class="section-header">
-          <div class="section-title">과목 DB</div>
-          <button class="btn btn-green btn-sm" onclick="openDeptForm()">+ 과목 추가</button>
-        </div>
-        <div id="dept-form" style="display:none" class="card">
-          <div class="row2">
-            <div class="fg"><label>병원 유형</label><input type="text" id="df-type" placeholder="한의원" /></div>
-            <div class="fg"><label>표출 과목명 (쉼표 구분)</label><input type="text" id="df-depts" placeholder="한의원, 한방치료, 한방" /></div>
-          </div>
-          <div class="btn-row">
-            <button class="btn btn-green" onclick="saveDept()">저장</button>
-            <button class="btn" onclick="closeDeptForm()">취소</button>
-          </div>
-        </div>
-        <div class="card"><table class="data-table"><thead><tr><th>병원 유형</th><th>표출 과목명</th><th></th></tr></thead><tbody id="dept-tbody"></tbody></table></div>
-      </div>
-
-      <div class="tab-content" id="dbtab-disease">
-        <div class="section-header">
-          <div class="section-title">질환 DB</div>
-          <button class="btn btn-green btn-sm" onclick="openDiseaseForm()">+ 질환 추가</button>
-        </div>
-        <div id="disease-form" style="display:none" class="card">
+        <div id="region-preview" style="display:none" class="card">
+          <div class="card-title">✅ 파싱 결과</div>
           <div class="row3">
-            <div class="fg"><label>진료 분야</label><input type="text" id="dsf-cat" placeholder="통증" /></div>
-            <div class="fg"><label>질환명</label><input type="text" id="dsf-name" placeholder="허리디스크" /></div>
-            <div class="fg">
-              <label>검색량</label>
-              <select id="dsf-vol">
-                <option value="high">높음</option>
-                <option value="med">중간</option>
-                <option value="low">낮음</option>
-              </select>
-            </div>
-          </div>
-          <div class="fg" style="margin-bottom:12px">
-            <label>실무 메모</label>
-            <input type="text" id="dsf-note" placeholder="검색량 높음. 경쟁 극심. 지역 조합 필수." />
+            <div class="fg"><label>시/군</label><input type="text" id="rp-city" /></div>
+            <div class="fg"><label>유형</label><select id="rp-type"><option value="근거리">근거리</option><option value="중거리">중거리</option><option value="광역">광역</option></select></div>
+            <div class="fg"><label>지명 목록 (쉼표 구분)</label><input type="text" id="rp-list" /></div>
           </div>
           <div class="btn-row">
-            <button class="btn btn-green" onclick="saveDisease()">저장</button>
-            <button class="btn" onclick="closeDiseaseForm()">취소</button>
+            <button class="btn btn-green" onclick="saveRegionFromPreview()">저장</button>
+            <button class="btn" onclick="document.getElementById('region-preview').style.display='none'">취소</button>
           </div>
         </div>
-        <div class="card"><table class="data-table"><thead><tr><th>분야</th><th>질환명</th><th>검색량</th><th>메모</th><th></th></tr></thead><tbody id="disease-tbody"></tbody></table></div>
+        <div class="card"><div id="region-cards"><div class="empty">등록된 지역이 없습니다.</div></div></div>
       </div>
 
-      <div class="tab-content" id="dbtab-product">
-        <div class="section-header">
-          <div class="section-title">상품 / 시술 DB</div>
-          <button class="btn btn-green btn-sm" onclick="openProductForm()">+ 상품 추가</button>
+      <!-- 과목 -->
+      <div class="tab-content" id="dbtab-dept">
+        <div class="chat-input-box">
+          <div class="chat-guide">
+            <div class="chat-guide-title">💬 과목 자유 입력</div>
+            <div class="chat-guide-examples">
+              <span class="ex-chip">한의원: 한의원, 한방치료, 한방</span>
+              <span class="ex-chip">신경외과: 신경외과, 척추전문, 정형외과</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-end">
+            <textarea id="dept-free-input" placeholder="병원유형: 과목명1, 과목명2, 과목명3" style="min-height:50px;flex:1;margin-bottom:0"></textarea>
+            <button class="btn btn-green" onclick="parseDeptInput()" style="white-space:nowrap;padding:10px 18px">파싱 →</button>
+          </div>
         </div>
-        <div id="product-form" style="display:none" class="card">
+        <div id="dept-preview" style="display:none" class="card">
+          <div class="card-title">✅ 파싱 결과</div>
           <div class="row2">
-            <div class="fg"><label>병원 유형</label><input type="text" id="pf-type" placeholder="한의원" /></div>
-            <div class="fg"><label>진료 분야</label><input type="text" id="pf-cat" placeholder="통증" /></div>
-          </div>
-          <div class="row2">
-            <div class="fg"><label>상품/시술명</label><input type="text" id="pf-name" placeholder="추나요법" /></div>
-            <div class="fg"><label>매칭 질환 (쉼표 구분)</label><input type="text" id="pf-match" placeholder="허리디스크, 목디스크, 척추관협착증" /></div>
-          </div>
-          <div class="fg" style="margin-bottom:12px">
-            <label>실무 제언 / 의료법 주의사항</label>
-            <textarea id="pf-note" placeholder="추나는 건강보험 적용 강조 시 신뢰도 상승. 비급여 비용 명시 권장."></textarea>
+            <div class="fg"><label>병원 유형</label><input type="text" id="dp-type" /></div>
+            <div class="fg"><label>표출 과목명 (쉼표 구분)</label><input type="text" id="dp-depts" /></div>
           </div>
           <div class="btn-row">
-            <button class="btn btn-green" onclick="saveProduct()">저장</button>
-            <button class="btn" onclick="closeProductForm()">취소</button>
+            <button class="btn btn-green" onclick="saveDeptFromPreview()">저장</button>
+            <button class="btn" onclick="document.getElementById('dept-preview').style.display='none'">취소</button>
           </div>
         </div>
-        <div class="card"><table class="data-table"><thead><tr><th>유형</th><th>분야</th><th>상품명</th><th>매칭 질환</th><th>제언</th><th></th></tr></thead><tbody id="product-tbody"></tbody></table></div>
+        <div class="card"><div id="dept-cards"><div class="empty">등록된 과목이 없습니다.</div></div></div>
+      </div>
+
+      <!-- 질환 -->
+      <div class="tab-content" id="dbtab-disease">
+        <div class="chat-input-box">
+          <div class="chat-guide">
+            <div class="chat-guide-title">💬 질환 자유 입력</div>
+            <div class="chat-guide-examples">
+              <span class="ex-chip">통증 / 허리디스크 / 높음 / 지역 조합 필수</span>
+              <span class="ex-chip">다이어트 / 산후비만 / 중간 / 한약 연결 필수, 침다이어트 금지</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-end">
+            <textarea id="disease-free-input" placeholder="진료분야 / 질환명 / 검색량(높음·중간·낮음) / 메모" style="min-height:50px;flex:1;margin-bottom:0"></textarea>
+            <button class="btn btn-green" onclick="parseDiseaseInput()" style="white-space:nowrap;padding:10px 18px">파싱 →</button>
+          </div>
+        </div>
+        <div id="disease-preview" style="display:none" class="card">
+          <div class="card-title">✅ 파싱 결과</div>
+          <div class="row3">
+            <div class="fg"><label>진료 분야</label><input type="text" id="dsp-cat" /></div>
+            <div class="fg"><label>질환명</label><input type="text" id="dsp-name" /></div>
+            <div class="fg"><label>검색량</label><select id="dsp-vol"><option value="high">높음</option><option value="med">중간</option><option value="low">낮음</option></select></div>
+          </div>
+          <div class="fg" style="margin-bottom:12px"><label>실무 메모</label><input type="text" id="dsp-note" /></div>
+          <div class="btn-row">
+            <button class="btn btn-green" onclick="saveDiseaseFromPreview()">저장</button>
+            <button class="btn" onclick="document.getElementById('disease-preview').style.display='none'">취소</button>
+          </div>
+        </div>
+        <div class="card"><div id="disease-cards"><div class="empty">등록된 질환이 없습니다.</div></div></div>
+      </div>
+
+      <!-- 상품 -->
+      <div class="tab-content" id="dbtab-product">
+        <div class="chat-input-box">
+          <div class="chat-guide">
+            <div class="chat-guide-title">💬 상품/시술 자유 입력</div>
+            <div class="chat-guide-examples">
+              <span class="ex-chip">한의원 / 통증 / 추나요법 / 허리디스크, 목디스크 / 건강보험 적용 강조 권장</span>
+              <span class="ex-chip">통증의학과 / 통증 / 프롤로주사 / 무릎통증, 오십견 / 실손보험 연계 수요 높음</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-end">
+            <textarea id="product-free-input" placeholder="병원유형 / 분야 / 상품명 / 매칭질환 / 실무제언" style="min-height:50px;flex:1;margin-bottom:0"></textarea>
+            <button class="btn btn-green" onclick="parseProductInput()" style="white-space:nowrap;padding:10px 18px">파싱 →</button>
+          </div>
+        </div>
+        <div id="product-preview" style="display:none" class="card">
+          <div class="card-title">✅ 파싱 결과</div>
+          <div class="row2">
+            <div class="fg"><label>병원 유형</label><input type="text" id="pp-type" /></div>
+            <div class="fg"><label>진료 분야</label><input type="text" id="pp-cat" /></div>
+          </div>
+          <div class="row2">
+            <div class="fg"><label>상품/시술명</label><input type="text" id="pp-name" /></div>
+            <div class="fg"><label>매칭 질환 (쉼표 구분)</label><input type="text" id="pp-match" /></div>
+          </div>
+          <div class="fg" style="margin-bottom:12px"><label>실무 제언</label><textarea id="pp-note" style="min-height:50px"></textarea></div>
+          <div class="btn-row">
+            <button class="btn btn-green" onclick="saveProductFromPreview()">저장</button>
+            <button class="btn" onclick="document.getElementById('product-preview').style.display='none'">취소</button>
+          </div>
+        </div>
+        <div class="card"><div id="product-cards"><div class="empty">등록된 상품이 없습니다.</div></div></div>
       </div>
     </div>
 
     <!-- 이슈 경보 탭 -->
     <div class="tab-content" id="tab-issues">
-      <div class="section-header">
-        <div>
-          <div class="section-title">이슈 경보</div>
-          <div class="section-sub">특정 키워드 출력 시 실무자에게 자동으로 경보를 표시합니다.</div>
-        </div>
-        <button class="btn btn-green btn-sm" onclick="openIssueForm()">+ 이슈 추가</button>
-      </div>
-
-      <div id="issue-form" style="display:none" class="card">
-        <div class="row2">
-          <div class="fg"><label>트리거 키워드 (쉼표 구분)</label><input type="text" id="if-kw" placeholder="도수치료, 관리급여" /></div>
-          <div class="fg">
-            <label>경보 등급</label>
-            <select id="if-level">
-              <option value="info">안내 (초록)</option>
-              <option value="warn">주의 (노랑)</option>
-              <option value="danger">경고 (빨강)</option>
-            </select>
+      <div class="chat-input-box">
+        <div class="chat-guide">
+          <div class="chat-guide-title">💬 이슈 자유 입력</div>
+          <div class="chat-guide-examples">
+            <span class="ex-chip">경고 / 도수치료 / 도수치료 관리급여 이슈 / 2026년 하반기 편입 예정. 수익 영향 있음. / 보건복지부 2026.03</span>
+            <span class="ex-chip">주의 / 체외충격파 / 의협 가이드라인 4회 제한 / 초과 시 실손 거절 명분 / 대한의사협회 2026</span>
           </div>
         </div>
-        <div class="fg" style="margin-bottom:8px">
-          <label>이슈 제목</label>
-          <input type="text" id="if-title" placeholder="도수치료 관리급여 이슈" />
+        <div style="display:flex;gap:8px;align-items:flex-end">
+          <textarea id="issue-free-input" placeholder="경보등급(경고/주의/안내) / 트리거키워드 / 제목 / 내용 / 출처" style="min-height:60px;flex:1;margin-bottom:0"></textarea>
+          <button class="btn btn-green" onclick="parseIssueInput()" style="white-space:nowrap;padding:10px 18px">파싱 →</button>
         </div>
-        <div class="fg" style="margin-bottom:12px">
-          <label>이슈 내용 (실무자에게 보여줄 메시지)</label>
-          <textarea id="if-msg" placeholder="2026년 하반기 도수치료가 관리급여로 편입 예정입니다. 원장님 수익에 직접 영향이 있으니 키워드 전략 변경 전 관리자에게 확인하세요."></textarea>
+      </div>
+      <div id="issue-preview" style="display:none" class="card">
+        <div class="card-title">✅ 파싱 결과</div>
+        <div class="row2">
+          <div class="fg"><label>트리거 키워드 (쉼표 구분)</label><input type="text" id="ip-kw" /></div>
+          <div class="fg"><label>경보 등급</label><select id="ip-level"><option value="info">안내 (초록)</option><option value="warn">주의 (노랑)</option><option value="danger">경고 (빨강)</option></select></div>
         </div>
-        <div class="fg" style="margin-bottom:12px">
-          <label>출처 / 날짜</label>
-          <input type="text" id="if-src" placeholder="보건복지부 발표, 2026.03" />
-        </div>
+        <div class="fg" style="margin-bottom:8px"><label>이슈 제목</label><input type="text" id="ip-title" /></div>
+        <div class="fg" style="margin-bottom:8px"><label>이슈 내용</label><textarea id="ip-msg" style="min-height:60px"></textarea></div>
+        <div class="fg" style="margin-bottom:12px"><label>출처 / 날짜</label><input type="text" id="ip-src" /></div>
         <div class="btn-row">
-          <button class="btn btn-green" onclick="saveIssue()">저장</button>
-          <button class="btn" onclick="closeIssueForm()">취소</button>
+          <button class="btn btn-green" onclick="saveIssueFromPreview()">저장</button>
+          <button class="btn" onclick="document.getElementById('issue-preview').style.display='none'">취소</button>
         </div>
       </div>
-
-      <div class="card">
-        <table class="data-table">
-          <thead><tr><th>등급</th><th>제목</th><th>트리거 키워드</th><th>내용</th><th>출처</th><th></th></tr></thead>
-          <tbody id="issue-tbody"></tbody>
-        </table>
-      </div>
+      <div class="card"><div id="issue-cards"><div class="empty">등록된 이슈가 없습니다.</div></div></div>
     </div>
   </div>
 </div>
 
 <script>
-var ADMIN_PW = 'aube2026';
-var isAdmin = false;
+var ADMIN_PW='aube2026';
+var isAdmin=false;
 
-function goPage(id) {
-  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
-  document.querySelectorAll('.nav-tab').forEach(function(t){ t.classList.remove('active'); });
+// ===== STORAGE =====
+function load(k,d){try{return JSON.parse(localStorage.getItem('aube_'+k))||d;}catch(e){return d;}}
+function save(k,v){localStorage.setItem('aube_'+k,JSON.stringify(v));}
+function nextId(arr){return arr.length?Math.max.apply(null,arr.map(function(x){return x.id;}))+1:1;}
+
+// ===== NAV =====
+function goPage(id,el){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('active');});
   document.getElementById('page-'+id).classList.add('active');
-  event.target.classList.add('active');
+  el.classList.add('active');
   if(id==='gen') renderClientList();
 }
 
-function checkLogin() {
-  var pw = document.getElementById('admin-pw').value;
-  if(pw === ADMIN_PW) {
-    isAdmin = true;
-    document.getElementById('admin-login').style.display = 'none';
-    document.getElementById('admin-body').style.display = 'block';
+// ===== LOGIN =====
+function checkLogin(){
+  if(document.getElementById('admin-pw').value===ADMIN_PW){
+    isAdmin=true;
+    document.getElementById('admin-login').style.display='none';
+    document.getElementById('admin-body').style.display='block';
     renderAll();
   } else {
-    document.getElementById('login-err').style.display = 'block';
+    document.getElementById('login-err').style.display='block';
   }
 }
-
-function logout() {
-  isAdmin = false;
-  document.getElementById('admin-login').style.display = 'block';
-  document.getElementById('admin-body').style.display = 'none';
-  document.getElementById('admin-pw').value = '';
+function logout(){
+  isAdmin=false;
+  document.getElementById('admin-login').style.display='block';
+  document.getElementById('admin-body').style.display='none';
+  document.getElementById('admin-pw').value='';
 }
 
-function switchTab(id) {
-  document.querySelectorAll('#admin-body .tab-content').forEach(function(t){ if(t.id.startsWith('tab-')) t.classList.remove('active'); });
-  document.querySelectorAll('#admin-body .tab-row:first-child .tab').forEach(function(t){ t.classList.remove('active'); });
+// ===== TABS =====
+function switchTab(id,el){
+  document.querySelectorAll('#admin-body > div[id^="tab-"]').forEach(function(t){t.classList.remove('active');});
+  document.querySelectorAll('#admin-body .tab-row:first-of-type .tab').forEach(function(t){t.classList.remove('active');});
   document.getElementById('tab-'+id).classList.add('active');
-  event.target.classList.add('active');
+  if(el) el.classList.add('active');
 }
-
-function switchDbTab(id) {
-  document.querySelectorAll('[id^="dbtab-"]').forEach(function(t){ t.classList.remove('active'); });
+function switchDbTab(id,el){
+  document.querySelectorAll('[id^="dbtab-"]').forEach(function(t){t.classList.remove('active');});
   document.getElementById('dbtab-'+id).classList.add('active');
-  var tabs = document.querySelectorAll('#tab-db .tab-row:first-child .tab');
-  tabs.forEach(function(t){ t.classList.remove('active'); });
-  event.target.classList.add('active');
+  var tabs=document.querySelectorAll('#tab-db .tab-row .tab');
+  tabs.forEach(function(t){t.classList.remove('active');});
+  if(el) el.classList.add('active');
 }
 
-// ===== STORAGE =====
-function load(key, def) { try { return JSON.parse(localStorage.getItem('aube_'+key)) || def; } catch(e) { return def; } }
-function save(key, val) { localStorage.setItem('aube_'+key, JSON.stringify(val)); }
+// ===== PARSE HELPERS =====
+function guessType(txt){
+  if(/마취|통증의학/.test(txt)) return '통증의학과';
+  if(/신경외과/.test(txt)) return '신경외과';
+  if(/정형외과/.test(txt)) return '정형외과';
+  if(/재활/.test(txt)) return '재활의학과';
+  if(/요양병원/.test(txt)) return '요양병원';
+  if(/한방병원/.test(txt)) return '한방병원';
+  return '한의원';
+}
+function guessMain(txt){
+  var cats=[];
+  if(/통증|디스크|척추|근골/.test(txt)) cats.push('통증');
+  if(/다이어트|비만|갱년기/.test(txt)) cats.push('다이어트');
+  if(/소아|성장|키/.test(txt)) cats.push('소아성장');
+  if(/피부|아토피/.test(txt)) cats.push('피부');
+  if(/암|면역|요양/.test(txt)) cats.push('암');
+  return cats.length>1?'혼합':cats.length===1?cats[0]:'통증';
+}
+function guessCity(txt){
+  var m=txt.match(/([가-힣]+[시군구])/);
+  if(m) return m[1];
+  var areas=['평택','천안','아산','수원','화성','동탄','강남','서초','마포','부산','대구','인천','광주','대전','울산','세종','제주'];
+  for(var i=0;i<areas.length;i++){if(txt.includes(areas[i])) return areas[i];}
+  return '';
+}
+function guessMid(txt){
+  var r=[];
+  if(/다이어트|비만/.test(txt)) r.push('다이어트');
+  if(/소아|성장/.test(txt)) r.push('소아성장');
+  if(/피부|아토피/.test(txt)) r.push('피부');
+  return r.join('·');
+}
+
+// ===== CLIENT PARSE & SAVE =====
+function parseClientInput(){
+  var txt=document.getElementById('client-free-input').value.trim();
+  if(!txt){alert('내용을 입력해 주세요.');return;}
+  var parts=txt.split(/[,.\n]/).map(function(x){return x.trim();}).filter(Boolean);
+  var name=parts[0]||'';
+  var city=guessCity(txt);
+  var type=guessType(txt);
+  var main=guessMain(txt);
+  var mid=guessMid(txt);
+  var nearMap={통증:'통증·급성 질환 집중',다이어트:'다이어트 집중',소아성장:'소아성장 집중',피부:'피부질환 집중',암:'면역·요양 집중',혼합:'통증·급성 집중'};
+  document.getElementById('cp-name').value=name;
+  document.getElementById('cp-city').value=city;
+  document.getElementById('cp-type').value=type;
+  document.getElementById('cp-main').value=main;
+  document.getElementById('cp-near').value=nearMap[main]||'통증·급성 질환 집중';
+  document.getElementById('cp-mid').value=mid;
+  document.getElementById('cp-note').value='';
+  document.getElementById('client-preview').style.display='block';
+  document.getElementById('client-preview').scrollIntoView({behavior:'smooth'});
+}
+function saveClientFromPreview(){
+  var clients=load('clients',[]);
+  var editId=document.getElementById('client-preview').dataset.editId;
+  var obj={
+    id:editId?parseInt(editId):nextId(clients),
+    name:document.getElementById('cp-name').value,
+    city:document.getElementById('cp-city').value,
+    type:document.getElementById('cp-type').value,
+    main:document.getElementById('cp-main').value,
+    near:document.getElementById('cp-near').value,
+    mid:document.getElementById('cp-mid').value,
+    note:document.getElementById('cp-note').value
+  };
+  if(editId){
+    var idx=clients.findIndex(function(c){return c.id===parseInt(editId);});
+    if(idx>=0) clients[idx]=obj; else clients.push(obj);
+  } else {
+    clients.push(obj);
+  }
+  save('clients',clients);
+  document.getElementById('client-preview').style.display='none';
+  document.getElementById('client-preview').dataset.editId='';
+  document.getElementById('client-free-input').value='';
+  renderClientCards();
+  renderClientList();
+}
+function editClient(id){
+  var clients=load('clients',[]);
+  var c=clients.find(function(x){return x.id===id;});
+  if(!c) return;
+  document.getElementById('cp-name').value=c.name;
+  document.getElementById('cp-city').value=c.city;
+  document.getElementById('cp-type').value=c.type;
+  document.getElementById('cp-main').value=c.main;
+  document.getElementById('cp-near').value=c.near||'';
+  document.getElementById('cp-mid').value=c.mid||'';
+  document.getElementById('cp-note').value=c.note||'';
+  document.getElementById('client-preview').dataset.editId=id;
+  document.getElementById('client-preview').style.display='block';
+  document.getElementById('client-preview').scrollIntoView({behavior:'smooth'});
+}
+function deleteClient(id){
+  if(!confirm('삭제하시겠습니까?')) return;
+  save('clients',load('clients',[]).filter(function(x){return x.id!==id;}));
+  renderClientCards(); renderClientList();
+}
+
+// ===== REGION PARSE & SAVE =====
+function parseRegionInput(){
+  var txt=document.getElementById('region-free-input').value.trim();
+  if(!txt){alert('내용을 입력해 주세요.');return;}
+  var typeMatch=txt.match(/(근거리|중거리|광역)/);
+  var rtype=typeMatch?typeMatch[1]:'근거리';
+  var cityMatch=txt.match(/([가-힣]+[시군구])/);
+  var city=cityMatch?cityMatch[1]:'';
+  var colonIdx=txt.indexOf(':');
+  var list='';
+  if(colonIdx>=0){
+    list=txt.substring(colonIdx+1).trim();
+  } else {
+    list=txt.replace(/(근거리|중거리|광역)/g,'').replace(/[가-힣]+[시군구]/,'').replace(/[\-:]/g,'').trim();
+  }
+  document.getElementById('rp-city').value=city;
+  document.getElementById('rp-type').value=rtype;
+  document.getElementById('rp-list').value=list;
+  document.getElementById('region-preview').style.display='block';
+}
+function saveRegionFromPreview(){
+  var regions=load('regions',[]);
+  var editId=document.getElementById('region-preview').dataset.editId;
+  var obj={id:editId?parseInt(editId):nextId(regions),city:document.getElementById('rp-city').value,type:document.getElementById('rp-type').value,list:document.getElementById('rp-list').value};
+  if(editId){var idx=regions.findIndex(function(r){return r.id===parseInt(editId);});if(idx>=0)regions[idx]=obj;else regions.push(obj);}
+  else regions.push(obj);
+  save('regions',regions);
+  document.getElementById('region-preview').style.display='none';
+  document.getElementById('region-preview').dataset.editId='';
+  document.getElementById('region-free-input').value='';
+  renderRegionCards();
+}
+function editRegion(id){
+  var r=load('regions',[]).find(function(x){return x.id===id;});if(!r)return;
+  document.getElementById('rp-city').value=r.city;
+  document.getElementById('rp-type').value=r.type;
+  document.getElementById('rp-list').value=r.list;
+  document.getElementById('region-preview').dataset.editId=id;
+  document.getElementById('region-preview').style.display='block';
+}
+function deleteRegion(id){if(!confirm('삭제?'))return;save('regions',load('regions',[]).filter(function(x){return x.id!==id;}));renderRegionCards();}
+
+// ===== DEPT PARSE & SAVE =====
+function parseDeptInput(){
+  var txt=document.getElementById('dept-free-input').value.trim();if(!txt){alert('내용을 입력해 주세요.');return;}
+  var ci=txt.indexOf(':');
+  var dtype=ci>=0?txt.substring(0,ci).trim():txt.split(/[,\s]/)[0];
+  var depts=ci>=0?txt.substring(ci+1).trim():txt;
+  document.getElementById('dp-type').value=dtype;
+  document.getElementById('dp-depts').value=depts;
+  document.getElementById('dept-preview').style.display='block';
+}
+function saveDeptFromPreview(){
+  var depts=load('depts',[]);
+  var editId=document.getElementById('dept-preview').dataset.editId;
+  var obj={id:editId?parseInt(editId):nextId(depts),type:document.getElementById('dp-type').value,depts:document.getElementById('dp-depts').value};
+  if(editId){var idx=depts.findIndex(function(d){return d.id===parseInt(editId);});if(idx>=0)depts[idx]=obj;else depts.push(obj);}
+  else depts.push(obj);
+  save('depts',depts);
+  document.getElementById('dept-preview').style.display='none';
+  document.getElementById('dept-preview').dataset.editId='';
+  document.getElementById('dept-free-input').value='';
+  renderDeptCards();
+}
+function editDept(id){
+  var d=load('depts',[]).find(function(x){return x.id===id;});if(!d)return;
+  document.getElementById('dp-type').value=d.type;
+  document.getElementById('dp-depts').value=d.depts;
+  document.getElementById('dept-preview').dataset.editId=id;
+  document.getElementById('dept-preview').style.display='block';
+}
+function deleteDept(id){if(!confirm('삭제?'))return;save('depts',load('depts',[]).filter(function(x){return x.id!==id;}));renderDeptCards();}
+
+// ===== DISEASE PARSE & SAVE =====
+function parseDiseaseInput(){
+  var txt=document.getElementById('disease-free-input').value.trim();if(!txt){alert('내용을 입력해 주세요.');return;}
+  var parts=txt.split('/').map(function(x){return x.trim();});
+  var volMap={'높음':'high','높':'high','high':'high','중간':'med','중':'med','med':'med','낮음':'low','낮':'low','low':'low'};
+  var cat=parts[0]||'통증';
+  var name=parts[1]||'';
+  var vol=volMap[parts[2]]||'med';
+  var note=parts[3]||'';
+  document.getElementById('dsp-cat').value=cat;
+  document.getElementById('dsp-name').value=name;
+  document.getElementById('dsp-vol').value=vol;
+  document.getElementById('dsp-note').value=note;
+  document.getElementById('disease-preview').style.display='block';
+}
+function saveDiseaseFromPreview(){
+  var diseases=load('diseases',[]);
+  var editId=document.getElementById('disease-preview').dataset.editId;
+  var obj={id:editId?parseInt(editId):nextId(diseases),cat:document.getElementById('dsp-cat').value,name:document.getElementById('dsp-name').value,vol:document.getElementById('dsp-vol').value,note:document.getElementById('dsp-note').value};
+  if(editId){var idx=diseases.findIndex(function(d){return d.id===parseInt(editId);});if(idx>=0)diseases[idx]=obj;else diseases.push(obj);}
+  else diseases.push(obj);
+  save('diseases',diseases);
+  document.getElementById('disease-preview').style.display='none';
+  document.getElementById('disease-preview').dataset.editId='';
+  document.getElementById('disease-free-input').value='';
+  renderDiseaseCards();
+}
+function editDisease(id){
+  var d=load('diseases',[]).find(function(x){return x.id===id;});if(!d)return;
+  document.getElementById('dsp-cat').value=d.cat;
+  document.getElementById('dsp-name').value=d.name;
+  document.getElementById('dsp-vol').value=d.vol;
+  document.getElementById('dsp-note').value=d.note;
+  document.getElementById('disease-preview').dataset.editId=id;
+  document.getElementById('disease-preview').style.display='block';
+}
+function deleteDisease(id){if(!confirm('삭제?'))return;save('diseases',load('diseases',[]).filter(function(x){return x.id!==id;}));renderDiseaseCards();}
+
+// ===== PRODUCT PARSE & SAVE =====
+function parseProductInput(){
+  var txt=document.getElementById('product-free-input').value.trim();if(!txt){alert('내용을 입력해 주세요.');return;}
+  var parts=txt.split('/').map(function(x){return x.trim();});
+  document.getElementById('pp-type').value=parts[0]||'';
+  document.getElementById('pp-cat').value=parts[1]||'';
+  document.getElementById('pp-name').value=parts[2]||'';
+  document.getElementById('pp-match').value=parts[3]||'';
+  document.getElementById('pp-note').value=parts[4]||'';
+  document.getElementById('product-preview').style.display='block';
+}
+function saveProductFromPreview(){
+  var products=load('products',[]);
+  var editId=document.getElementById('product-preview').dataset.editId;
+  var obj={id:editId?parseInt(editId):nextId(products),type:document.getElementById('pp-type').value,cat:document.getElementById('pp-cat').value,name:document.getElementById('pp-name').value,match:document.getElementById('pp-match').value,note:document.getElementById('pp-note').value};
+  if(editId){var idx=products.findIndex(function(p){return p.id===parseInt(editId);});if(idx>=0)products[idx]=obj;else products.push(obj);}
+  else products.push(obj);
+  save('products',products);
+  document.getElementById('product-preview').style.display='none';
+  document.getElementById('product-preview').dataset.editId='';
+  document.getElementById('product-free-input').value='';
+  renderProductCards();
+}
+function editProduct(id){
+  var p=load('products',[]).find(function(x){return x.id===id;});if(!p)return;
+  document.getElementById('pp-type').value=p.type;
+  document.getElementById('pp-cat').value=p.cat;
+  document.getElementById('pp-name').value=p.name;
+  document.getElementById('pp-match').value=p.match;
+  document.getElementById('pp-note').value=p.note;
+  document.getElementById('product-preview').dataset.editId=id;
+  document.getElementById('product-preview').style.display='block';
+}
+function deleteProduct(id){if(!confirm('삭제?'))return;save('products',load('products',[]).filter(function(x){return x.id!==id;}));renderProductCards();}
+
+// ===== ISSUE PARSE & SAVE =====
+function parseIssueInput(){
+  var txt=document.getElementById('issue-free-input').value.trim();if(!txt){alert('내용을 입력해 주세요.');return;}
+  var parts=txt.split('/').map(function(x){return x.trim();});
+  var lvMap={'경고':'danger','주의':'warn','안내':'info'};
+  var level=lvMap[parts[0]]||'warn';
+  document.getElementById('ip-level').value=level;
+  document.getElementById('ip-kw').value=parts[1]||'';
+  document.getElementById('ip-title').value=parts[2]||'';
+  document.getElementById('ip-msg').value=parts[3]||'';
+  document.getElementById('ip-src').value=parts[4]||'';
+  document.getElementById('issue-preview').style.display='block';
+}
+function saveIssueFromPreview(){
+  var issues=load('issues',[]);
+  var editId=document.getElementById('issue-preview').dataset.editId;
+  var obj={id:editId?parseInt(editId):nextId(issues),kw:document.getElementById('ip-kw').value,level:document.getElementById('ip-level').value,title:document.getElementById('ip-title').value,msg:document.getElementById('ip-msg').value,src:document.getElementById('ip-src').value};
+  if(editId){var idx=issues.findIndex(function(i){return i.id===parseInt(editId);});if(idx>=0)issues[idx]=obj;else issues.push(obj);}
+  else issues.push(obj);
+  save('issues',issues);
+  document.getElementById('issue-preview').style.display='none';
+  document.getElementById('issue-preview').dataset.editId='';
+  document.getElementById('issue-free-input').value='';
+  renderIssueCards();
+}
+function editIssue(id){
+  var iss=load('issues',[]).find(function(x){return x.id===id;});if(!iss)return;
+  document.getElementById('ip-kw').value=iss.kw;
+  document.getElementById('ip-level').value=iss.level;
+  document.getElementById('ip-title').value=iss.title;
+  document.getElementById('ip-msg').value=iss.msg;
+  document.getElementById('ip-src').value=iss.src;
+  document.getElementById('issue-preview').dataset.editId=id;
+  document.getElementById('issue-preview').style.display='block';
+}
+function deleteIssue(id){if(!confirm('삭제?'))return;save('issues',load('issues',[]).filter(function(x){return x.id!==id;}));renderIssueCards();}
+
+// ===== RENDER CARDS =====
+function renderClientCards(){
+  var clients=load('clients',[]);
+  var el=document.getElementById('client-cards');
+  if(!clients.length){el.innerHTML='<div class="empty">등록된 클라이언트가 없습니다.</div>';return;}
+  el.innerHTML=clients.map(function(c){
+    return '<div class="db-card"><div class="db-card-header"><div><div class="db-card-title">'+c.name+'</div><div class="db-card-meta">'+c.city+' · '+c.type+' · '+c.main+(c.note?' · '+c.note:'')+'</div><div class="db-card-meta" style="margin-top:2px">근거리: '+(c.near||'—')+' / 중거리: '+(c.mid||'—')+'</div></div><div class="db-card-actions"><button class="btn btn-sm btn-edit" onclick="editClient('+c.id+')">수정</button><button class="btn btn-sm btn-danger" onclick="deleteClient('+c.id+')">삭제</button></div></div></div>';
+  }).join('');
+}
+function renderRegionCards(){
+  var regions=load('regions',[]);
+  var el=document.getElementById('region-cards');
+  if(!regions.length){el.innerHTML='<div class="empty">등록된 지역이 없습니다.</div>';return;}
+  var typeColor={'근거리':'badge-green','중거리':'badge-amber','광역':'badge-red'};
+  el.innerHTML=regions.map(function(r){
+    return '<div class="db-card"><div class="db-card-header"><div><div class="db-card-title">'+r.city+' <span class="badge '+(typeColor[r.type]||'badge-green')+'">'+r.type+'</span></div><div class="db-card-meta">'+r.list+'</div></div><div class="db-card-actions"><button class="btn btn-sm btn-edit" onclick="editRegion('+r.id+')">수정</button><button class="btn btn-sm btn-danger" onclick="deleteRegion('+r.id+')">삭제</button></div></div></div>';
+  }).join('');
+}
+function renderDeptCards(){
+  var depts=load('depts',[]);
+  var el=document.getElementById('dept-cards');
+  if(!depts.length){el.innerHTML='<div class="empty">등록된 과목이 없습니다.</div>';return;}
+  el.innerHTML=depts.map(function(d){
+    return '<div class="db-card"><div class="db-card-header"><div><div class="db-card-title">'+d.type+'</div><div class="db-card-meta">'+d.depts+'</div></div><div class="db-card-actions"><button class="btn btn-sm btn-edit" onclick="editDept('+d.id+')">수정</button><button class="btn btn-sm btn-danger" onclick="deleteDept('+d.id+')">삭제</button></div></div></div>';
+  }).join('');
+}
+function renderDiseaseCards(){
+  var diseases=load('diseases',[]);
+  var el=document.getElementById('disease-cards');
+  if(!diseases.length){el.innerHTML='<div class="empty">등록된 질환이 없습니다.</div>';return;}
+  var vb={'high':'badge-red','med':'badge-amber','low':'badge-green'};
+  var vt={'high':'검색량 높음','med':'검색량 중간','low':'검색량 낮음'};
+  el.innerHTML=diseases.map(function(d){
+    return '<div class="db-card"><div class="db-card-header"><div><div class="db-card-title">'+d.cat+' / '+d.name+' <span class="badge '+(vb[d.vol]||'badge-green')+'">'+(vt[d.vol]||d.vol)+'</span></div><div class="db-card-meta">'+(d.note||'')+'</div></div><div class="db-card-actions"><button class="btn btn-sm btn-edit" onclick="editDisease('+d.id+')">수정</button><button class="btn btn-sm btn-danger" onclick="deleteDisease('+d.id+')">삭제</button></div></div></div>';
+  }).join('');
+}
+function renderProductCards(){
+  var products=load('products',[]);
+  var el=document.getElementById('product-cards');
+  if(!products.length){el.innerHTML='<div class="empty">등록된 상품이 없습니다.</div>';return;}
+  el.innerHTML=products.map(function(p){
+    return '<div class="db-card"><div class="db-card-header"><div><div class="db-card-title">'+p.name+' <span style="font-size:11px;color:var(--text3)">'+p.type+' · '+p.cat+'</span></div><div class="db-card-meta">매칭: '+(p.match||'—')+'</div><div class="db-card-meta">'+(p.note||'')+'</div></div><div class="db-card-actions"><button class="btn btn-sm btn-edit" onclick="editProduct('+p.id+')">수정</button><button class="btn btn-sm btn-danger" onclick="deleteProduct('+p.id+')">삭제</button></div></div></div>';
+  }).join('');
+}
+function renderIssueCards(){
+  var issues=load('issues',[]);
+  var el=document.getElementById('issue-cards');
+  if(!issues.length){el.innerHTML='<div class="empty">등록된 이슈가 없습니다.</div>';return;}
+  var lb={'danger':'badge-red','warn':'badge-amber','info':'badge-green'};
+  var lt={'danger':'경고','warn':'주의','info':'안내'};
+  el.innerHTML=issues.map(function(iss){
+    return '<div class="db-card"><div class="db-card-header"><div><div class="db-card-title"><span class="badge '+(lb[iss.level]||'badge-green')+'">'+(lt[iss.level]||iss.level)+'</span> '+iss.title+'</div><div class="db-card-meta">트리거: '+iss.kw+(iss.src?' · '+iss.src:'')+'</div><div class="db-card-meta">'+iss.msg.substring(0,80)+'...</div></div><div class="db-card-actions"><button class="btn btn-sm btn-edit" onclick="editIssue('+iss.id+')">수정</button><button class="btn btn-sm btn-danger" onclick="deleteIssue('+iss.id+')">삭제</button></div></div></div>';
+  }).join('');
+}
+function renderAll(){renderClientCards();renderRegionCards();renderDeptCards();renderDiseaseCards();renderProductCards();renderIssueCards();}
+
+// ===== RENDER CLIENT LIST (키워드 생성 페이지) =====
+function renderClientList(){
+  var clients=load('clients',[]);
+  var el=document.getElementById('client-list');
+  if(!clients.length){el.innerHTML='<div class="empty">등록된 클라이언트가 없습니다. 관리자 페이지에서 추가해 주세요.</div>';return;}
+  el.innerHTML=clients.map(function(c){
+    return '<div class="client-item" onclick="selectClient('+c.id+')" id="ci-'+c.id+'"><div class="client-name">'+c.name+'</div><div class="client-meta">'+c.city+' · '+c.type+' · '+c.main+'</div></div>';
+  }).join('');
+}
+
+var selectedClient=null;
+function selectClient(id){
+  var clients=load('clients',[]);
+  selectedClient=clients.find(function(c){return c.id===id;});
+  document.querySelectorAll('.client-item').forEach(function(el){el.classList.remove('selected');});
+  document.getElementById('ci-'+id).classList.add('selected');
+  document.getElementById('gen-body').style.display='block';
+  resetBtns();
+}
+
+// ===== KEYWORD GENERATION =====
+var ST={region:null,regionType:null,dept:null,disease:null,product:null};
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)];}
+
+function getRegions(city,type){
+  var regions=load('regions',[]);
+  var found=regions.filter(function(r){return r.city===city&&r.type===type;});
+  if(!found.length)return [city];
+  var all=[];
+  found.forEach(function(r){r.list.split(',').forEach(function(x){var t=x.trim();if(t)all.push(t);});});
+  return all.length?all:[city];
+}
+function pickRegion(){
+  if(!selectedClient)return{val:'지역',type:'근거리'};
+  var city=selectedClient.city;
+  var type=Math.random()<0.65?'근거리':'중거리';
+  var pool=getRegions(city,type);
+  if(!pool.length){type='근거리';pool=getRegions(city,'근거리');}
+  return{val:pick(pool),type:type};
+}
+function pickDept(){
+  if(!selectedClient)return '한의원';
+  var depts=load('depts',[]);
+  var found=depts.find(function(d){return d.type===selectedClient.type;});
+  if(!found)return selectedClient.type;
+  var arr=found.depts.split(',').map(function(x){return x.trim();}).filter(Boolean);
+  return pick(arr);
+}
+function pickDisease(){
+  if(!selectedClient)return{name:'허리통증',vol:'high',note:''};
+  var diseases=load('diseases',[]);
+  var main=selectedClient.main;
+  var arr;
+  if(main!=='혼합'){
+    arr=diseases.filter(function(d){return d.cat===main;});
+  } else {
+    var rt=ST.regionType||'근거리';
+    var nearStr=selectedClient.near||'';
+    var midStr=selectedClient.mid||'';
+    var nearCat=nearStr.includes('소아')?'소아성장':nearStr.includes('피부')?'피부':nearStr.includes('다이어트')?'다이어트':'통증';
+    var midCats=[];
+    if(midStr.includes('다이어트'))midCats.push('다이어트');
+    if(midStr.includes('소아'))midCats.push('소아성장');
+    if(midStr.includes('피부'))midCats.push('피부');
+    if(midStr.includes('암')||midStr.includes('요양'))midCats.push('암');
+    if(midStr.includes('통증'))midCats.push('통증');
+    if(!midCats.length)midCats=['다이어트','소아성장','피부'];
+    var targetCat=rt==='근거리'?nearCat:pick(midCats);
+    arr=diseases.filter(function(d){return d.cat===targetCat;});
+  }
+  if(!arr.length)arr=diseases;
+  return pick(arr);
+}
+function pickProduct(diseaseName){
+  if(!selectedClient)return{name:'해당 시술',match:'',note:''};
+  var diseases=load('diseases',[]);
+  var products=load('products',[]);
+  var disObj=diseases.find(function(d){return d.name===diseaseName;});
+  var disCat=disObj?disObj.cat:null;
+  var typeProducts=products.filter(function(p){return p.type===selectedClient.type;});
+  var matched=typeProducts.filter(function(p){return p.match&&p.match.split(',').map(function(x){return x.trim();}).indexOf(diseaseName)>=0;});
+  if(matched.length)return pick(matched);
+  if(disCat){var catMatched=typeProducts.filter(function(p){return p.cat===disCat;});if(catMatched.length)return pick(catMatched);}
+  if(typeProducts.length)return pick(typeProducts.slice(0,3));
+  return{name:'해당 시술',match:'',note:''};
+}
+
+function roll(n){
+  if(!selectedClient){alert('먼저 클라이언트를 선택해 주세요.');return;}
+  if(n===1){var r=pickRegion();ST.region=r.val;ST.regionType=r.type;document.getElementById('v1').textContent=r.val;var sub={근거리:'근거리 — '+(selectedClient.near||'통증·급성 질환'),중거리:'중거리 — '+(selectedClient.mid||'전문 클리닉'),광역:'광역 — 브랜딩·특화 클리닉'};document.getElementById('s1').textContent=sub[r.type]||'';document.getElementById('btn1').classList.add('active');}
+  if(n===2){var d=pickDept();ST.dept=d;document.getElementById('v2').textContent=d;document.getElementById('s2').textContent='병원 유형 연관 과목';document.getElementById('btn2').classList.add('active');}
+  if(n===3){var dis=pickDisease();ST.disease=dis;document.getElementById('v3').textContent=dis.name;var volLabel={high:'검색량 높음 — 경쟁 주의',med:'검색량 중간',low:'검색량 낮음 — 조합 필수'};document.getElementById('s3').textContent=volLabel[dis.vol]||'';document.getElementById('btn3').classList.add('active');var pr=pickProduct(dis.name);ST.product=pr;document.getElementById('v4').textContent=pr.name;document.getElementById('s4').textContent='질환 자동 매칭';document.getElementById('btn4').classList.add('active');}
+  if(n===4){var dis2=ST.disease||{name:'',vol:'med'};var pr2=pickProduct(dis2.name);ST.product=pr2;document.getElementById('v4').textContent=pr2.name;document.getElementById('s4').textContent='질환 매칭 선택';document.getElementById('btn4').classList.add('active');}
+  if(ST.region&&ST.dept&&ST.disease&&ST.product)showResult();
+}
+function rollAll(){
+  if(!selectedClient){alert('먼저 클라이언트를 선택해 주세요.');return;}
+  var r=pickRegion();ST.region=r.val;ST.regionType=r.type;document.getElementById('v1').textContent=r.val;var sub={근거리:'근거리 — '+(selectedClient.near||'통증·급성 질환'),중거리:'중거리 — '+(selectedClient.mid||'전문 클리닉'),광역:'광역 — 브랜딩·특화 클리닉'};document.getElementById('s1').textContent=sub[r.type]||'';document.getElementById('btn1').classList.add('active');
+  var d=pickDept();ST.dept=d;document.getElementById('v2').textContent=d;document.getElementById('s2').textContent='병원 유형 연관 과목';document.getElementById('btn2').classList.add('active');
+  var dis=pickDisease();ST.disease=dis;document.getElementById('v3').textContent=dis.name;var volLabel={high:'검색량 높음 — 경쟁 주의',med:'검색량 중간',low:'검색량 낮음 — 조합 필수'};document.getElementById('s3').textContent=volLabel[dis.vol]||'';document.getElementById('btn3').classList.add('active');
+  var pr=pickProduct(dis.name);ST.product=pr;document.getElementById('v4').textContent=pr.name;document.getElementById('s4').textContent='질환 자동 매칭';document.getElementById('btn4').classList.add('active');
+  showResult();
+}
+function resetBtns(){
+  ST={region:null,regionType:null,dept:null,disease:null,product:null};
+  ['1','2','3','4'].forEach(function(n){document.getElementById('v'+n).textContent='클릭하여 생성';document.getElementById('s'+n).textContent='—';document.getElementById('btn'+n).classList.remove('active');});
+  document.getElementById('result-card').style.display='none';
+}
+function showResult(){
+  var r=ST.region,dept=ST.dept,dis=ST.disease,prod=ST.product,rt=ST.regionType;
+  document.getElementById('combo-main').textContent=r+' '+dept+' '+dis.name;
+  var variants=[
+    {t:r+' '+dis.name+' '+dept,star:true},
+    {t:r+' '+dis.name+' 치료',star:false},
+    {t:r+' '+dis.name+' '+prod.name,star:true},
+    {t:r+' '+dept+' '+prod.name,star:false},
+    {t:dis.name+' '+dept+' 잘하는 곳',star:false},
+    {t:r+' '+dis.name+' 잘 낫는 곳',star:false}
+  ];
+  document.getElementById('combo-chips').innerHTML=variants.map(function(v){return '<span class="chip'+(v.star?' star':'')+'">'+ v.t+'</span>';}).join('');
+  var issues=load('issues',[]);
+  var triggered=[];
+  var allKws=[r,dept,dis.name,prod.name].join(' ').toLowerCase();
+  issues.forEach(function(iss){var kwArr=iss.kw.split(',').map(function(k){return k.trim();});var hit=kwArr.some(function(k){return allKws.includes(k.toLowerCase());});if(hit)triggered.push(iss);});
+  document.getElementById('issue-alerts').innerHTML=triggered.map(function(iss){var cls=iss.level==='danger'?'danger':iss.level==='warn'?'warn':'';return '<div class="issue-alert'+(cls?' '+cls:'')+'"><div class="issue-alert-title"><span class="issue-badge">'+({danger:'경고',warn:'주의',info:'안내'}[iss.level]||'안내')+'</span>'+iss.title+(iss.src?' <span style="font-size:10px;font-weight:400;color:var(--text3)">'+iss.src+'</span>':'')+'</div><div class="issue-alert-msg">'+iss.msg+'</div></div>';}).join('');
+  var advHtml='';
+  if(dis.vol==='low')advHtml+='<div class="adv warn"><div class="adv-title">검색량 주의</div><div class="adv-msg"><b>'+dis.name+'</b>은 단독 검색량이 낮습니다. 지역+과목+증상 구체화 조합으로 롱테일을 공략하세요.'+(dis.note?' '+dis.note:'')+'</div></div>';
+  if(dis.vol==='high')advHtml+='<div class="adv"><div class="adv-title">경쟁도 안내</div><div class="adv-msg"><b>'+dis.name+'</b>은 검색량이 높은 만큼 경쟁도도 높습니다. 지역+질환+증상 구체화나 정보 격차형 제목으로 차별화하세요.'+(dis.note?' '+dis.note:'')+'</div></div>';
+  if(prod.note&&!triggered.some(function(t){return t.msg.includes(prod.name);})){var prodCls=prod.note.includes('금지')||prod.note.includes('위반')||prod.note.includes('주의')?'warn':'';advHtml+='<div class="adv '+prodCls+'"><div class="adv-title">상품 키워드 제언</div><div class="adv-msg">'+prod.note+'</div></div>';}
+  if(rt==='근거리')advHtml+='<div class="adv"><div class="adv-title">지역 전략</div><div class="adv-msg">근거리 지명 <b>'+r+'</b>은 즉시 내원 수요에 유효합니다. 네이버 플레이스 상위 노출과 병행 시 전환율 극대화.</div></div>';
+  if(rt==='중거리')advHtml+='<div class="adv"><div class="adv-title">지역 전략</div><div class="adv-msg">중거리 지명 <b>'+r+'</b>은 전문 클리닉·만성 질환 수요에 적합합니다. 전문성과 후기를 콘텐츠에 담으세요.</div></div>';
+  if(rt==='광역')advHtml+='<div class="adv warn"><div class="adv-title">광역 키워드 주의</div><div class="adv-msg">광역 지명 <b>'+r+'</b>은 브랜딩 콘텐츠에는 유효하지만 신환 전환율은 낮습니다. 근거리·중거리 키워드와 포트폴리오를 나눠 운영하세요.</div></div>';
+  if(!advHtml)advHtml='<div class="adv"><div class="adv-title">조합 적합도 양호</div><div class="adv-msg">지역+과목+질환 구조로 안정적인 조합입니다.</div></div>';
+  document.getElementById('advice-area').innerHTML=advHtml;
+  document.getElementById('result-card').style.display='block';
+}
+function copyResult(){
+  var main=document.getElementById('combo-main').textContent;
+  var chips=Array.from(document.querySelectorAll('#combo-chips .chip')).map(function(c){return c.textContent;}).join(' / ');
+  var advs=Array.from(document.querySelectorAll('.adv-msg')).map(function(a){return a.textContent;}).join('\n');
+  navigator.clipboard.writeText('[메인 키워드]\n'+main+'\n\n[변형 조합]\n'+chips+'\n\n[실무 제언]\n'+advs);
+  var btn=document.querySelector('.copy-btn');btn.textContent='복사됨';setTimeout(function(){btn.textContent='복사';},2000);
+}
 
 // ===== DEFAULT DATA =====
-function initDefaultData() {
-  if(!localStorage.getItem('aube_inited')) {
-    save('clients', [
-      {id:1, name:'자연방한의원', city:'평택시', type:'한의원', main:'혼합', near:'통증·급성 질환 집중', mid:'다이어트·소아성장·피부질환', note:'평택 고덕 소재. 원장님 통증+소아성장 선호.'}
+function initDefaultData(){
+  if(!localStorage.getItem('aube_inited')){
+    save('clients',[{id:1,name:'자연방한의원',city:'평택시',type:'한의원',main:'혼합',near:'통증·급성 질환 집중',mid:'다이어트·소아성장·피부질환',note:'평택 고덕 소재. 원장님 통증+소아성장 선호.'}]);
+    save('regions',[
+      {id:1,city:'평택시',type:'근거리',list:'평택,평택역,비전동,고덕,고덕동,세교동,평택고덕,소사벌,안중,포승,오성,팽성,통복동,합정동'},
+      {id:2,city:'평택시',type:'중거리',list:'천안,아산,안성,송탄,서정리,서정리역,진위,공도,직산,성환,배방,온양,둔포,오산'},
+      {id:3,city:'평택시',type:'광역',list:'경기,경기남부,충남'},
+      {id:4,city:'수원시',type:'근거리',list:'수원,수원역,인계동,영통,매탄동,팔달,장안,권선,화서역'},
+      {id:5,city:'수원시',type:'중거리',list:'화성,동탄,오산,의왕,안양,군포,병점,봉담'},
+      {id:6,city:'서울',type:'근거리',list:'강남,서초,송파,강동,마포,은평,노원,도봉,성북,용산'}
     ]);
-    save('regions', [
-      {id:1, city:'평택시', type:'근거리', list:'평택,평택역,비전동,고덕,고덕동,세교동,평택고덕,소사벌,안중,포승,오성,팽성,통복동,합정동'},
-      {id:2, city:'평택시', type:'중거리', list:'천안,아산,안성,송탄,서정리,서정리역,진위,공도,직산,성환,배방,온양,둔포,오산'},
-      {id:3, city:'평택시', type:'광역', list:'경기,경기남부,충남'},
-      {id:4, city:'수원시', type:'근거리', list:'수원,수원역,인계동,영통,매탄동,팔달,장안,권선,화서역'},
-      {id:5, city:'수원시', type:'중거리', list:'화성,동탄,오산,의왕,안양,군포,병점,봉담'},
-      {id:6, city:'서울', type:'근거리', list:'강남,서초,송파,강동,마포,은평,노원,도봉,성북,용산'}
+    save('depts',[
+      {id:1,type:'한의원',depts:'한의원,한방치료,한방'},{id:2,type:'한방병원',depts:'한방병원,한방,요양병원'},
+      {id:3,type:'신경외과',depts:'신경외과,척추전문,정형외과'},{id:4,type:'정형외과',depts:'정형외과,신경외과,재활의학과'},
+      {id:5,type:'통증의학과',depts:'통증의학과,마취통증의학과,통증클리닉'},{id:6,type:'재활의학과',depts:'재활의학과,물리치료,정형외과'},
+      {id:7,type:'요양병원',depts:'요양병원,한방병원,재활병원'}
     ]);
-    save('depts', [
-      {id:1, type:'한의원', depts:'한의원,한방치료,한방'},
-      {id:2, type:'한방병원', depts:'한방병원,한방,요양병원'},
-      {id:3, type:'신경외과', depts:'신경외과,척추전문,정형외과'},
-      {id:4, type:'정형외과', depts:'정형외과,신경외과,재활의학과'},
-      {id:5, type:'통증의학과', depts:'통증의학과,마취통증의학과,통증클리닉'},
-      {id:6, type:'재활의학과', depts:'재활의학과,물리치료,정형외과'},
-      {id:7, type:'요양병원', depts:'요양병원,한방병원,재활병원'}
-    ]);
-    save('diseases', [
+    save('diseases',[
       {id:1,cat:'통증',name:'허리디스크',vol:'high',note:'검색량 최상위. 경쟁 극심. 지역+질환 조합 필수.'},
-      {id:2,cat:'통증',name:'목디스크',vol:'high',note:'검색량 높음. 거북목·일자목과 함께 사용 권장.'},
+      {id:2,cat:'통증',name:'목디스크',vol:'high',note:'거북목·일자목과 함께 사용 권장.'},
       {id:3,cat:'통증',name:'허리통증',vol:'high',note:'광범위 수요. 단독 사용 시 경쟁 과다.'},
-      {id:4,cat:'통증',name:'목통증',vol:'high',note:'광범위 수요. 구체 증상명 병기 권장.'},
+      {id:4,cat:'통증',name:'목통증',vol:'high',note:'구체 증상명 병기 권장.'},
       {id:5,cat:'통증',name:'어깨통증',vol:'high',note:'중장년 수요 집중.'},
       {id:6,cat:'통증',name:'무릎통증',vol:'high',note:'50대 이상 수요. 퇴행성관절염과 함께 사용.'},
       {id:7,cat:'통증',name:'척추관협착증',vol:'med',note:'중장년 만성 수요. 롱테일 적합.'},
-      {id:8,cat:'통증',name:'테니스엘보',vol:'med',note:'직장인·주부 수요.'},
-      {id:9,cat:'통증',name:'오십견',vol:'med',note:'중장년 여성 수요.'},
+      {id:8,cat:'통증',name:'테니스엘보',vol:'med',note:'직장인·주부 수요.'},{id:9,cat:'통증',name:'오십견',vol:'med',note:'중장년 여성 수요.'},
       {id:10,cat:'통증',name:'거북목',vol:'med',note:'직장인·학생 수요 높음. 일자목과 병용.'},
       {id:11,cat:'통증',name:'교통사고후유증',vol:'med',note:'자보 연계 수요. 보험 키워드.'},
       {id:12,cat:'통증',name:'좌골신경통',vol:'low',note:'검색량 낮음. 단독 사용 비권장.'},
@@ -605,387 +1020,37 @@ function initDefaultData() {
       {id:19,cat:'소아성장',name:'소아성장',vol:'med',note:'부모 주도 검색. 감성형 콘텐츠 유효.'},
       {id:20,cat:'소아성장',name:'키성장',vol:'med',note:'초등 자녀 부모 수요.'},
       {id:21,cat:'소아성장',name:'성장판검사',vol:'med',note:'검사 목적형 수요. 지역 조합 필수.'},
-      {id:22,cat:'피부',name:'아토피',vol:'high',note:'검색량 높음. 소아 부모 수요 집중.'},
+      {id:22,cat:'피부',name:'아토피',vol:'high',note:'소아 부모 수요 집중.'},
       {id:23,cat:'피부',name:'건선',vol:'med',note:'만성 피부질환. 치료 정보 수요.'},
-      {id:24,cat:'피부',name:'두드러기',vol:'med',note:'급성 증상 검색. 즉시 해결 수요.'},
+      {id:24,cat:'피부',name:'두드러기',vol:'med',note:'급성 증상 검색.'},
       {id:25,cat:'암',name:'항암치료',vol:'high',note:'암 환자 및 가족 핵심 수요.'},
       {id:26,cat:'암',name:'암요양',vol:'med',note:'회복기 수요. 가족이 검색하는 경향.'}
     ]);
-    save('products', [
+    save('products',[
       {id:1,type:'한의원',cat:'통증',name:'침치료',match:'허리디스크,목디스크,허리통증,목통증,어깨통증,무릎통증,오십견,거북목,관절통증,좌골신경통',note:'침치료는 대중 인지도 높고 의료광고법상 안전한 표현. 효과 과장 금지.'},
       {id:2,type:'한의원',cat:'통증',name:'추나요법',match:'허리디스크,목디스크,척추관협착증,거북목,교통사고후유증',note:'건강보험 적용 강조 시 신뢰도 상승. 급여 횟수 제한(연 20회) 명시 권장.'},
       {id:3,type:'한의원',cat:'통증',name:'봉침',match:'허리디스크,척추관협착증,무릎통증,퇴행성관절염',note:'봉침 알레르기 이슈 언급 자제. 전문성 소구에 유효.'},
-      {id:4,type:'한의원',cat:'통증',name:'약침',match:'허리디스크,목디스크,퇴행성관절염,척추관협착증',note:'전문 용어. 부제목 또는 본문 배치 권장. 제목 전면 사용 자제.'},
+      {id:4,type:'한의원',cat:'통증',name:'약침',match:'허리디스크,목디스크,퇴행성관절염,척추관협착증',note:'전문 용어. 부제목 또는 본문 배치 권장.'},
       {id:5,type:'한의원',cat:'다이어트',name:'다이어트 한약',match:'다이어트,복부비만,갱년기비만,체중감량',note:'식욕조절·대사개선 기전 설명 시 신뢰도 높음. 효과 수치 과장 의료법 위반 주의.'},
       {id:6,type:'한의원',cat:'다이어트',name:'한약',match:'산후비만',note:'산후비만은 반드시 한약 연결. 보한·어혈제거 기전 강조. 침다이어트 연결 금지.'},
       {id:7,type:'한의원',cat:'소아성장',name:'성장 한약',match:'소아성장,키성장,성장지연,성장한약',note:'성장 한약은 한의원 특화 상품. 부모 신뢰 확보 콘텐츠 필수 병행.'},
       {id:8,type:'한의원',cat:'피부',name:'아토피 한약',match:'아토피,두드러기,건선',note:'스테로이드 부작용 우려층 타깃에 유효. 면역 개선 기전 강조.'},
       {id:9,type:'신경외과',cat:'통증',name:'비수술치료',match:'허리디스크,목디스크,허리통증,목통증',note:'수술 공포층 타깃. 클릭률 높음. 비수술 범위 명시 필수.'},
-      {id:10,type:'신경외과',cat:'통증',name:'신경차단술',match:'허리디스크,척추관협착증,좌골신경통',note:'전문 용어. 제목 전면 배치 시 일반인 이탈 가능. 증상명 앞에 배치 권장.'},
-      {id:11,type:'신경외과',cat:'통증',name:'도수치료',match:'거북목,교통사고후유증,어깨통증',note:'2026년 관리급여 이슈. 원장님 수익 영향. 키워드 전략 변경 전 관리자 확인 필수.'},
+      {id:10,type:'신경외과',cat:'통증',name:'신경차단술',match:'허리디스크,척추관협착증,좌골신경통',note:'전문 용어. 증상명 앞에 배치 권장.'},
+      {id:11,type:'신경외과',cat:'통증',name:'도수치료',match:'거북목,교통사고후유증,어깨통증',note:'2026년 관리급여 이슈. 키워드 전략 변경 전 관리자 확인 필수.'},
       {id:12,type:'통증의학과',cat:'통증',name:'프롤로주사',match:'퇴행성관절염,무릎통증,어깨통증,오십견',note:'실손보험 연계 수요 높음. 보험 적용 여부 명시 권장.'},
       {id:13,type:'통증의학과',cat:'통증',name:'DNA주사',match:'허리디스크,목디스크,퇴행성관절염',note:'PDRN주사 동의어. 재생치료 키워드로 성장 중.'},
-      {id:14,type:'통증의학과',cat:'통증',name:'체외충격파',match:'테니스엘보,오십견,근막통증',note:'의협 가이드라인 4회 제한 고려. 가이드라인 준수 여부 콘텐츠 내 명시 권장.'}
+      {id:14,type:'통증의학과',cat:'통증',name:'체외충격파',match:'테니스엘보,오십견,근막통증',note:'의협 가이드라인 4회 제한 고려.'}
     ]);
-    save('issues', [
-      {id:1,kw:'도수치료,관리급여',level:'danger',title:'도수치료 관리급여 편입 이슈',msg:'2026년 하반기 도수치료가 관리급여로 편입 예정입니다. 회당 3.8~6.8만원 상한, 치료기간 15회 제한 논의 중. 원장님 수익에 직접 영향이 있으니 키워드 전략 변경 전 관리자에게 반드시 확인하세요.',src:'보건복지부, 2026.03'},
-      {id:2,kw:'체외충격파',level:'warn',title:'체외충격파 의협 가이드라인 주의',msg:'의협 자율시정 가이드라인에 따라 체외충격파는 4회(추가 2회) 이내 산정이 원칙입니다. 이를 초과하는 경우 실손보험 지급 거절 명분이 될 수 있습니다. 콘텐츠 내 횟수 언급 자제.',src:'대한의사협회, 2026'},
+    save('issues',[
+      {id:1,kw:'도수치료,관리급여',level:'danger',title:'도수치료 관리급여 편입 이슈',msg:'2026년 하반기 도수치료가 관리급여로 편입 예정입니다. 회당 3.8~6.8만원 상한, 치료기간 15회 제한 논의 중. 키워드 전략 변경 전 관리자에게 반드시 확인하세요.',src:'보건복지부, 2026.03'},
+      {id:2,kw:'체외충격파',level:'warn',title:'체외충격파 의협 가이드라인 주의',msg:'의협 자율시정 가이드라인에 따라 체외충격파는 4회(추가 2회) 이내 산정이 원칙입니다. 이를 초과하는 경우 실손보험 지급 거절 명분이 될 수 있습니다.',src:'대한의사협회, 2026'},
       {id:3,kw:'실손보험,5세대',level:'warn',title:'실손보험 5세대 전환 이슈',msg:'2026년 5세대 실손보험 출시로 비급여 도수·주사 항목 보험금 지급 요건이 강화됩니다. 실손 수요 의존도가 높은 클라이언트는 콘텐츠 전략 재검토를 권장합니다.',src:'금융감독원, 2026'},
-      {id:4,kw:'산후비만,침다이어트',level:'danger',title:'산후비만 — 침다이어트 연결 금지',msg:'산후비만 키워드에 침다이어트를 연결하는 것은 의학적으로 부적절합니다. 산후 어혈·보한 개념의 한약 처방이 원칙입니다. 반드시 한약으로 연결하세요.',src:'AUBE KOREA 내부 지침'}
+      {id:4,kw:'산후비만,침다이어트',level:'danger',title:'산후비만 — 침다이어트 연결 금지',msg:'산후비만 키워드에 침다이어트를 연결하는 것은 의학적으로 부적절합니다. 반드시 한약으로 연결하세요.',src:'AUBE KOREA 내부 지침'}
     ]);
-    save('inited', true);
+    save('inited',true);
   }
 }
-
-// ===== RENDER CLIENTS =====
-function renderClientList() {
-  var clients = load('clients', []);
-  var el = document.getElementById('client-list');
-  if(!clients.length) {
-    el.innerHTML = '<div class="empty">등록된 클라이언트가 없습니다. 관리자 페이지에서 추가해 주세요.</div>';
-    return;
-  }
-  el.innerHTML = clients.map(function(c) {
-    return '<div class="client-item" onclick="selectClient('+c.id+')" id="ci-'+c.id+'"><div class="client-name">'+c.name+'</div><div class="client-meta">'+c.city+' · '+c.type+' · '+c.main+'</div></div>';
-  }).join('');
-}
-
-var selectedClient = null;
-
-function selectClient(id) {
-  var clients = load('clients', []);
-  selectedClient = clients.find(function(c){ return c.id===id; });
-  document.querySelectorAll('.client-item').forEach(function(el){ el.classList.remove('selected'); });
-  document.getElementById('ci-'+id).classList.add('selected');
-  document.getElementById('gen-body').style.display = 'block';
-  resetBtns();
-}
-
-// ===== KEYWORD GENERATION =====
-var ST = {region:null, regionType:null, dept:null, disease:null, product:null};
-
-function pick(arr) { return arr[Math.floor(Math.random()*arr.length)]; }
-
-function getRegions(city, type) {
-  var regions = load('regions', []);
-  var found = regions.filter(function(r){ return r.city===city && r.type===type; });
-  if(!found.length) return [city];
-  var all = [];
-  found.forEach(function(r){ r.list.split(',').forEach(function(x){ var t=x.trim(); if(t) all.push(t); }); });
-  return all.length ? all : [city];
-}
-
-function pickRegion() {
-  if(!selectedClient) return {val:'지역',type:'근거리'};
-  var city = selectedClient.city;
-  var r = Math.random();
-  var type;
-  if(r < 0.65) type='근거리';
-  else type='중거리';
-  var pool = getRegions(city, type);
-  if(!pool.length) { type='근거리'; pool=getRegions(city,'근거리'); }
-  return {val:pick(pool), type:type};
-}
-
-function pickDept() {
-  if(!selectedClient) return '한의원';
-  var depts = load('depts', []);
-  var found = depts.find(function(d){ return d.type===selectedClient.type; });
-  if(!found) return selectedClient.type;
-  var arr = found.depts.split(',').map(function(x){ return x.trim(); }).filter(Boolean);
-  return pick(arr);
-}
-
-function pickDisease() {
-  if(!selectedClient) return {name:'허리통증',vol:'high',note:''};
-  var diseases = load('diseases', []);
-  var main = selectedClient.main;
-  var arr;
-  if(main !== '혼합') {
-    arr = diseases.filter(function(d){ return d.cat === main; });
-  } else {
-    var rt = ST.regionType || '근거리';
-    var nearStr = selectedClient.near || '';
-    var midStr = selectedClient.mid || '';
-    var nearCat = nearStr.includes('소아') ? '소아성장'
-                : nearStr.includes('피부') ? '피부'
-                : nearStr.includes('다이어트') ? '다이어트' : '통증';
-    var midCats = [];
-    if(midStr.includes('다이어트')) midCats.push('다이어트');
-    if(midStr.includes('소아')) midCats.push('소아성장');
-    if(midStr.includes('피부')) midCats.push('피부');
-    if(midStr.includes('암')||midStr.includes('요양')) midCats.push('암');
-    if(midStr.includes('통증')) midCats.push('통증');
-    if(!midCats.length) midCats = ['다이어트','소아성장','피부'];
-    var targetCat = rt === '근거리' ? nearCat : pick(midCats);
-    arr = diseases.filter(function(d){ return d.cat === targetCat; });
-  }
-  if(!arr.length) arr = diseases;
-  return pick(arr);
-}
-
-function pickProduct(diseaseName) {
-  if(!selectedClient) return {name:'해당 시술',match:'',note:''};
-  var diseases = load('diseases', []);
-  var products = load('products', []);
-  var disObj = diseases.find(function(d){ return d.name === diseaseName; });
-  var disCat = disObj ? disObj.cat : null;
-  var typeProducts = products.filter(function(p){ return p.type===selectedClient.type; });
-  var matched = typeProducts.filter(function(p){
-    return p.match && p.match.split(',').map(function(x){return x.trim();}).indexOf(diseaseName)>=0;
-  });
-  if(matched.length) return pick(matched);
-  if(disCat) {
-    var catMatched = typeProducts.filter(function(p){ return p.cat === disCat; });
-    if(catMatched.length) return pick(catMatched);
-  }
-  if(typeProducts.length) return pick(typeProducts.slice(0,3));
-  return {name:'해당 시술',match:'',note:''};
-}
-
-function roll(n) {
-  if(!selectedClient) { alert('먼저 클라이언트를 선택해 주세요.'); return; }
-  if(n===1) {
-    var r=pickRegion(); ST.region=r.val; ST.regionType=r.type;
-    document.getElementById('v1').textContent=r.val;
-    var sub={근거리:'근거리 — '+(selectedClient.near||'통증·급성 질환'),중거리:'중거리 — '+(selectedClient.mid||'전문 클리닉'),광역:'광역 — 브랜딩·특화 클리닉'};
-    document.getElementById('s1').textContent=sub[r.type]||'';
-    document.getElementById('btn1').classList.add('active');
-  }
-  if(n===2) {
-    var d=pickDept(); ST.dept=d;
-    document.getElementById('v2').textContent=d;
-    document.getElementById('s2').textContent='병원 유형 연관 과목';
-    document.getElementById('btn2').classList.add('active');
-  }
-  if(n===3) {
-    var dis=pickDisease(); ST.disease=dis;
-    document.getElementById('v3').textContent=dis.name;
-    var volLabel={high:'검색량 높음 — 경쟁 주의',med:'검색량 중간',low:'검색량 낮음 — 조합 필수'};
-    document.getElementById('s3').textContent=volLabel[dis.vol]||'';
-    document.getElementById('btn3').classList.add('active');
-    var pr=pickProduct(dis.name); ST.product=pr;
-    document.getElementById('v4').textContent=pr.name;
-    document.getElementById('s4').textContent='질환 자동 매칭';
-    document.getElementById('btn4').classList.add('active');
-  }
-  if(n===4) {
-    var dis2=ST.disease||{name:'',vol:'med'}; var pr2=pickProduct(dis2.name); ST.product=pr2;
-    document.getElementById('v4').textContent=pr2.name;
-    document.getElementById('s4').textContent='질환 매칭 선택';
-    document.getElementById('btn4').classList.add('active');
-  }
-  if(ST.region&&ST.dept&&ST.disease&&ST.product) showResult();
-}
-
-function rollAll() {
-  if(!selectedClient) { alert('먼저 클라이언트를 선택해 주세요.'); return; }
-  var r=pickRegion(); ST.region=r.val; ST.regionType=r.type;
-  document.getElementById('v1').textContent=r.val;
-  var sub={근거리:'근거리 — '+(selectedClient.near||'통증·급성 질환'),중거리:'중거리 — '+(selectedClient.mid||'전문 클리닉'),광역:'광역 — 브랜딩·특화 클리닉'};
-  document.getElementById('s1').textContent=sub[r.type]||'';
-  document.getElementById('btn1').classList.add('active');
-  var d=pickDept(); ST.dept=d;
-  document.getElementById('v2').textContent=d;
-  document.getElementById('s2').textContent='병원 유형 연관 과목';
-  document.getElementById('btn2').classList.add('active');
-  var dis=pickDisease(); ST.disease=dis;
-  document.getElementById('v3').textContent=dis.name;
-  var volLabel={high:'검색량 높음 — 경쟁 주의',med:'검색량 중간',low:'검색량 낮음 — 조합 필수'};
-  document.getElementById('s3').textContent=volLabel[dis.vol]||'';
-  document.getElementById('btn3').classList.add('active');
-  var pr=pickProduct(dis.name); ST.product=pr;
-  document.getElementById('v4').textContent=pr.name;
-  document.getElementById('s4').textContent='질환 자동 매칭';
-  document.getElementById('btn4').classList.add('active');
-  showResult();
-}
-
-function resetBtns() {
-  ST={region:null,regionType:null,dept:null,disease:null,product:null};
-  ['1','2','3','4'].forEach(function(n){
-    document.getElementById('v'+n).textContent='클릭하여 생성';
-    document.getElementById('s'+n).textContent='—';
-    document.getElementById('btn'+n).classList.remove('active');
-  });
-  document.getElementById('result-card').style.display='none';
-}
-
-function showResult() {
-  var r=ST.region, dept=ST.dept, dis=ST.disease, prod=ST.product, rt=ST.regionType;
-  var main=r+' '+dept+' '+dis.name;
-  document.getElementById('combo-main').textContent=main;
-  var variants=[
-    {t:r+' '+dis.name+' '+dept, star:true},
-    {t:r+' '+dis.name+' 치료', star:false},
-    {t:r+' '+dis.name+' '+prod.name, star:true},
-    {t:r+' '+dept+' '+prod.name, star:false},
-    {t:dis.name+' '+dept+' 잘하는 곳', star:false},
-    {t:r+' '+dis.name+' 잘 낫는 곳', star:false}
-  ];
-  document.getElementById('combo-chips').innerHTML=variants.map(function(v){
-    return '<span class="chip'+(v.star?' star':'')+'">'+v.t+'</span>';
-  }).join('');
-
-  var issues=load('issues',[]);
-  var triggered=[];
-  var allKws=[r,dept,dis.name,prod.name].join(' ').toLowerCase();
-  issues.forEach(function(iss){
-    var kwArr=iss.kw.split(',').map(function(k){return k.trim();});
-    var hit=kwArr.some(function(k){ return allKws.includes(k.toLowerCase()); });
-    if(hit) triggered.push(iss);
-  });
-  var ia=document.getElementById('issue-alerts');
-  ia.innerHTML=triggered.map(function(iss){
-    var cls=iss.level==='danger'?'danger':iss.level==='warn'?'warn':'';
-    return '<div class="issue-alert'+(cls?' '+cls:'')+'"><div class="issue-alert-title"><span class="issue-badge">'+({danger:'경고',warn:'주의',info:'안내'}[iss.level]||'안내')+'</span>'+iss.title+(iss.src?' <span style="font-size:10px;font-weight:400;color:var(--text3);">'+iss.src+'</span>':'')+'</div><div class="issue-alert-msg">'+iss.msg+'</div></div>';
-  }).join('');
-
-  var adv=document.getElementById('advice-area');
-  var advHtml='';
-  if(dis.vol==='low') advHtml+='<div class="adv warn"><div class="adv-title">검색량 주의</div><div class="adv-msg"><b>'+dis.name+'</b>은 단독 검색량이 낮습니다. 대중은 이 용어를 직접 검색하지 않아요. <b>지역+과목+증상 구체화</b> 조합으로 롱테일을 공략하거나, 공감형 제목("'+r+' '+dis.name+' 왜 생길까요?")으로 정보성 콘텐츠를 구성하세요.'+(dis.note?' '+dis.note:'')+'</div></div>';
-  if(dis.vol==='high') advHtml+='<div class="adv"><div class="adv-title">경쟁도 안내</div><div class="adv-msg"><b>'+dis.name+'</b>은 검색량이 높은 만큼 경쟁도도 높습니다. 단순 지역+질환 구조는 이미 포화 상태일 수 있어요. <b>지역+질환+증상 구체화</b>나 <b>정보 격차형 제목</b>으로 차별화하세요.'+(dis.note?' '+dis.note:'')+'</div></div>';
-  if(prod.note && !triggered.some(function(t){return t.msg.includes(prod.name);})) {
-    var prodCls=prod.note.includes('금지')||prod.note.includes('위반')||prod.note.includes('주의')?'warn':'';
-    advHtml+='<div class="adv '+prodCls+'"><div class="adv-title">상품 키워드 제언</div><div class="adv-msg">'+prod.note+'</div></div>';
-  }
-  if(rt==='근거리') advHtml+='<div class="adv"><div class="adv-title">지역 전략</div><div class="adv-msg">근거리 지명 <b>'+r+'</b>은 즉시 내원 수요에 유효합니다. 네이버 플레이스 상위 노출과 병행 시 전환율 극대화.</div></div>';
-  if(rt==='중거리') advHtml+='<div class="adv"><div class="adv-title">지역 전략</div><div class="adv-msg">중거리 지명 <b>'+r+'</b>은 전문 클리닉·만성 질환 수요에 적합합니다. 대중은 "가까운 병원"보다 "잘하는 병원"을 찾기 위해 이동합니다. 전문성과 후기를 콘텐츠에 담으세요.</div></div>';
-  if(rt==='광역') advHtml+='<div class="adv warn"><div class="adv-title">광역 키워드 주의</div><div class="adv-msg">광역 지명 <b>'+r+'</b>은 브랜딩 콘텐츠에는 유효하지만 신환 전환율은 낮습니다. 근거리·중거리 키워드와 포트폴리오를 나눠 운영하세요.</div></div>';
-  if(!advHtml) advHtml='<div class="adv"><div class="adv-title">조합 적합도 양호</div><div class="adv-msg">지역+과목+질환 구조로 안정적인 조합입니다. 제목 앞쪽에 지역명, 중간에 질환명을 배치하고 본문 내 시술명을 자연스럽게 녹이세요.</div></div>';
-  adv.innerHTML=advHtml;
-  document.getElementById('result-card').style.display='block';
-}
-
-function copyResult() {
-  var main=document.getElementById('combo-main').textContent;
-  var chips=Array.from(document.querySelectorAll('#combo-chips .chip')).map(function(c){return c.textContent;}).join(' / ');
-  var advs=Array.from(document.querySelectorAll('.adv-msg')).map(function(a){return a.textContent;}).join('\n');
-  navigator.clipboard.writeText('[메인 키워드]\n'+main+'\n\n[변형 조합]\n'+chips+'\n\n[실무 제언]\n'+advs);
-  var btn=document.querySelector('.copy-btn');
-  btn.textContent='복사됨';
-  setTimeout(function(){btn.textContent='복사';},2000);
-}
-
-// ===== ADMIN RENDERS =====
-function renderAll() {
-  renderClientTable(); renderRegionTable(); renderDeptTable(); renderDiseaseTable(); renderProductTable(); renderIssueTable();
-}
-
-function renderClientTable() {
-  var clients=load('clients',[]);
-  var tbody=document.getElementById('client-tbody');
-  if(!clients.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:20px">등록된 클라이언트가 없습니다.</td></tr>';return;}
-  tbody.innerHTML=clients.map(function(c){
-    return '<tr><td><b>'+c.name+'</b></td><td>'+c.city+'</td><td>'+c.type+'</td><td>'+c.main+'</td><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+c.note+'</td><td><button class="btn btn-sm btn-danger" onclick="deleteClient('+c.id+')">삭제</button></td></tr>';
-  }).join('');
-}
-
-function renderRegionTable() {
-  var regions=load('regions',[]);
-  var tbody=document.getElementById('region-tbody');
-  if(!regions.length){tbody.innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--text3);padding:20px">데이터 없음</td></tr>';return;}
-  tbody.innerHTML=regions.map(function(r){
-    return '<tr><td>'+r.city+'</td><td><span class="badge badge-green">'+r.type+'</span></td><td style="font-size:12px;color:var(--text2)">'+r.list+'</td><td><button class="btn btn-sm btn-danger" onclick="deleteRegion('+r.id+')">삭제</button></td></tr>';
-  }).join('');
-}
-
-function renderDeptTable() {
-  var depts=load('depts',[]);
-  var tbody=document.getElementById('dept-tbody');
-  if(!depts.length){tbody.innerHTML='<tr><td colspan="3" style="text-align:center;color:var(--text3);padding:20px">데이터 없음</td></tr>';return;}
-  tbody.innerHTML=depts.map(function(d){
-    return '<tr><td>'+d.type+'</td><td style="font-size:12px;color:var(--text2)">'+d.depts+'</td><td><button class="btn btn-sm btn-danger" onclick="deleteDept('+d.id+')">삭제</button></td></tr>';
-  }).join('');
-}
-
-function renderDiseaseTable() {
-  var diseases=load('diseases',[]);
-  var tbody=document.getElementById('disease-tbody');
-  if(!diseases.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--text3);padding:20px">데이터 없음</td></tr>';return;}
-  tbody.innerHTML=diseases.map(function(d){
-    var vb={high:'badge-red',med:'badge-amber',low:'badge-green'}[d.vol]||'badge-green';
-    var vt={high:'높음',med:'중간',low:'낮음'}[d.vol]||d.vol;
-    return '<tr><td>'+d.cat+'</td><td><b>'+d.name+'</b></td><td><span class="badge '+vb+'">'+vt+'</span></td><td style="font-size:12px;color:var(--text2);max-width:200px">'+d.note+'</td><td><button class="btn btn-sm btn-danger" onclick="deleteDisease('+d.id+')">삭제</button></td></tr>';
-  }).join('');
-}
-
-function renderProductTable() {
-  var products=load('products',[]);
-  var tbody=document.getElementById('product-tbody');
-  if(!products.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:20px">데이터 없음</td></tr>';return;}
-  tbody.innerHTML=products.map(function(p){
-    return '<tr><td>'+p.type+'</td><td>'+p.cat+'</td><td><b>'+p.name+'</b></td><td style="font-size:11px;color:var(--text3)">'+p.match+'</td><td style="font-size:12px;color:var(--text2);max-width:200px">'+p.note+'</td><td><button class="btn btn-sm btn-danger" onclick="deleteProduct('+p.id+')">삭제</button></td></tr>';
-  }).join('');
-}
-
-function renderIssueTable() {
-  var issues=load('issues',[]);
-  var tbody=document.getElementById('issue-tbody');
-  if(!issues.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:20px">등록된 이슈가 없습니다.</td></tr>';return;}
-  tbody.innerHTML=issues.map(function(iss){
-    var lb={danger:'badge-red',warn:'badge-amber',info:'badge-green'}[iss.level]||'badge-green';
-    var lt={danger:'경고',warn:'주의',info:'안내'}[iss.level]||iss.level;
-    return '<tr><td><span class="badge '+lb+'">'+lt+'</span></td><td><b>'+iss.title+'</b></td><td style="font-size:11px;color:var(--text3)">'+iss.kw+'</td><td style="font-size:12px;color:var(--text2);max-width:200px">'+iss.msg.substring(0,60)+'...</td><td style="font-size:11px;color:var(--text3)">'+iss.src+'</td><td><button class="btn btn-sm btn-danger" onclick="deleteIssue('+iss.id+')">삭제</button></td></tr>';
-  }).join('');
-}
-
-// ===== CRUD =====
-function nextId(arr){ return arr.length ? Math.max.apply(null,arr.map(function(x){return x.id;}))+1 : 1; }
-
-function openClientForm(){ document.getElementById('client-form').style.display='block'; }
-function closeClientForm(){ document.getElementById('client-form').style.display='none'; }
-function saveClient(){
-  var clients=load('clients',[]);
-  clients.push({id:nextId(clients),name:document.getElementById('cf-name').value,city:document.getElementById('cf-city').value,type:document.getElementById('cf-type').value,main:document.getElementById('cf-main').value,near:document.getElementById('cf-near').value,mid:document.getElementById('cf-mid').value,note:document.getElementById('cf-note').value});
-  save('clients',clients); closeClientForm(); renderClientTable(); renderClientList();
-}
-function deleteClient(id){ var c=load('clients',[]); save('clients',c.filter(function(x){return x.id!==id;})); renderClientTable(); renderClientList(); }
-
-function openRegionForm(){ document.getElementById('region-form').style.display='block'; }
-function closeRegionForm(){ document.getElementById('region-form').style.display='none'; }
-function saveRegion(){
-  var regions=load('regions',[]);
-  regions.push({id:nextId(regions),city:document.getElementById('rf-city').value,type:document.getElementById('rf-type').value,list:document.getElementById('rf-list').value});
-  save('regions',regions); closeRegionForm(); renderRegionTable();
-}
-function deleteRegion(id){ var r=load('regions',[]); save('regions',r.filter(function(x){return x.id!==id;})); renderRegionTable(); }
-
-function openDeptForm(){ document.getElementById('dept-form').style.display='block'; }
-function closeDeptForm(){ document.getElementById('dept-form').style.display='none'; }
-function saveDept(){
-  var depts=load('depts',[]);
-  depts.push({id:nextId(depts),type:document.getElementById('df-type').value,depts:document.getElementById('df-depts').value});
-  save('depts',depts); closeDeptForm(); renderDeptTable();
-}
-function deleteDept(id){ var d=load('depts',[]); save('depts',d.filter(function(x){return x.id!==id;})); renderDeptTable(); }
-
-function openDiseaseForm(){ document.getElementById('disease-form').style.display='block'; }
-function closeDiseaseForm(){ document.getElementById('disease-form').style.display='none'; }
-function saveDisease(){
-  var diseases=load('diseases',[]);
-  diseases.push({id:nextId(diseases),cat:document.getElementById('dsf-cat').value,name:document.getElementById('dsf-name').value,vol:document.getElementById('dsf-vol').value,note:document.getElementById('dsf-note').value});
-  save('diseases',diseases); closeDiseaseForm(); renderDiseaseTable();
-}
-function deleteDisease(id){ var d=load('diseases',[]); save('diseases',d.filter(function(x){return x.id!==id;})); renderDiseaseTable(); }
-
-function openProductForm(){ document.getElementById('product-form').style.display='block'; }
-function closeProductForm(){ document.getElementById('product-form').style.display='none'; }
-function saveProduct(){
-  var products=load('products',[]);
-  products.push({id:nextId(products),type:document.getElementById('pf-type').value,cat:document.getElementById('pf-cat').value,name:document.getElementById('pf-name').value,match:document.getElementById('pf-match').value,note:document.getElementById('pf-note').value});
-  save('products',products); closeProductForm(); renderProductTable();
-}
-function deleteProduct(id){ var p=load('products',[]); save('products',p.filter(function(x){return x.id!==id;})); renderProductTable(); }
-
-function openIssueForm(){ document.getElementById('issue-form').style.display='block'; }
-function closeIssueForm(){ document.getElementById('issue-form').style.display='none'; }
-function saveIssue(){
-  var issues=load('issues',[]);
-  issues.push({id:nextId(issues),kw:document.getElementById('if-kw').value,level:document.getElementById('if-level').value,title:document.getElementById('if-title').value,msg:document.getElementById('if-msg').value,src:document.getElementById('if-src').value});
-  save('issues',issues); closeIssueForm(); renderIssueTable();
-}
-function deleteIssue(id){ var iss=load('issues',[]); save('issues',iss.filter(function(x){return x.id!==id;})); renderIssueTable(); }
 
 initDefaultData();
 renderClientList();
