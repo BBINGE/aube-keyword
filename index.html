@@ -1200,27 +1200,28 @@ function pickDisease(cats){
   return pick(pool)||{name:'허리통증',vol:'high',note:''};
 }
 function pickProduct(diseaseName){
-  if(!selectedClient)return{name:'해당 시술',match:'',note:''};
+  if(!selectedClient)return null;
   var all=getAllProducts();
   var excludes=selectedClient.exclude||[];
-  // 제외 시술 필터링
   var typeProducts=all.filter(function(p){
     return p.type===selectedClient.type && excludes.indexOf(p.name)<0;
   });
+  // 1순위: 질환명 직접 매칭
   var matched=typeProducts.filter(function(p){return p.match&&p.match.split(',').map(function(x){return x.trim();}).indexOf(diseaseName)>=0;});
   if(matched.length)return pick(matched);
+  // 2순위: 같은 카테고리 상품
   var dis=getAllDiseases().find(function(d){return d.name===diseaseName;});
   if(dis){var catM=typeProducts.filter(function(p){return p.cat===dis.cat;});if(catM.length)return pick(catM);}
-  if(typeProducts.length)return pick(typeProducts);
-  return{name:'해당 시술',match:'',note:''};
+  // 3순위: 없으면 null (엉뚱한 시술 표시 안 함)
+  return null;
 }
 
 function roll(n){
   if(!selectedClient){alert('먼저 클라이언트를 선택해 주세요.');return;}
   if(n===1){var rc=pickRegionAndCats();ST.region=rc.region;ST.cats=rc.cats;document.getElementById('v1').textContent=rc.region;document.getElementById('s1').textContent=rc.cats.join(' · ');document.getElementById('btn1').classList.add('active');}
   if(n===2){var d=pickDept();ST.dept=d;document.getElementById('v2').textContent=d;document.getElementById('s2').textContent='병원 유형 연관 과목';document.getElementById('btn2').classList.add('active');}
-  if(n===3){var cats=ST.cats||ALL_CATS;var dis=pickDisease(cats);ST.disease=dis;document.getElementById('v3').textContent=dis.name;var vl={high:'검색량 높음 — 경쟁 주의',med:'검색량 중간',low:'검색량 낮음 — 조합 필수'};document.getElementById('s3').textContent=vl[dis.vol]||'';document.getElementById('btn3').classList.add('active');var pr=pickProduct(dis.name);ST.product=pr;document.getElementById('v4').textContent=pr.name;document.getElementById('s4').textContent='질환 자동 매칭';document.getElementById('btn4').classList.add('active');}
-  if(n===4){var pr2=pickProduct((ST.disease||{name:''}).name);ST.product=pr2;document.getElementById('v4').textContent=pr2.name;document.getElementById('s4').textContent='매칭 재선택';document.getElementById('btn4').classList.add('active');}
+  if(n===3){var cats=ST.cats||ALL_CATS;var dis=pickDisease(cats);ST.disease=dis;document.getElementById('v3').textContent=dis.name;var vl={high:'검색량 높음 — 경쟁 주의',med:'검색량 중간',low:'검색량 낮음 — 조합 필수'};document.getElementById('s3').textContent=vl[dis.vol]||'';document.getElementById('btn3').classList.add('active');var pr=pickProduct(dis.name);ST.product=pr;if(pr){document.getElementById('v4').textContent=pr.name;document.getElementById('s4').textContent='질환 자동 매칭';document.getElementById('btn4').classList.add('active');}else{document.getElementById('v4').textContent='—';document.getElementById('s4').textContent='해당 시술 없음';document.getElementById('btn4').classList.remove('active');}}
+  if(n===4){var pr2=pickProduct((ST.disease||{name:''}).name);ST.product=pr2;if(pr2){document.getElementById('v4').textContent=pr2.name;document.getElementById('s4').textContent='매칭 재선택';document.getElementById('btn4').classList.add('active');}else{document.getElementById('v4').textContent='—';document.getElementById('s4').textContent='해당 시술 없음';document.getElementById('btn4').classList.remove('active');}}
   if(ST.region&&ST.dept&&ST.disease&&ST.product)showResult();
 }
 function rollAll(){
@@ -1243,13 +1244,15 @@ function showResult(){
   var variants=[
     {t:r+' '+dis.name+' '+dept,star:true},
     {t:r+' '+dis.name+' 치료',star:false},
-    {t:r+' '+dis.name+' '+prod.name,star:true},
-    {t:r+' '+dept+' '+prod.name,star:false},
-    {t:dis.name+' '+dept+' 잘하는 곳',star:false},
+    {t:r+' '+dis.name+' 잘하는 곳',star:false},
     {t:r+' '+dis.name+' 잘 낫는 곳',star:false},
     {t:r+' '+dis.name+' 비용',star:false},
     {t:r+' '+dis.name+' 원인',star:false}
   ];
+  if(prod){
+    variants.splice(2,0,{t:r+' '+dis.name+' '+prod.name,star:true});
+    variants.splice(4,0,{t:r+' '+dept+' '+prod.name,star:false});
+  }
   document.getElementById('combo-chips').innerHTML=variants.map(function(v){
     return '<span class="chip'+(v.star?' star':'')+'" onclick="copyChip(this)">'+v.t+'</span>';
   }).join('');
