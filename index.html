@@ -392,7 +392,7 @@
 <script>
 var ADMIN_PW='aube2026';
 var isAdmin=false;
-var ALL_CATS=['통증','교통사고','다이어트','소아성장','피부','공황/불면','산후'];
+var ALL_CATS=['통증','교통사고','다이어트','소아성장','피부','공황/불면','산후','척추','말초신경','두통/어지럼','신경계'];
 
 // ===== localStorage 키 — 절대 변경 금지 =====
 var KEY_CLIENTS='aube_clients';
@@ -463,7 +463,33 @@ var CLAUDE_DISEASES=[
   // 산후
   {id:'c70',cat:'산후',name:'산후보약',vol:'med',note:'출산 후 체력회복. 보한·어혈제거 기전 강조.',src:'claude'},
   {id:'c71',cat:'산후',name:'산후풍',vol:'med',note:'출산 후 관절통·냉증. 한의원 특화.',src:'claude'},
-  {id:'c72',cat:'산후',name:'산후조리',vol:'high',note:'출산 후 전반적 회복. 광범위 수요.',src:'claude'}
+  {id:'c72',cat:'산후',name:'산후조리',vol:'high',note:'출산 후 전반적 회복. 광범위 수요.',src:'claude'},
+  // 신경외과 특화 질환
+  {id:'c80',cat:'척추',name:'척추측만증',vol:'med',note:'청소년·성인 수요. 정기검진 연계 수요.',src:'claude'},
+  {id:'c81',cat:'척추',name:'압박골절',vol:'med',note:'골다공증 동반 중장년 수요. 낙상 후 즉시 내원 유도.',src:'claude'},
+  {id:'c82',cat:'척추',name:'전방전위증',vol:'low',note:'만성 허리통증 동반. 전문 용어. 증상명 앞 배치 권장.',src:'claude'},
+  {id:'c83',cat:'척추',name:'디스크내장증',vol:'low',note:'MRI 기반 진단. 전문성 소구 콘텐츠 유효.',src:'claude'},
+  {id:'c84',cat:'척추',name:'후관절증후군',vol:'low',note:'만성 허리통증 원인. 전문 용어. 증상형 콘텐츠 접근 권장.',src:'claude'},
+  {id:'c85',cat:'척추',name:'경추증',vol:'low',note:'목 퇴행성 변화. 중장년 수요.',src:'claude'},
+  {id:'c86',cat:'척추',name:'척추전방전위증',vol:'low',note:'만성 허리통증 동반. 영상 진단 연계.',src:'claude'},
+  {id:'c87',cat:'척추',name:'허리디스크 재발',vol:'med',note:'수술 후 재발 수요. 비수술 대안 소구 유효.',src:'claude'},
+  {id:'c88',cat:'말초신경',name:'손발저림',vol:'high',note:'전 연령 수요. 원인 다양. 정보형 콘텐츠 유효.',src:'claude'},
+  {id:'c89',cat:'말초신경',name:'손목터널증후군',vol:'med',note:'직장인·주부 수요. 비수술 치료 소구 유효.',src:'claude'},
+  {id:'c90',cat:'말초신경',name:'발목터널증후군',vol:'low',note:'검색량 낮음. 지역+증상 조합 필수.',src:'claude'},
+  {id:'c91',cat:'말초신경',name:'팔꿈치터널증후군',vol:'low',note:'직장인 수요. 손저림과 함께 사용.',src:'claude'},
+  {id:'c92',cat:'말초신경',name:'이상근증후군',vol:'low',note:'좌골신경통 유사 증상. 전문성 소구 유효.',src:'claude'},
+  {id:'c93',cat:'두통/어지럼',name:'편두통',vol:'high',note:'전 연령 수요. 여성 타깃. 만성 편두통 구분 권장.',src:'claude'},
+  {id:'c94',cat:'두통/어지럼',name:'군발두통',vol:'low',note:'검색량 낮음. 전문성 소구 콘텐츠 유효.',src:'claude'},
+  {id:'c95',cat:'두통/어지럼',name:'어지럼증',vol:'high',note:'중장년 수요. 원인별(이석증·뇌혈관) 구분 권장.',src:'claude'},
+  {id:'c96',cat:'두통/어지럼',name:'뇌졸중 후유증',vol:'med',note:'회복기 수요. 가족이 검색하는 경향.',src:'claude'},
+  {id:'c97',cat:'두통/어지럼',name:'뇌경색',vol:'med',note:'고관여 수요. 예방·조기진단 소구 유효.',src:'claude'},
+  {id:'c98',cat:'두통/어지럼',name:'만성두통',vol:'high',note:'전 연령 수요. 원인 탐색형 콘텐츠 유효.',src:'claude'},
+  {id:'c99',cat:'두통/어지럼',name:'긴장성두통',vol:'med',note:'직장인·학생 수요. 스트레스 연계 소구.',src:'claude'},
+  {id:'c100',cat:'신경계',name:'안면신경마비',vol:'med',note:'돌발성 수요. 초기 내원 유도 콘텐츠 유효.',src:'claude'},
+  {id:'c101',cat:'신경계',name:'삼차신경통',vol:'low',note:'검색량 낮음. 극심한 안면통증 수요. 전문성 소구.',src:'claude'},
+  {id:'c102',cat:'신경계',name:'손떨림',vol:'med',note:'중장년 수요. 파킨슨병 우려층 타깃.',src:'claude'},
+  {id:'c103',cat:'신경계',name:'보행장애',vol:'low',note:'고령 수요. 가족이 검색하는 경향.',src:'claude'},
+  {id:'c104',cat:'신경계',name:'근력저하',vol:'low',note:'다양한 원인. 증상형 콘텐츠 접근 권장.',src:'claude'}
 ];
 
 var CLAUDE_PRODUCTS=[
@@ -505,7 +531,20 @@ var CLAUDE_PRODUCTS=[
   // 정형외과
   {id:'cp40',type:'정형외과',cat:'통증',name:'관절내시경',match:'무릎통증,어깨통증,오십견',note:'최소침습 강조. 수술 공포층 타깃.',src:'claude'},
   {id:'cp41',type:'정형외과',cat:'통증',name:'인공관절수술',match:'퇴행성관절염,무릎통증',note:'60대 이상 타깃. 고관여 키워드. 신뢰 콘텐츠 필수.',src:'claude'},
-  {id:'cp42',type:'정형외과',cat:'교통사고',name:'교통사고 정형외과',match:'교통사고후유증',note:'자동차보험 적용. 골절·인대 손상 검사 연계.',src:'claude'}
+  {id:'cp42',type:'정형외과',cat:'교통사고',name:'교통사고 정형외과',match:'교통사고후유증',note:'자동차보험 적용. 골절·인대 손상 검사 연계.',src:'claude'},
+  // 신경외과 특화 상품 확장
+  {id:'cp50',type:'신경외과',cat:'척추',name:'비수술 척추치료',match:'허리디스크,목디스크,척추관협착증,허리디스크 재발,전방전위증,척추전방전위증,디스크내장증',note:'수술 공포층 타깃. 클릭률 높음. 비수술 범위와 한계 명시 필수.',src:'claude'},
+  {id:'cp51',type:'신경외과',cat:'척추',name:'경막외 신경차단술',match:'허리디스크,척추관협착증,좌골신경통,후관절증후군,이상근증후군',note:'전문 용어. 증상명 앞 배치 권장. 시술 후 일상 복귀 빠름 소구 유효.',src:'claude'},
+  {id:'cp52',type:'신경외과',cat:'척추',name:'고주파 열치료',match:'후관절증후군,디스크내장증,만성허리통증',note:'만성 통증 타깃. 전문성 소구. 시술 시간 짧음 강조 유효.',src:'claude'},
+  {id:'cp53',type:'신경외과',cat:'척추',name:'척추 내시경 시술',match:'허리디스크,목디스크,척추관협착증,압박골절',note:'최소침습 강조. 전신마취 없음 소구 유효. 당일 또는 단기 입원.',src:'claude'},
+  {id:'cp54',type:'신경외과',cat:'척추',name:'풍선확장술',match:'척추관협착증,압박골절',note:'고령 환자 타깃. 전신마취 없음 강조. 골다공증 동반 환자 유효.',src:'claude'},
+  {id:'cp55',type:'신경외과',cat:'척추',name:'척추 성형술',match:'압박골절,척추전방전위증',note:'골다공증 동반 골절 타깃. 빠른 통증 완화 소구 유효.',src:'claude'},
+  {id:'cp56',type:'신경외과',cat:'말초신경',name:'손목터널 감압술',match:'손목터널증후군,손발저림',note:'비수술 대안 먼저 소구. 수술 불가피한 경우 최소침습 강조.',src:'claude'},
+  {id:'cp57',type:'신경외과',cat:'말초신경',name:'신경 감압술',match:'팔꿈치터널증후군,발목터널증후군,이상근증후군',note:'말초신경 압박 해소. 증상 개선 빠름 소구.',src:'claude'},
+  {id:'cp58',type:'신경외과',cat:'두통/어지럼',name:'두통 클리닉',match:'편두통,군발두통,만성두통,긴장성두통',note:'원인 감별 진단 소구. 약물 의존도 줄이는 치료 강조 유효.',src:'claude'},
+  {id:'cp59',type:'신경외과',cat:'두통/어지럼',name:'뇌혈관 정밀검사',match:'뇌경색,뇌졸중 후유증,어지럼증,만성두통',note:'예방 목적 수요. 가족력 있는 수요층 타깃. 조기 발견 소구.',src:'claude'},
+  {id:'cp60',type:'신경외과',cat:'신경계',name:'안면신경 치료',match:'안면신경마비,삼차신경통',note:'돌발성 수요. 초기 내원 골든타임 소구 유효.',src:'claude'},
+  {id:'cp61',type:'신경외과',cat:'교통사고',name:'교통사고 신경외과',match:'교통사고후유증,목 교통사고',note:'자동차보험 적용. MRI·CT 정밀 검사 연계. 합의 전 치료 유도.',src:'claude'}
 ];
 
 var CLAUDE_DEPTS=[
