@@ -948,8 +948,9 @@ function switchDbTab(id,el){
 var rgGroups=[];
 function renderRgEditor(){
   var el=document.getElementById('rg-groups');
+  var sortedCats=ALL_CATS.slice().sort(function(a,b){return a.localeCompare(b,'ko');});
   el.innerHTML=rgGroups.map(function(g,i){
-    var cats=ALL_CATS.map(function(c){
+    var cats=sortedCats.map(function(c){
       var chk=g.cats.indexOf(c)>=0?'checked':'';
       return '<label class="cat-check"><input type="checkbox" '+chk+' onchange="toggleCat('+i+',\''+c+'\')"> '+c+'</label>';
     }).join('');
