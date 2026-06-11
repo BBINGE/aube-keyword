@@ -509,8 +509,10 @@ var CLAUDE_DISEASES=[
   {id:'c17',cat:'통증',name:'두통',vol:'high',note:'전 연령 수요. 편두통·긴장성두통으로 세분화 권장.',src:'claude'},
   // 교통사고
   {id:'c20',cat:'교통사고',name:'교통사고후유증',vol:'med',note:'자보 연계 수요. 보험 키워드. 합의 전 치료 유도 유효.',src:'claude'},
-  {id:'c21',cat:'교통사고',name:'교통사고 후유증 한방',vol:'med',note:'교통사고 직후 검색 수요. 자동차보험 적용 강조.',src:'claude'},
-  {id:'c22',cat:'교통사고',name:'목 교통사고',vol:'med',note:'경추 손상 수요. 경추염좌·목디스크와 함께 사용.',src:'claude'},
+  {id:'c21',cat:'교통사고',name:'교통사고 후유증 한방',vol:'med',note:'한의원·한방병원 전용. 교통사고 직후 검색 수요. 자동차보험 적용 강조.',src:'claude'},
+  {id:'c22',cat:'교통사고',name:'교통사고 목통증',vol:'med',note:'경추 손상 수요. 경추염좌·목디스크 연계. 신경외과·통증의학과 타깃.',src:'claude'},
+  {id:'c23',cat:'교통사고',name:'교통사고 허리통증',vol:'med',note:'요추 손상 수요. 요추염좌·허리디스크 연계.',src:'claude'},
+  {id:'c24',cat:'교통사고',name:'교통사고 후유증 신경외과',vol:'low',note:'신경외과 타입 전용. MRI·CT 정밀검사 연계.',src:'claude'},
   // 다이어트
   {id:'c30',cat:'다이어트',name:'다이어트',vol:'high',note:'검색량 최상위. 단독 사용 시 경쟁 극심. 지역명 필수.',src:'claude'},
   {id:'c31',cat:'다이어트',name:'산후비만',vol:'med',note:'출산 후 여성 수요. 한약 연결 필수. 침다이어트 연결 금지.',src:'claude'},
@@ -1253,7 +1255,17 @@ function pickDept(){
 function pickDisease(cats){
   var all=getAllDiseases();
   var pool=cats&&cats.length?all.filter(function(d){return cats.indexOf(d.cat)>=0;}):all;
-  // 카테고리 매칭 질환 없으면 전체 fallback 안 함 — null 반환
+  // 병원 타입에 맞지 않는 질환 필터링
+  if(selectedClient){
+    var isHanbang=selectedClient.type==='한의원'||selectedClient.type==='한방병원';
+    pool=pool.filter(function(d){
+      // "한방" 포함 질환명은 한의원/한방병원만
+      if(d.name.includes('한방')&&!isHanbang) return false;
+      // "신경외과" 포함 질환명은 신경외과만
+      if(d.name.includes('신경외과')&&selectedClient.type!=='신경외과') return false;
+      return true;
+    });
+  }
   if(!pool.length)return null;
   return pick(pool)||null;
 }
