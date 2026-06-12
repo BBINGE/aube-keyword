@@ -1219,21 +1219,16 @@ function findRelatedProducts(raw,products,foundDis,foundProd){
   if(foundProd.length){
     return {items:out,inferredTypes:inferredTypes};
   }
+  if(!inferredTypes.length){
+    return {items:out,inferredTypes:inferredTypes};
+  }
   foundDis.forEach(function(d){
     products.forEach(function(p){
       if(!productMatchesDisease(p,d))return;
-      if(inferredTypes.length&&inferredTypes.indexOf(p.type)<0)return;
+      if(inferredTypes.indexOf(p.type)<0)return;
       if(!out.some(function(x){return x.id===p.id;}))out.push(p);
     });
   });
-  // 과목 단서가 너무 좁아 연결 상품이 0개가 되면, 질환 match 기준 상품을 fallback으로 보여준다.
-  if(foundDis.length&&foundProd.length===0&&out.length===0){
-    foundDis.forEach(function(d){
-      products.forEach(function(p){
-        if(productMatchesDisease(p,d)&&!out.some(function(x){return x.id===p.id;}))out.push(p);
-      });
-    });
-  }
   return {items:out,inferredTypes:inferredTypes};
 }
 
