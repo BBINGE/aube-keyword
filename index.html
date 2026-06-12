@@ -126,6 +126,41 @@
   .db-source-claude{background:#e8f0fe;color:#1a56db;border:1px solid #c3d4fb;}
   .db-source-custom{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);}
   .section-divider{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;padding:8px 0 6px;border-bottom:1px solid var(--border);margin-bottom:10px;}
+  /* ===== 정론지 ===== */
+  .brief-input-card{background:var(--surface);border:1px solid var(--accent-border);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px;}
+  .brief-input-row{display:flex;gap:8px;align-items:flex-end;margin-top:10px;}
+  .brief-input-row textarea{flex:1;margin:0;min-height:44px;}
+  .parsed-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+  .parsed-chip{font-size:12px;padding:5px 12px;border-radius:99px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);}
+  .parsed-chip b{color:var(--text);font-weight:600;}
+  .parsed-chip.hit{border-color:var(--accent-border);background:var(--accent-bg);color:var(--accent);}
+  .parsed-chip.miss{border-color:var(--red-border);background:var(--red-bg);color:var(--red);}
+  .brief-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:0;margin-bottom:14px;overflow:hidden;}
+  .brief-card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 20px;border-bottom:1px solid var(--border);background:var(--surface2);}
+  .brief-card-kind{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);}
+  .brief-card-name{font-size:17px;font-weight:700;color:var(--text);letter-spacing:-.01em;}
+  .brief-card-body{padding:18px 20px;}
+  .brief-block{margin-bottom:14px;}
+  .brief-block:last-child{margin-bottom:0;}
+  .brief-block-label{display:inline-block;font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-bg);border:1px solid var(--accent-border);border-radius:var(--radius-sm);padding:2px 9px;margin-bottom:6px;}
+  .brief-block-text{font-size:13.5px;color:var(--text);line-height:1.8;}
+  .verify-flag{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px;background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);}
+  .src-section{background:var(--surface2);border-top:1px dashed var(--border2);padding:16px 20px;}
+  .src-title{font-size:11px;font-weight:700;letter-spacing:.05em;color:var(--text2);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+  .src-item{display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);}
+  .src-item:last-child{border-bottom:none;}
+  .src-tier{flex-shrink:0;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;white-space:nowrap;margin-top:1px;}
+  .tier1{background:#e7f5ec;color:#1a7a40;border:1px solid #b3e0c4;}
+  .tier2{background:#e8f0fe;color:#1a56db;border:1px solid #c3d4fb;}
+  .tier3{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);}
+  .src-body{flex:1;min-width:0;}
+  .src-name{font-size:12.5px;font-weight:600;color:var(--text);}
+  .src-hint{font-size:11px;color:var(--text3);margin-top:2px;line-height:1.6;}
+  .src-link{font-size:11px;color:var(--accent);text-decoration:none;word-break:break-all;}
+  .src-link:hover{text-decoration:underline;}
+  .src-unverified{font-size:10px;color:var(--amber);font-weight:600;}
+  .brief-disclaimer{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:var(--radius);padding:12px 16px;margin-bottom:16px;font-size:12px;color:#5a3a10;line-height:1.7;}
+  .brief-disclaimer b{color:var(--amber);}
   @media(max-width:600px){
     .row2,.kw-grid,.client-list{grid-template-columns:1fr;}
     .row3{grid-template-columns:1fr 1fr;}
@@ -143,7 +178,8 @@
   </div>
   <div class="nav-tabs">
     <button class="nav-tab active" onclick="goPage('gen',this)">키워드 생성</button>
-    <button class="nav-tab" onclick="goPage('admin',this)">관리자</button>
+    <button class="nav-tab" onclick="goPage('brief',this)">정론지</button>
+    <button class="nav-tab" onclick="goPage('admin',this)">관리자 🔒</button>
   </div>
   <div class="nav-right">오늘의브랜딩 기획부 제작 및 문의<br><strong>박성호 기획팀장</strong></div>
 </nav>
@@ -184,6 +220,29 @@
       <button class="copy-btn" onclick="copyResult()">전체 복사</button>
     </div>
   </div>
+</div>
+
+<!-- 정론지 -->
+<div class="page" id="page-brief">
+  <div class="page-header">
+    <h1>정론지</h1>
+    <p>키워드 조합을 붙여넣으면 검증 DB 기반 원고 정론과 인용 출처를 펼칩니다.</p>
+  </div>
+
+  <div class="brief-disclaimer">
+    <b>⚠ 검수 전 자료입니다.</b> 아래 정론과 출처는 Claude 기본 DB에서 생성된 초안으로, 기획부장·의료 실무자 검수를 거치기 전입니다. 원고에 그대로 옮기기 전 출처를 직접 확인하세요. 출처 링크는 기관 도메인 안내이며, 실재 여부는 클릭해 확인해야 합니다.
+  </div>
+
+  <div class="brief-input-card">
+    <div class="card-title">키워드 조합 입력 — 키워드 생성에서 복사한 문장을 붙여넣으세요</div>
+    <div class="brief-input-row">
+      <textarea id="brief-input" placeholder="예: 신정역 정형외과 디스크내장증 경피적 경막외강 신경성형술 (신경성형술)"></textarea>
+      <button class="btn btn-accent" onclick="parseBrief()">정론 펼치기</button>
+    </div>
+    <div class="parsed-chips" id="brief-parsed"></div>
+  </div>
+
+  <div id="brief-result"></div>
 </div>
 
 <!-- 관리자 -->
@@ -912,6 +971,55 @@ var CLAUDE_ISSUES=[
   {id:'ci5',kw:'우울증,정신건강',level:'warn',title:'정신건강 키워드 의료광고 주의',msg:'우울증·공황장애 등 정신건강 키워드는 효과 과장 시 의료광고법 위반 소지가 있습니다. 치료 효과보다 증상 공감형 콘텐츠로 접근하세요.',src:'AUBE KOREA 내부 지침'}
 ];
 
+// ===== 정론지: 신뢰 출처 화이트리스트 (도메인 기반) =====
+// 원칙: Claude는 URL을 생성하지 않는다. 기관 도메인과 "어디를 찾아보면 되는지" 길만 안내한다.
+// 실제 링크 박기·실재 확인은 반드시 사람이 한다. 자동 제시는 전부 '미검증 후보'.
+var SOURCE_WHITELIST=[
+  // Tier 1 — 법적·제도 근거
+  {tier:1,name:'식품의약품안전처 (MFDS)',domain:'mfds.go.kr',hint:'의약품·의료기기 허가사항, 시술 안전성 고시',base:'https://www.mfds.go.kr'},
+  {tier:1,name:'건강보험심사평가원 (HIRA)',domain:'hira.or.kr',hint:'급여·비급여 분류, 적응증·산정 기준',base:'https://www.hira.or.kr'},
+  {tier:1,name:'보건복지부 고시',domain:'mohw.go.kr',hint:'급여기준 고시, 관리급여 편입 등 제도 변경',base:'https://www.mohw.go.kr'},
+  {tier:1,name:'질병관리청 (KDCA)',domain:'kdca.go.kr',hint:'질환 통계·예방·표준 정보',base:'https://www.kdca.go.kr'},
+  // Tier 2 — 임상 권위 (표준 정설)
+  {tier:2,name:'대한의학회 / 임상진료지침정보센터',domain:'guideline.or.kr',hint:'전문학회 진료지침 표준',base:'https://www.guideline.or.kr'},
+  {tier:2,name:'PubMed (NIH)',domain:'pubmed.ncbi.nlm.nih.gov',hint:'영문 논문 — DOI·PMID로 실재 검증 가능',base:'https://pubmed.ncbi.nlm.nih.gov'},
+  {tier:2,name:'대한신경외과학회',domain:'neurosurgery.or.kr',hint:'척추·말초신경 시술 지침',base:'https://www.neurosurgery.or.kr'},
+  {tier:2,name:'대한정형외과학회',domain:'koa.or.kr',hint:'근골격계 질환·시술 지침',base:'https://www.koa.or.kr'},
+  {tier:2,name:'대한한의학회',domain:'skom.or.kr',hint:'한방 표준 임상 정보',base:'https://www.skom.or.kr'},
+  // Tier 3 — 참고 (반드시 사람이 실재·정설 여부 확인)
+  {tier:3,name:'KCI (한국학술지인용색인)',domain:'kci.go.kr',hint:'국내 등재 논문 — 정설 여부 직접 확인 필요',base:'https://www.kci.go.kr'},
+  {tier:3,name:'KoreaMed',domain:'koreamed.org',hint:'국내 의학논문 — 개별 검증 필요',base:'https://www.koreamed.org'},
+  {tier:3,name:'RISS',domain:'riss.kr',hint:'학술자료 검색 — 출처 품질 편차 큼',base:'https://www.riss.kr'}
+];
+
+// 진료분야(cat) → 어느 출처 기관을 찾아보면 되는지 매핑 (도메인 키로 연결)
+var CAT_SOURCE_MAP={
+  '통증':['hira.or.kr','guideline.or.kr','pubmed.ncbi.nlm.nih.gov'],
+  '척추':['neurosurgery.or.kr','koa.or.kr','hira.or.kr','pubmed.ncbi.nlm.nih.gov'],
+  '말초신경':['neurosurgery.or.kr','pubmed.ncbi.nlm.nih.gov','guideline.or.kr'],
+  '신경계':['neurosurgery.or.kr','guideline.or.kr','pubmed.ncbi.nlm.nih.gov'],
+  '두통/어지럼':['guideline.or.kr','pubmed.ncbi.nlm.nih.gov','kdca.go.kr'],
+  '교통사고':['hira.or.kr','mohw.go.kr','skom.or.kr'],
+  '다이어트':['skom.or.kr','kdca.go.kr','kci.go.kr'],
+  '소아성장':['guideline.or.kr','skom.or.kr','pubmed.ncbi.nlm.nih.gov'],
+  '산후':['skom.or.kr','guideline.or.kr','kci.go.kr'],
+  '피부':['skom.or.kr','kci.go.kr','pubmed.ncbi.nlm.nih.gov'],
+  '피부과':['mfds.go.kr','guideline.or.kr','pubmed.ncbi.nlm.nih.gov'],
+  '미용':['mfds.go.kr','pubmed.ncbi.nlm.nih.gov','kci.go.kr'],
+  '성형외과':['mfds.go.kr','guideline.or.kr','pubmed.ncbi.nlm.nih.gov'],
+  '암':['kdca.go.kr','guideline.or.kr','pubmed.ncbi.nlm.nih.gov'],
+  '재활':['koa.or.kr','guideline.or.kr','hira.or.kr'],
+  '내과':['guideline.or.kr','kdca.go.kr','pubmed.ncbi.nlm.nih.gov'],
+  '이비인후과':['guideline.or.kr','hira.or.kr','pubmed.ncbi.nlm.nih.gov'],
+  '안과':['guideline.or.kr','pubmed.ncbi.nlm.nih.gov','mfds.go.kr'],
+  '산부인과':['guideline.or.kr','kdca.go.kr','pubmed.ncbi.nlm.nih.gov'],
+  '비뇨기과':['guideline.or.kr','pubmed.ncbi.nlm.nih.gov','mfds.go.kr'],
+  '치과':['guideline.or.kr','hira.or.kr','pubmed.ncbi.nlm.nih.gov'],
+  '여성질환':['skom.or.kr','guideline.or.kr','kci.go.kr'],
+  '공황/불면':['guideline.or.kr','kdca.go.kr','pubmed.ncbi.nlm.nih.gov']
+};
+function srcByDomain(d){return SOURCE_WHITELIST.find(function(s){return s.domain===d;});}
+
 // ===== 전체 DB 병합 (Claude 기본 + 커스텀) =====
 function getAllDiseases(){
   var custom=load(KEY_CUSTOM_DISEASES,[]);
@@ -938,6 +1046,101 @@ function goPage(id,el){
   el.classList.add('active');
   if(id==='gen')renderClientList();
 }
+
+// ===== 정론지 로직 =====
+// note의 【블록】 파싱 → {라벨:내용} 배열
+function parseNoteBlocks(note){
+  if(!note)return [];
+  var out=[];var re=/【([^】]+)】/g;var m;var idxs=[];
+  while((m=re.exec(note))!==null){idxs.push({label:m[1],start:m.index,after:m.index+m[0].length});}
+  for(var i=0;i<idxs.length;i++){
+    var end=(i+1<idxs.length)?idxs[i+1].start:note.length;
+    out.push({label:idxs[i].label,text:note.slice(idxs[i].after,end).trim()});
+  }
+  if(out.length===0)out.push({label:'설명',text:note.trim()});
+  return out;
+}
+
+// 입력 문장에서 DB의 질환·시술명을 길이 내림차순으로 탐색 (긴 이름 우선 매칭)
+function findInText(text,items,nameKey){
+  var found=[];var sorted=items.slice().sort(function(a,b){return b[nameKey].length-a[nameKey].length;});
+  sorted.forEach(function(it){
+    var nm=it[nameKey];
+    // 괄호 앞 핵심 명칭도 매칭 시도 (예: "침치료 (Acupuncture)" → "침치료")
+    var core=nm.split('(')[0].trim();
+    if((text.indexOf(nm)>=0||text.indexOf(core)>=0)&&!found.some(function(f){return f.id===it.id;})){
+      found.push(it);
+    }
+  });
+  return found;
+}
+
+function parseBrief(){
+  var raw=document.getElementById('brief-input').value.trim();
+  var parsedEl=document.getElementById('brief-parsed');
+  var resultEl=document.getElementById('brief-result');
+  if(!raw){parsedEl.innerHTML='';resultEl.innerHTML='<div class="empty">키워드 조합을 붙여넣고 정론 펼치기를 눌러주세요.</div>';return;}
+
+  var diseases=getAllDiseases();
+  var products=getAllProducts();
+  var foundDis=findInText(raw,diseases,'name');
+  var foundProd=findInText(raw,products,'name');
+
+  // 파싱 칩 표시
+  var chips='';
+  if(foundDis.length){foundDis.forEach(function(d){chips+='<span class="parsed-chip hit">질환 <b>'+esc(d.name)+'</b></span>';});}
+  if(foundProd.length){foundProd.forEach(function(p){chips+='<span class="parsed-chip hit">시술 <b>'+esc(p.name)+'</b></span>';});}
+  if(!foundDis.length&&!foundProd.length){chips='<span class="parsed-chip miss">DB에서 일치하는 질환·시술을 찾지 못했습니다</span>';}
+  parsedEl.innerHTML=chips;
+
+  // 결과 카드
+  var html='';
+  if(!foundDis.length&&!foundProd.length){
+    html='<div class="empty">입력 문장에서 DB에 등록된 질환·시술명을 찾지 못했습니다.<br>키워드 생성 탭에서 만든 조합을 그대로 붙여넣었는지 확인하거나, 관리자 DB에 해당 항목이 있는지 확인하세요.</div>';
+    resultEl.innerHTML=html;return;
+  }
+
+  foundDis.forEach(function(d){html+=renderBriefCard('질환',d);});
+  foundProd.forEach(function(p){html+=renderBriefCard('시술 / 상품',p);});
+  resultEl.innerHTML=html;
+}
+
+function renderBriefCard(kind,item){
+  var blocks=parseNoteBlocks(item.note);
+  var srcBadge=item.src==='claude'?'Claude 기본 DB':'커스텀 입력';
+  var h='<div class="brief-card">';
+  h+='<div class="brief-card-head"><div><div class="brief-card-kind">'+kind+'</div><div class="brief-card-name">'+esc(item.name)+'</div></div>';
+  h+='<span class="verify-flag">🟡 검수 전 · '+srcBadge+'</span></div>';
+  h+='<div class="brief-card-body">';
+  blocks.forEach(function(b){
+    h+='<div class="brief-block"><span class="brief-block-label">'+esc(b.label)+'</span><div class="brief-block-text">'+esc(b.text)+'</div></div>';
+  });
+  h+='</div>';
+  // 출처 섹션
+  h+=renderSources(item.cat);
+  h+='</div>';
+  return h;
+}
+
+function renderSources(cat){
+  var domains=CAT_SOURCE_MAP[cat]||['guideline.or.kr','pubmed.ncbi.nlm.nih.gov','hira.or.kr'];
+  var h='<div class="src-section"><div class="src-title">📎 인용 출처 — 찾아볼 기관 (미검증 후보)</div>';
+  domains.forEach(function(dom){
+    var s=srcByDomain(dom);if(!s)return;
+    h+='<div class="src-item">';
+    h+='<span class="src-tier tier'+s.tier+'">TIER '+s.tier+'</span>';
+    h+='<div class="src-body">';
+    h+='<div class="src-name">'+esc(s.name)+'</div>';
+    h+='<div class="src-hint">'+esc(s.hint)+'</div>';
+    h+='<a class="src-link" href="'+s.base+'" target="_blank" rel="noopener">'+s.base+'</a> ';
+    h+='<span class="src-unverified">· 클릭해 실제 자료 직접 확인 필요</span>';
+    h+='</div></div>';
+  });
+  h+='</div>';
+  return h;
+}
+
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 // ===== LOGIN =====
 function checkLogin(){
