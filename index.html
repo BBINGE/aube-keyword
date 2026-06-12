@@ -1164,6 +1164,7 @@ function canonicalProductKey(product){
   if(name.indexOf('PRP')>=0||name.indexOf('자가혈')>=0)return 'PRP주사';
   if(name.indexOf('콜라겐 관절')>=0)return '콜라겐 관절주사';
   if(name.indexOf('콜라겐 연부조직')>=0)return '콜라겐 연부조직주사';
+  if(baseName&&baseName!==name)return baseName;
   return name;
 }
 function canonicalProduct(product){
