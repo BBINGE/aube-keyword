@@ -617,7 +617,7 @@ var CLAUDE_DISEASES=[
   {id:'c81',cat:'척추',name:'압박골절',vol:'med',note:'골다공증 동반 중장년 수요. 낙상 후 즉시 내원 유도.',src:'claude'},
   {id:'c82',cat:'척추',name:'전방전위증',vol:'low',note:'만성 허리통증 동반. 전문 용어. 증상명 앞 배치 권장.',src:'claude'},
   {id:'c83',cat:'척추',name:'디스크내장증',vol:'low',note:'MRI 기반 진단. 전문성 소구 콘텐츠 유효.',src:'claude'},
-  {id:'c84',cat:'척추',name:'후관절증후군',vol:'low',note:'만성 허리통증 원인. 전문 용어. 증상형 콘텐츠 접근 권장.',src:'claude'},
+  {id:'c84',cat:'척추',name:'후관절증후군',vol:'low',en:'facet joint syndrome',note:'【정의】 척추 후방의 후관절(facet joint·척추뼈를 서로 연결하는 활막관절)에 발생하는 퇴행성 변화·염증으로 인한 통증 증후군. 추간판 외에 척추 하중을 분담하는 후관절이 노화·반복 부하로 마모되며 발생. 디스크성 통증과 구분되는 별개의 통증 원인이다. 【기전】 후관절 연골 마모 → 관절낭 염증·골극 형성 → 관절을 지배하는 척추신경 내측지(medial branch) 자극 → 통증. 장시간 서 있거나 허리를 뒤로 젖힐 때(신전) 악화되는 것이 특징. 【주요 증상】 허리를 펴거나 젖힐 때 심해지는 국소 허리통증, 아침 기상 시 뻣뻣함, 둔부·허벅지 방사통(디스크와 달리 무릎 아래로는 잘 내려가지 않음). 【진단】 신전 시 통증 유발 검사, 영상(X-ray·CT·MRI)상 후관절 비대·관절강 협착, 확진은 내측지 차단(medial branch block) 반응으로 확인. 【감별질환】 추간판탈출증(디스크), 척추관협착증, 천장관절증후군, 근막통증증후군. 디스크와 증상이 겹쳐 오진되기 쉬워 감별이 중요. 【원고 포인트】 "디스크인 줄 알았는데 후관절이 원인"이라는 감별 서사가 검색 의도와 잘 맞음. 신전 시 악화라는 특징적 증상으로 자가 의심 유도 가능. 효과·완치 단정 표현은 의료광고법 주의.',src:'claude'},
   {id:'c85',cat:'척추',name:'경추증',vol:'low',note:'목 퇴행성 변화. 중장년 수요.',src:'claude'},
   {id:'c86',cat:'척추',name:'척추전방전위증',vol:'low',note:'만성 허리통증 동반. 영상 진단 연계.',src:'claude'},
   {id:'c87',cat:'척추',name:'허리디스크 재발',vol:'med',note:'수술 후 재발 수요. 비수술 대안 소구 유효.',src:'claude'},
@@ -843,7 +843,7 @@ var CLAUDE_PRODUCTS=[
   {id:'cp20',type:'신경외과',cat:'척추',name:'경막외 신경차단술 (Epidural Block)',match:'허리디스크,목디스크,척추관협착증,좌골신경통,허리통증,목통증,후관절증후군,이상근증후군',note:'【정의】 척추 경막외강(경막 바깥 공간)에 스테로이드·국소마취제를 주입해 신경 주변 염증·부종을 억제하는 비수술 시술. C-arm 영상 유도 하에 정확한 위치에 시행. 【적용 질환】 허리·목 디스크, 척추관협착증, 좌골신경통 등 신경 압박 및 염증성 척추 통증. 【시행 과목】 신경외과·통증의학과·정형외과. 건강보험 급여 적용. 【원고 포인트】 수술 없이 통증 원인에 직접 약물 전달. 비수술 치료를 원하는 환자 타깃 소구 유효.',src:'claude'},
   {id:'cp21',type:'신경외과',cat:'척추',name:'선택적 신경근 차단술 (SNRB)',match:'허리디스크,목디스크,좌골신경통',note:'【정의】 척추에서 뻗어 나오는 특정 신경근에 직접 스테로이드·국소마취제를 주입하는 정밀 주사 시술. 경막외 신경차단술보다 더 정밀하게 레벨별 신경근을 타깃. C-arm 영상 유도 필수. 【적용 질환】 특정 레벨 허리·목 디스크, 좌골신경통. 【시행 과목】 신경외과·통증의학과. 진단과 치료를 동시에 수행. 【원고 포인트】 어느 신경이 문제인지 정밀하게 찾아 치료한다는 점 강조. 수술 전 최후 비수술 치료 소구 유효.',src:'claude'},
   {id:'cp22',type:'신경외과',cat:'척추',name:'경피적 경막외강 신경성형술 (신경성형술)',match:'척추관협착증,허리디스크,만성허리통증,디스크내장증',note:'【정의】 특수 카테터를 꼬리뼈를 통해 경막외강에 삽입, 신경 주변 유착(섬유화 조직)을 물리적으로 박리하고 고농도 식염수·스테로이드를 주입하는 시술. 일반 주사 치료로 효과 없는 만성 통증에 적용. 【적용 질환】 척추관협착증, 만성 허리디스크, 디스크내장증, 수술 후 재발 통증. 【시행 과목】 신경외과·통증의학과. ⚠️ 2026년 관리급여 편입 이슈 - 비용 구조 변화 예상. 원고에서 비용 언급 시 사전 확인 필수. 【원고 포인트】 주사 치료도 효과 없었던 만성 통증 환자 대상. 마지막 비수술 치료 선택지로 소구 유효.',src:'claude'},
-  {id:'cp23',type:'신경외과',cat:'척추',name:'고주파 신경차단술 (열응고술·RF Ablation)',match:'후관절증후군,디스크내장증,만성허리통증',note:'【정의】 바늘 끝 전극에 고주파 전류를 흘려 열(60~80도)을 발생시켜 통증 신호를 전달하는 신경 내측지를 차단하는 시술. 신경 자체를 손상시키지 않고 통증 전달 기능만 억제. C-arm 영상 유도 하에 시행. 【적용 질환】 후관절증후군, 디스크내장증, 보존 치료 실패한 만성 허리통증. 【시행 과목】 신경외과·통증의학과. 효과 지속 6~18개월, 반복 시술 가능. 【원고 포인트】 반복 주사도 효과 없는 만성 통증 타깃. 당일 시술·빠른 일상복귀 강조 유효.',src:'claude'},
+  {id:'cp23',type:'신경외과',cat:'척추',name:'고주파 신경차단술 (열응고술·RF Ablation)',en:'radiofrequency ablation facet joint',match:'후관절증후군,디스크내장증,만성허리통증',note:'【정의】 바늘 끝 전극에 고주파 전류를 흘려 열(60~80도)을 발생시켜 통증 신호를 전달하는 신경 내측지를 차단하는 시술. 신경 자체를 손상시키지 않고 통증 전달 기능만 억제. C-arm 영상 유도 하에 시행. 【적용 질환】 후관절증후군, 디스크내장증, 보존 치료 실패한 만성 허리통증. 【시행 과목】 신경외과·통증의학과. 효과 지속 6~18개월, 반복 시술 가능. 【원고 포인트】 반복 주사도 효과 없는 만성 통증 타깃. 당일 시술·빠른 일상복귀 강조 유효.',src:'claude'},
   {id:'cp24',type:'신경외과',cat:'척추',name:'도수치료 (Manual Therapy)',match:'거북목,교통사고후유증,어깨통증,목통증',note:'【정의】 물리치료사가 손을 이용해 관절 가동범위 회복, 근막 이완, 자세 교정을 수행하는 비약물·비침습 치료. 관절 가동술(mobilization), 고속 교정(manipulation), 연부조직 기법으로 세분. 비급여. 【적용 질환】 거북목·일자목, 교통사고 후유증, 어깨·목 만성 통증, 자세 이상. 【시행 과목】 신경외과·통증의학과·재활의학과 협진 물리치료사 시행. ⚠️ 2026년 관리급여 편입 이슈 - 단독 홍보보다 치료 필요성(적응증) 설명 중심 콘텐츠 권장. 【원고 포인트】 약 없이 손으로 바로잡는 치료로 소구. 수술·주사 거부층 타깃 유효.',src:'claude'},
   {id:'cp25',type:'신경외과',cat:'교통사고',name:'경막외 신경차단술',match:'교통사고후유증,목 교통사고후유증,목 교통사고',note:'【정의】 척추 경막외강에 스테로이드·국소마취제를 주입해 신경 주변 염증을 억제하는 비수술 시술. 교통사고 후 경추·요추 신경 손상 치료에 적용. 자동차보험 급여. 【적용 질환】 교통사고 후유증, 경추·요추 신경 압박 통증. 【시행 과목】 신경외과. 【원고 포인트】 MRI·CT 정밀검사 연계. 합의 전 충분한 치료 권장.',src:'claude'},
   {id:'cp26',type:'신경외과',cat:'두통/어지럼',name:'두통 클리닉',match:'편두통,군발두통,만성두통,긴장성두통',note:'【정의】 두통의 원인을 신경학적으로 감별(편두통·긴장성·군발성·속발성)해 원인별 맞춤 치료를 제공하는 클리닉. 약물 치료, 신경차단술, 생활습관 교정을 병행. 【적용 질환】 편두통, 긴장성두통, 군발두통, 만성두통(월 15일 이상). 【시행 과목】 신경외과·신경과. 【원고 포인트】 진통제 남용 두통 환자 타깃 유효. 원인 감별 → 맞춤 치료 과정 설명 소구.',src:'claude'},
@@ -1117,23 +1117,48 @@ function renderBriefCard(kind,item){
   });
   h+='</div>';
   // 출처 섹션
-  h+=renderSources(item.cat);
+  h+=renderSources(item);
   h+='</div>';
   return h;
 }
 
-function renderSources(cat){
+// 검색 링크 생성: 안정적인 곳은 검색 URL, 비표준인 곳은 홈 링크
+// item: 질환/시술 객체 (en=영문검색어, name=한글명)
+function buildSearchUrl(domain,item){
+  var ko=encodeURIComponent((item.name||'').split('(')[0].trim());
+  var en=item.en?encodeURIComponent(item.en):'';
+  switch(domain){
+    case 'pubmed.ncbi.nlm.nih.gov':
+      // 영문 검색어 있으면 검색 링크, 없으면 홈 (영문 없이 한글 검색은 결과 빈약 → 홈이 안전)
+      return en?{url:'https://pubmed.ncbi.nlm.nih.gov/?term='+en,search:true}:{url:'https://pubmed.ncbi.nlm.nih.gov',search:false};
+    case 'kci.go.kr':
+      return {url:'https://www.kci.go.kr/kciportal/po/search/poArtiSearList.kci?searchQuery='+ko,search:true};
+    case 'koreamed.org':
+      return {url:'https://www.koreamed.org/SearchBasic.php?DT=1&QY='+(en||ko),search:true};
+    default:
+      // 기관·학회·고시: 검색 파라미터 비표준 → 홈 링크 유지가 안전
+      var s=srcByDomain(domain);
+      return {url:s?s.base:'#',search:false};
+  }
+}
+
+function renderSources(item){
+  var cat=item.cat;
   var domains=CAT_SOURCE_MAP[cat]||['guideline.or.kr','pubmed.ncbi.nlm.nih.gov','hira.or.kr'];
-  var h='<div class="src-section"><div class="src-title">📎 인용 출처 — 찾아볼 기관 (미검증 후보)</div>';
+  var h='<div class="src-section"><div class="src-title">📎 인용 출처 — 관련 자료 검색 (미검증 후보)</div>';
   domains.forEach(function(dom){
     var s=srcByDomain(dom);if(!s)return;
+    var link=buildSearchUrl(dom,item);
+    var tag=link.search
+      ?'<span class="src-unverified">🔍 '+esc(item.en||item.name.split('(')[0].trim())+' 검색결과 · 실재 자료이므로 직접 확인</span>'
+      :'<span class="src-unverified">· 기관 홈 — 사이트 내에서 직접 검색 필요</span>';
     h+='<div class="src-item">';
     h+='<span class="src-tier tier'+s.tier+'">TIER '+s.tier+'</span>';
     h+='<div class="src-body">';
-    h+='<div class="src-name">'+esc(s.name)+'</div>';
+    h+='<div class="src-name">'+esc(s.name)+(link.search?' <span style="font-size:10px;color:#1a7a40;font-weight:700">검색링크</span>':'')+'</div>';
     h+='<div class="src-hint">'+esc(s.hint)+'</div>';
-    h+='<a class="src-link" href="'+s.base+'" target="_blank" rel="noopener">'+s.base+'</a> ';
-    h+='<span class="src-unverified">· 클릭해 실제 자료 직접 확인 필요</span>';
+    h+='<a class="src-link" href="'+link.url+'" target="_blank" rel="noopener">'+esc(link.url.length>60?link.url.slice(0,60)+'…':link.url)+'</a> ';
+    h+=tag;
     h+='</div></div>';
   });
   h+='</div>';
