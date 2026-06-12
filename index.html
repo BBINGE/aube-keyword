@@ -21,14 +21,24 @@
   body::after{content:"";position:fixed;right:-60px;bottom:-40px;width:420px;height:160px;z-index:0;pointer-events:none;opacity:0.04;background-repeat:no-repeat;background-position:right bottom;background-size:contain;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 636 148' fill='%233182f6'%3E%3Crect x='0' y='36' width='28' height='112'/%3E%3Crect x='0' y='0' width='156' height='28'/%3E%3Crect x='128' y='0' width='28' height='148'/%3E%3Crect x='172' y='0' width='28' height='148'/%3E%3Crect x='172' y='120' width='156' height='28'/%3E%3Crect x='300' y='0' width='28' height='148'/%3E%3Crect x='344' y='0' width='156' height='28'/%3E%3Crect x='344' y='60' width='156' height='28'/%3E%3Crect x='344' y='120' width='156' height='28'/%3E%3Crect x='472' y='0' width='28' height='148'/%3E%3Crect x='516' y='0' width='120' height='28'/%3E%3Crect x='516' y='60' width='120' height='28'/%3E%3Crect x='516' y='120' width='120' height='28'/%3E%3C/svg%3E");}
   nav{position:relative;z-index:2;}
   .page{position:relative;z-index:1;}
-  .ptc-field{position:fixed;inset:56px 0 0;z-index:0;pointer-events:none;overflow:hidden;}
-  .kg-node{position:absolute;width:6px;height:6px;border-radius:50%;background:#16e0a3;box-shadow:0 0 10px rgba(22,224,163,.55);opacity:.22;animation:kgDrift linear infinite;}
-  .kg-node.blue{background:#3182f6;box-shadow:0 0 10px rgba(49,130,246,.5);}
-  .kg-node.small{width:4px;height:4px;opacity:.18;}
-  .kg-edge{position:absolute;height:1px;transform-origin:left center;background:linear-gradient(90deg,rgba(49,130,246,0),rgba(49,130,246,.26),rgba(22,224,163,.18),rgba(49,130,246,0));opacity:.26;animation:kgPulse linear infinite;}
-  @keyframes kgDrift{0%{transform:translate3d(0,22px,0);opacity:.08;}22%{opacity:.24;}76%{opacity:.18;}100%{transform:translate3d(0,-28px,0);opacity:.06;}}
-  @keyframes kgPulse{0%{opacity:.05;filter:blur(0);}35%{opacity:.28;}70%{opacity:.16;}100%{opacity:.05;filter:blur(.2px);}}
-  @media(prefers-reduced-motion:reduce){.kg-node,.kg-edge{animation:none;opacity:.16;}}
+  .ptc-field{position:fixed;inset:56px 0 0;z-index:0;pointer-events:none;overflow:hidden;background:
+    linear-gradient(90deg,rgba(49,130,246,.035) 1px,transparent 1px),
+    linear-gradient(0deg,rgba(22,224,163,.026) 1px,transparent 1px);
+    background-size:92px 92px,92px 92px;}
+  .ptc-field::before{content:"";position:absolute;inset:0;opacity:.44;background-repeat:repeat-y;background-size:100% 180px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 180' preserveAspectRatio='none'%3E%3Cpath d='M0 104 H120 L135 104 L148 52 L160 142 L173 84 L186 104 H365 L382 104 L394 62 L407 130 L420 92 L433 104 H900' fill='none' stroke='%2316e0a3' stroke-width='2.6' stroke-linecap='round'/%3E%3Cpath d='M0 130 H210 L224 130 L235 98 L246 150 L258 120 L270 130 H900' fill='none' stroke='%233182f6' stroke-width='1.6' stroke-linecap='round' opacity='.48'/%3E%3C/svg%3E");animation:ecgSlide 8.5s linear infinite;}
+  .ptc-field::after{content:"";position:absolute;top:0;bottom:0;width:180px;left:-190px;background:linear-gradient(90deg,transparent,rgba(49,130,246,.09),rgba(22,224,163,.11),transparent);animation:dataScan 5.2s linear infinite;}
+  .med-node{position:absolute;width:8px;height:8px;border:1px solid rgba(49,130,246,.38);background:rgba(255,255,255,.56);box-shadow:0 0 14px rgba(49,130,246,.22);opacity:.55;animation:medFloat linear infinite;}
+  .med-node.plus{width:14px;height:14px;border:0;background:transparent;box-shadow:none;}
+  .med-node.plus::before,.med-node.plus::after{content:"";position:absolute;background:rgba(22,224,163,.5);left:6px;top:1px;width:2px;height:12px;border-radius:2px;}
+  .med-node.plus::after{transform:rotate(90deg);}
+  .med-node.dot{border-radius:50%;background:rgba(22,224,163,.36);border-color:rgba(22,224,163,.52);}
+  .med-chip{position:absolute;min-width:34px;height:18px;padding:1px 7px;border:1px solid rgba(49,130,246,.2);border-radius:5px;background:rgba(255,255,255,.58);color:rgba(49,130,246,.58);font-size:10px;font-weight:700;letter-spacing:0;text-align:center;line-height:15px;box-shadow:0 8px 26px rgba(25,31,40,.05);animation:medFloat linear infinite;}
+  .med-link{position:absolute;height:1px;transform-origin:left center;background:linear-gradient(90deg,transparent,rgba(49,130,246,.28),rgba(22,224,163,.26),transparent);opacity:.42;animation:linkBlink linear infinite;}
+  @keyframes ecgSlide{0%{transform:translate3d(-90px,0,0);opacity:.18;}18%{opacity:.54;}100%{transform:translate3d(90px,-180px,0);opacity:.24;}}
+  @keyframes dataScan{0%{left:-190px;}100%{left:100%;}}
+  @keyframes medFloat{0%{transform:translate3d(0,18px,0) scale(.96);opacity:.18;}18%{opacity:.62;}72%{opacity:.46;}100%{transform:translate3d(18px,-34px,0) scale(1.04);opacity:.16;}}
+  @keyframes linkBlink{0%,100%{opacity:.13;}35%{opacity:.48;}66%{opacity:.28;}}
+  @media(prefers-reduced-motion:reduce){.ptc-field::before,.ptc-field::after,.med-node,.med-chip,.med-link{animation:none;opacity:.22;}}
   nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;}
   .nav-logo{font-size:13px;font-weight:700;letter-spacing:.04em;color:var(--accent);}
   .nav-brand{display:flex;align-items:center;gap:10px;}
@@ -1095,34 +1105,47 @@ function spawnParticles(){
   var field=document.getElementById('ptc-field');
   if(!field)return;
   field.innerHTML='';
-  var nodes=[
-    {x:10,y:18,c:'blue'},{x:24,y:31,c:''},{x:39,y:22,c:'small'},{x:58,y:35,c:'blue small'},{x:74,y:21,c:''},{x:88,y:40,c:'blue'},
-    {x:16,y:62,c:''},{x:31,y:73,c:'blue small'},{x:49,y:64,c:''},{x:66,y:76,c:'small'},{x:83,y:65,c:'blue small'},
-    {x:22,y:88,c:'small'},{x:55,y:91,c:'blue'},{x:78,y:87,c:''}
+  var points=[
+    {x:8,y:18,c:'plus'},{x:19,y:30,c:'dot'},{x:34,y:22,c:''},{x:50,y:35,c:'plus'},{x:66,y:20,c:'dot'},{x:86,y:36,c:''},
+    {x:13,y:58,c:''},{x:28,y:70,c:'plus'},{x:43,y:62,c:'dot'},{x:61,y:75,c:''},{x:80,y:64,c:'plus'},
+    {x:18,y:88,c:'dot'},{x:48,y:90,c:''},{x:73,y:86,c:'dot'}
   ];
-  var edges=[[0,1],[1,2],[2,3],[3,4],[4,5],[6,7],[7,8],[8,9],[9,10],[11,12],[12,13],[1,7],[3,8],[5,10]];
-  edges.forEach(function(pair,i){
-    var a=nodes[pair[0]],b=nodes[pair[1]];
+  var links=[[0,1],[1,2],[2,3],[3,4],[4,5],[6,7],[7,8],[8,9],[9,10],[11,12],[12,13],[1,7],[3,8],[5,10]];
+  var chips=[
+    {x:6,y:42,t:'EHR'},{x:22,y:14,t:'01'},{x:39,y:82,t:'DB'},{x:58,y:51,t:'SEO'},{x:77,y:25,t:'RX'},{x:86,y:78,t:'AI'}
+  ];
+  links.forEach(function(pair,i){
+    var a=points[pair[0]],b=points[pair[1]];
     var dx=b.x-a.x,dy=b.y-a.y;
     var len=Math.sqrt(dx*dx+dy*dy);
-    var edge=document.createElement('span');
-    edge.className='kg-edge';
-    edge.style.left=a.x+'vw';
-    edge.style.top=a.y+'%';
-    edge.style.width=len+'vw';
-    edge.style.transform='rotate('+Math.atan2(dy,dx)+'rad)';
-    edge.style.animationDuration=(9+(i%5)*2)+'s';
-    edge.style.animationDelay=(-i*0.7)+'s';
-    field.appendChild(edge);
+    var link=document.createElement('span');
+    link.className='med-link';
+    link.style.left=a.x+'vw';
+    link.style.top=a.y+'%';
+    link.style.width=len+'vw';
+    link.style.transform='rotate('+Math.atan2(dy,dx)+'rad)';
+    link.style.animationDuration=(4.8+(i%4)*.75)+'s';
+    link.style.animationDelay=(-i*.34)+'s';
+    field.appendChild(link);
   });
-  nodes.forEach(function(n,i){
+  points.forEach(function(p,i){
     var node=document.createElement('span');
-    node.className='kg-node '+n.c;
-    node.style.left=n.x+'vw';
-    node.style.top=n.y+'%';
-    node.style.animationDuration=(12+(i%6)*1.8)+'s';
-    node.style.animationDelay=(-i*0.45)+'s';
+    node.className='med-node '+p.c;
+    node.style.left=p.x+'vw';
+    node.style.top=p.y+'%';
+    node.style.animationDuration=(6.4+(i%5)*.65)+'s';
+    node.style.animationDelay=(-i*.38)+'s';
     field.appendChild(node);
+  });
+  chips.forEach(function(c,i){
+    var chip=document.createElement('span');
+    chip.className='med-chip';
+    chip.textContent=c.t;
+    chip.style.left=c.x+'vw';
+    chip.style.top=c.y+'%';
+    chip.style.animationDuration=(7.2+(i%3)*.8)+'s';
+    chip.style.animationDelay=(-i*.55)+'s';
+    field.appendChild(chip);
   });
 }
 if(document.readyState!=='loading')spawnParticles();
@@ -1177,6 +1200,37 @@ function findInText(text,items,nameKey){
   });
   return found;
 }
+function canonicalProductKey(product){
+  if(!product)return '';
+  var name=product.name||'';
+  var en=product.en||'';
+  if(name.indexOf('도수치료')>=0||en.indexOf('manual therapy')>=0)return '도수치료';
+  return name;
+}
+function canonicalProduct(product){
+  if(canonicalProductKey(product)!=='도수치료')return product;
+  return Object.assign({},product,{
+    id:'cp-manual-therapy',
+    type:'공통',
+    cat:'통증/재활',
+    name:'도수치료',
+    en:'manual therapy',
+    match:'도수치료,거북목,일자목,목통증,허리통증,어깨통증,교통사고후유증,수술 후 재활,스포츠 재활,자세교정',
+    note:'【공통 정의】 도수치료는 전문 치료사가 손을 이용해 관절 가동범위, 근육·근막 긴장, 자세와 움직임 패턴을 평가하고 조절하는 비수술·비약물 치료입니다. 과목별로 완전히 다른 치료가 아니라, 진단과 치료 흐름에 따라 원고에서 강조점이 달라지는 항목으로 보는 편이 안전합니다. 【원고 포인트】 “손으로 디스크를 교정한다”, “완치된다”처럼 과장하기보다, 통증 조절 이후 움직임 회복·기능 회복을 돕는 보존 치료로 설명하세요. 비용·횟수·2026년 관리급여 이슈는 최신 고시 확인을 전제로 안내하는 것이 안전합니다.',
+    src:'claude'
+  });
+}
+function dedupeProductsForDisplay(products){
+  var out=[];var seen={};
+  products.forEach(function(p){
+    var key=canonicalProductKey(p);
+    if(!key)return;
+    if(seen[key])return;
+    seen[key]=true;
+    out.push(canonicalProduct(p));
+  });
+  return out;
+}
 function inferBriefTypes(text){
   var map=[
     {type:'정형외과',keys:['정형외과','정형','관절','스포츠']},
@@ -1213,7 +1267,7 @@ function findRelatedProducts(raw,products,foundDis,foundProd){
     });
   });
   // 과목 단서가 너무 좁아 연결 상품이 0개가 되면, 질환 match 기준 상품을 fallback으로 보여준다.
-  if(foundDis.length&&out.length===foundProd.length){
+  if(foundDis.length&&foundProd.length===0&&out.length===0){
     foundDis.forEach(function(d){
       products.forEach(function(p){
         if(productMatchesDisease(p,d)&&!out.some(function(x){return x.id===p.id;}))out.push(p);
@@ -1233,8 +1287,10 @@ function parseBrief(){
   var products=getAllProducts();
   var foundDis=findInText(raw,diseases,'name');
   var directProd=findInText(raw,products,'name');
+  var directProductKeys=dedupeProductsForDisplay(directProd).map(function(p){return canonicalProductKey(p);});
+  foundDis=foundDis.filter(function(d){return directProductKeys.indexOf(d.name)<0;});
   var related=findRelatedProducts(raw,products,foundDis,directProd);
-  var foundProd=related.items;
+  var foundProd=dedupeProductsForDisplay(related.items);
   var inferredTypes=related.inferredTypes;
 
   // 파싱 칩 표시
