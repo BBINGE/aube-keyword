@@ -1154,6 +1154,8 @@ function canonicalProductKey(product){
   if(!product)return '';
   var name=product.name||'';
   var en=product.en||'';
+  var baseName=name.replace(/\s*\([^)]*\)/g,'').trim();
+  if(baseName==='선택적 신경근 차단술'||name.indexOf('SNRB')>=0||en.toLowerCase().indexOf('selective nerve root block')>=0)return '선택적 신경근 차단술';
   if(name.indexOf('도수치료')>=0||en.indexOf('manual therapy')>=0)return '도수치료';
   if(name.indexOf('체외충격파')>=0||en.toLowerCase().indexOf('eswt')>=0)return '체외충격파치료';
   if(name.indexOf('프롤로')>=0||name.indexOf('인대강화')>=0||en.toLowerCase().indexOf('prolotherapy')>=0)return '프롤로주사';
