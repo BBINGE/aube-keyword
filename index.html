@@ -2,21 +2,24 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%233182f6'/%3E%3Cg fill='%23fff'%3E%3Crect x='28' y='42' width='13' height='30'/%3E%3Crect x='28' y='28' width='44' height='13'/%3E%3Crect x='59' y='28' width='13' height='44'/%3E%3C/g%3E%3C/svg%3E">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAAC5UlEQVR4nO1UzYsURxT//aqqe7pnxpkgmw8U9yB4UkiE3bAJGph8GV2E3HLxEPBjD0IOOQlecoiBQK45BPYPEHIJ5JbklkvE3BKVHDSyxLjq7g474/b0dFe956FndmdjDoHgQZiioLp/9d77vY96j6uLs3iWyzxT61OCKcGUAADgRicJEjqGCej4Z/uDrC7+XfJpUHWCoCw0+JF+JWPsSC2KoQoQ3kM8QJUw6WMl+U+QBnFtTCDCVw6YdA9VtHKE1GEGAMVQNx7AOgTP9l422+pLU2+yooQqiTxTVZs2MAkOc1ldAelgrGb91oXPkjdPApUEAAx/vwYg3L7R++oT++K+0Nuon/44OXUm3F9JF97fLfmL5oNkrjMZQXH7t+7FE4xiB0BFTKOV//x9f/lzu/cl2VxP3vsofv0dZH1uayggwaSN7pcXH1fOWifdtca5y+kbH6wtdfqNFlTGSSaCp4ug6kZlNFa7j/yN6/ry/rC2Gh1ZoDG6Xd6qbqSWRXz0rWj2EFRgnW71o4OHZfA4nu9EBw5BAmigCjJ0H+Y/fktj3I4JF7HeZNpgvcm4Nlmv8TYIPp7rJHMdFU9j1ZemPeNX/ojn302OHlfxpFFVGFP+eTP/4SpoxwQSEAJEJnaAiPpC80zzTAeZ5hlrSe+LpV6lYl1Y77U+vdJYPLN29ljPOkxGbJ3d88JOithssz5+BqqIE7ZnpL9Z//B8NP824xrKws7s8+v3W5e+rr12HMHDWhRDu/+gf/BX+/I3tVePIXgYA1FYW9691buyRBc5qDBJs++WZXOD9YaGkkla3ry+dbWQzfXy1q/bUaqIv3eHNMgHo3QDeu0nf+8OrcMggwhIqMKY8OhvkAC4ujgLUrf6MJZpHSqg0WKIIoexWhYTnQy6GFAti52WJOliqKovdvWpdWy2x42mymYbUIhUKWJcQy0FlNw9rFQrm/8JlICdUbG70aEKrRDB/1vP/7ieEkwJngOCJ6VmdPAnQLxdAAAAAElFTkSuQmCC">
 <title>AUBE KOREA — 병의원 키워드 생성기</title>
 <style>
   :root {
-    --bg:#f9f9f7;--surface:#fff;--surface2:#f4f4f2;
-    --border:#e8e8e4;--border2:#d4d4ce;
-    --text:#1a1a18;--text2:#6b6b67;--text3:#a0a09c;
-    --accent:#e84b1d;--accent-bg:#fdf1ed;--accent-border:#f5b8a4;
+    --bg:#f7f9fc;--surface:#fff;--surface2:#f1f4f8;
+    --border:#e6eaf0;--border2:#d0d7e2;
+    --text:#191f28;--text2:#5a6573;--text3:#9aa3b0;
+    --accent:#3182f6;--accent-bg:#eaf2fe;--accent-border:#a8caf9;
     --amber:#7a5a1a;--amber-bg:#fef8ed;--amber-border:#f0d080;
     --red:#8a2020;--red-bg:#fdf0f0;--red-border:#f0a8a8;
     --radius:10px;--radius-sm:6px;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:-apple-system,'Pretendard','Apple SD Gothic Neo',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;}
+  body{font-family:-apple-system,'Pretendard','Apple SD Gothic Neo',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;position:relative;}
+  body::after{content:"";position:fixed;right:-60px;bottom:-40px;width:420px;height:160px;z-index:0;pointer-events:none;opacity:0.04;background-repeat:no-repeat;background-position:right bottom;background-size:contain;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 636 148' fill='%233182f6'%3E%3Crect x='0' y='36' width='28' height='112'/%3E%3Crect x='0' y='0' width='156' height='28'/%3E%3Crect x='128' y='0' width='28' height='148'/%3E%3Crect x='172' y='0' width='28' height='148'/%3E%3Crect x='172' y='120' width='156' height='28'/%3E%3Crect x='300' y='0' width='28' height='148'/%3E%3Crect x='344' y='0' width='156' height='28'/%3E%3Crect x='344' y='60' width='156' height='28'/%3E%3Crect x='344' y='120' width='156' height='28'/%3E%3Crect x='472' y='0' width='28' height='148'/%3E%3Crect x='516' y='0' width='120' height='28'/%3E%3Crect x='516' y='60' width='120' height='28'/%3E%3Crect x='516' y='120' width='120' height='28'/%3E%3C/svg%3E");}
+  .wrap,nav{position:relative;z-index:1;}
   nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;}
   .nav-logo{font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--accent);}
   .nav-logo-sub{font-size:10px;color:var(--text3);letter-spacing:.05em;margin-top:1px;}
@@ -92,9 +95,10 @@
   .login-title{font-size:18px;font-weight:700;margin-bottom:6px;}
   .login-sub{font-size:13px;color:var(--text2);margin-bottom:24px;}
   .empty{text-align:center;padding:40px;color:var(--text3);font-size:13px;}
-  .page-header{margin-bottom:28px;}
-  .page-header h1{font-size:22px;font-weight:700;letter-spacing:-.02em;}
-  .page-header p{font-size:13px;color:var(--text2);margin-top:4px;}
+  .page-header{margin-bottom:28px;position:relative;padding:18px 22px;border-radius:var(--radius);background:var(--surface2);overflow:hidden;}
+  .page-header::before{content:"";position:absolute;right:16px;top:50%;transform:translateY(-50%);width:200px;height:46px;opacity:0.06;background-repeat:no-repeat;background-position:right center;background-size:contain;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 636 148' fill='%233182f6'%3E%3Crect x='0' y='36' width='28' height='112'/%3E%3Crect x='0' y='0' width='156' height='28'/%3E%3Crect x='128' y='0' width='28' height='148'/%3E%3Crect x='172' y='0' width='28' height='148'/%3E%3Crect x='172' y='120' width='156' height='28'/%3E%3Crect x='300' y='0' width='28' height='148'/%3E%3Crect x='344' y='0' width='156' height='28'/%3E%3Crect x='344' y='60' width='156' height='28'/%3E%3Crect x='344' y='120' width='156' height='28'/%3E%3Crect x='472' y='0' width='28' height='148'/%3E%3Crect x='516' y='0' width='120' height='28'/%3E%3Crect x='516' y='60' width='120' height='28'/%3E%3Crect x='516' y='120' width='120' height='28'/%3E%3C/svg%3E");}
+  .page-header h1{font-size:22px;font-weight:700;letter-spacing:-.02em;position:relative;}
+  .page-header p{font-size:13px;color:var(--text2);margin-top:4px;position:relative;}
   .tab-row{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:20px;}
   .tab{padding:8px 16px;font-size:13px;color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .12s;}
   .tab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600;}
