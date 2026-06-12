@@ -283,9 +283,9 @@
   </div>
 
   <div class="brief-input-card">
-    <div class="card-title">키워드 조합 입력 — 키워드 생성에서 복사한 문장을 붙여넣으세요</div>
+    <div class="card-title">원고 주제 입력 — 키워드 조합을 붙여넣거나 제목을 직접 입력하세요</div>
     <div class="brief-input-row">
-      <textarea id="brief-input" placeholder="예: 신정역 정형외과 디스크내장증 경피적 경막외강 신경성형술 (신경성형술)"></textarea>
+      <textarea id="brief-input" placeholder="예: 상도동 정형외과 테니스엘보 야간진료 잘하는 곳"></textarea>
       <button class="btn btn-accent" onclick="parseBrief()">근거 자료 불러오기</button>
     </div>
     <div class="parsed-chips" id="brief-parsed"></div>
@@ -1147,17 +1147,76 @@ function parseNoteBlocks(note){
 }
 
 // 입력 문장에서 DB의 질환·시술명을 길이 내림차순으로 탐색 (긴 이름 우선 매칭)
+function normalizeBriefText(text){
+  return (text||'').toLowerCase().replace(/[()\[\]{}·ㆍ,./\\|+_-]/g,' ').replace(/\s+/g,' ').trim();
+}
+function briefNameVariants(name){
+  var out=[];var nm=name||'';
+  out.push(nm);
+  out.push(nm.split('(')[0].trim());
+  out.push(nm.replace(/\s*\([^)]*\)/g,'').trim());
+  out.push(nm.replace(/[\s·ㆍ]/g,'').trim());
+  return out.filter(function(x,i,a){return x&&a.indexOf(x)===i;});
+}
+function briefTextHas(text,name){
+  var raw=text||'';var compact=raw.replace(/[\s·ㆍ,./\\|+_-]/g,'');
+  return briefNameVariants(name).some(function(v){
+    return raw.indexOf(v)>=0||normalizeBriefText(raw).indexOf(normalizeBriefText(v))>=0||compact.indexOf(v.replace(/[\s·ㆍ,./\\|+_-]/g,''))>=0;
+  });
+}
 function findInText(text,items,nameKey){
-  var found=[];var sorted=items.slice().sort(function(a,b){return b[nameKey].length-a[nameKey].length;});
+  var found=[];var sorted=items.slice().sort(function(a,b){return (b[nameKey]||'').length-(a[nameKey]||'').length;});
   sorted.forEach(function(it){
-    var nm=it[nameKey];
-    // 괄호 앞 핵심 명칭도 매칭 시도 (예: "침치료 (Acupuncture)" → "침치료")
-    var core=nm.split('(')[0].trim();
-    if((text.indexOf(nm)>=0||text.indexOf(core)>=0)&&!found.some(function(f){return f.id===it.id;})){
+    if(briefTextHas(text,it[nameKey])&&!found.some(function(f){return f.id===it.id;})){
       found.push(it);
     }
   });
   return found;
+}
+function inferBriefTypes(text){
+  var map=[
+    {type:'정형외과',keys:['정형외과','정형','관절','스포츠']},
+    {type:'신경외과',keys:['신경외과','신경','척추']},
+    {type:'통증의학과',keys:['통증의학과','마취통증','통증클리닉']},
+    {type:'재활의학과',keys:['재활의학과','재활']},
+    {type:'한의원',keys:['한의원','한방','한약','침','추나']},
+    {type:'한방병원',keys:['한방병원']},
+    {type:'치과',keys:['치과']},
+    {type:'피부과',keys:['피부과']},
+    {type:'내과',keys:['내과']},
+    {type:'이비인후과',keys:['이비인후과','이비인후','ENT']},
+    {type:'안과',keys:['안과']},
+    {type:'산부인과',keys:['산부인과','여성의원']},
+    {type:'비뇨기과',keys:['비뇨기과','비뇨의학과']},
+    {type:'성형외과',keys:['성형외과']},
+    {type:'요양병원',keys:['요양병원']}
+  ];
+  return map.filter(function(row){return row.keys.some(function(k){return text.indexOf(k)>=0;});}).map(function(row){return row.type;});
+}
+function productMatchesDisease(product,disease){
+  if(!product||!disease)return false;
+  var match=product.match||'';
+  return briefTextHas(match,disease.name)||briefNameVariants(disease.name).some(function(v){return match.indexOf(v)>=0;});
+}
+function findRelatedProducts(raw,products,foundDis,foundProd){
+  var out=foundProd.slice();
+  var inferredTypes=inferBriefTypes(raw);
+  foundDis.forEach(function(d){
+    products.forEach(function(p){
+      if(!productMatchesDisease(p,d))return;
+      if(inferredTypes.length&&inferredTypes.indexOf(p.type)<0)return;
+      if(!out.some(function(x){return x.id===p.id;}))out.push(p);
+    });
+  });
+  // 과목 단서가 너무 좁아 연결 상품이 0개가 되면, 질환 match 기준 상품을 fallback으로 보여준다.
+  if(foundDis.length&&out.length===foundProd.length){
+    foundDis.forEach(function(d){
+      products.forEach(function(p){
+        if(productMatchesDisease(p,d)&&!out.some(function(x){return x.id===p.id;}))out.push(p);
+      });
+    });
+  }
+  return {items:out,inferredTypes:inferredTypes};
 }
 
 function parseBrief(){
@@ -1169,19 +1228,23 @@ function parseBrief(){
   var diseases=getAllDiseases();
   var products=getAllProducts();
   var foundDis=findInText(raw,diseases,'name');
-  var foundProd=findInText(raw,products,'name');
+  var directProd=findInText(raw,products,'name');
+  var related=findRelatedProducts(raw,products,foundDis,directProd);
+  var foundProd=related.items;
+  var inferredTypes=related.inferredTypes;
 
   // 파싱 칩 표시
   var chips='';
+  if(inferredTypes.length){inferredTypes.forEach(function(t){chips+='<span class="parsed-chip hit">과목 <b>'+esc(t)+'</b></span>';});}
   if(foundDis.length){foundDis.forEach(function(d){chips+='<span class="parsed-chip hit">질환 <b>'+esc(d.name)+'</b></span>';});}
-  if(foundProd.length){foundProd.forEach(function(p){chips+='<span class="parsed-chip hit">시술 <b>'+esc(p.name)+'</b></span>';});}
+  if(foundProd.length){foundProd.forEach(function(p){chips+='<span class="parsed-chip hit">연결 시술 <b>'+esc(p.name)+'</b></span>';});}
   if(!foundDis.length&&!foundProd.length){chips='<span class="parsed-chip miss">DB에서 일치하는 질환·시술을 찾지 못했습니다</span>';}
   parsedEl.innerHTML=chips;
 
   // 결과 카드
   var html='';
   if(!foundDis.length&&!foundProd.length){
-    html='<div class="empty">입력 문장에서 DB에 등록된 질환·시술명을 찾지 못했습니다.<br>키워드 생성 탭에서 만든 조합을 그대로 붙여넣었는지 확인하거나, 관리자 DB에 해당 항목이 있는지 확인하세요.</div>';
+    html='<div class="empty">입력 문장에서 DB에 등록된 질환·시술명을 찾지 못했습니다.<br>질환명·시술명 일부를 더 구체적으로 입력하거나, 관리자 DB에 해당 항목이 있는지 확인하세요.</div>';
     resultEl.innerHTML=html;return;
   }
 
