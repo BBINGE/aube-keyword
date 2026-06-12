@@ -21,7 +21,7 @@
   body::after{content:"";position:fixed;right:-60px;bottom:-40px;width:420px;height:160px;z-index:0;pointer-events:none;opacity:0.04;background-repeat:no-repeat;background-position:right bottom;background-size:contain;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 636 148' fill='%233182f6'%3E%3Crect x='0' y='36' width='28' height='112'/%3E%3Crect x='0' y='0' width='156' height='28'/%3E%3Crect x='128' y='0' width='28' height='148'/%3E%3Crect x='172' y='0' width='28' height='148'/%3E%3Crect x='172' y='120' width='156' height='28'/%3E%3Crect x='300' y='0' width='28' height='148'/%3E%3Crect x='344' y='0' width='156' height='28'/%3E%3Crect x='344' y='60' width='156' height='28'/%3E%3Crect x='344' y='120' width='156' height='28'/%3E%3Crect x='472' y='0' width='28' height='148'/%3E%3Crect x='516' y='0' width='120' height='28'/%3E%3Crect x='516' y='60' width='120' height='28'/%3E%3Crect x='516' y='120' width='120' height='28'/%3E%3C/svg%3E");}
   nav{position:relative;z-index:2;}
   .page{position:relative;z-index:1;}
-  .ecg-side{position:fixed;top:56px;bottom:0;width:90px;z-index:0;pointer-events:none;overflow:hidden;display:none;opacity:0.10;}
+  .ecg-side{position:fixed;top:56px;bottom:0;width:90px;z-index:0;pointer-events:none;overflow:hidden;display:none;opacity:0.14;}
   .ecg-side.left{left:0;}
   .ecg-side.right{right:0;}
   .ecg-side svg{position:absolute;inset:0;width:100%;height:100%;}
@@ -105,10 +105,14 @@
   .login-title{font-size:18px;font-weight:700;margin-bottom:6px;}
   .login-sub{font-size:13px;color:var(--text2);margin-bottom:24px;}
   .empty{text-align:center;padding:40px;color:var(--text3);font-size:13px;}
-  .page-header{margin-bottom:28px;position:relative;padding:18px 22px;border-radius:var(--radius);background:var(--surface2);overflow:hidden;}
-  .page-header::before{content:"";position:absolute;right:16px;top:50%;transform:translateY(-50%);width:200px;height:46px;opacity:0.06;background-repeat:no-repeat;background-position:right center;background-size:contain;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 636 148' fill='%233182f6'%3E%3Crect x='0' y='36' width='28' height='112'/%3E%3Crect x='0' y='0' width='156' height='28'/%3E%3Crect x='128' y='0' width='28' height='148'/%3E%3Crect x='172' y='0' width='28' height='148'/%3E%3Crect x='172' y='120' width='156' height='28'/%3E%3Crect x='300' y='0' width='28' height='148'/%3E%3Crect x='344' y='0' width='156' height='28'/%3E%3Crect x='344' y='60' width='156' height='28'/%3E%3Crect x='344' y='120' width='156' height='28'/%3E%3Crect x='472' y='0' width='28' height='148'/%3E%3Crect x='516' y='0' width='120' height='28'/%3E%3Crect x='516' y='60' width='120' height='28'/%3E%3Crect x='516' y='120' width='120' height='28'/%3E%3C/svg%3E");}
-  .page-header h1{font-size:22px;font-weight:700;letter-spacing:-.02em;position:relative;}
-  .page-header p{font-size:13px;color:var(--text2);margin-top:4px;position:relative;}
+  .page-header{margin-bottom:28px;position:relative;padding:30px 28px;border-radius:14px;background:#0c1929;overflow:hidden;}
+  .page-header::before{content:"";position:absolute;inset:0;opacity:0.45;background-repeat:no-repeat;background-position:center;background-size:100% 100%;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 120' preserveAspectRatio='none'%3E%3Cpath d='M0 70 H180 L195 70 L208 30 L220 95 L233 55 L246 70 H360 L375 70 L388 35 L400 90 L413 60 L426 70 H600' fill='none' stroke='%2316e0a3' stroke-width='2.5'/%3E%3C/svg%3E");}
+  .page-header .hero-eyebrow{position:relative;font-size:11px;letter-spacing:.15em;color:#16e0a3;font-weight:700;text-transform:uppercase;margin-bottom:8px;}
+  .page-header h1{font-size:28px;font-weight:700;letter-spacing:-.02em;position:relative;color:#fff;}
+  .page-header p{font-size:13px;color:#8a9bb0;margin-top:6px;position:relative;}
+  .page-header::after{content:"";position:absolute;top:0;bottom:0;width:120px;left:-120px;z-index:0;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(22,224,163,0.18),transparent);animation:scanX 4s linear infinite;}
+  @keyframes scanX{0%{left:-120px;}100%{left:100%;}}
+  @media(prefers-reduced-motion:reduce){.page-header::after{animation:none;display:none;}}
   .tab-row{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:20px;}
   .tab{padding:8px 16px;font-size:13px;color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .12s;}
   .tab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600;}
@@ -201,8 +205,8 @@
   <div class="nav-right">오늘의브랜딩 기획부 제작 및 문의<br><strong>박성호 기획팀장</strong></div>
 </nav>
 
-<div class="ecg-side left" aria-hidden="true"><svg viewBox="0 0 90 800" preserveAspectRatio="none"><path class="ecg-path" d="M48 -40 V60 L36 74 L60 50 L48 96 L48 200 L34 214 L62 188 L48 250 V360 L36 374 L60 350 L48 396 L48 500 L34 514 L62 488 L48 550 V660 L36 674 L60 650 L48 696 V840" fill="none" stroke="#3182f6" stroke-width="2.5" stroke-linejoin="round"/></svg></div>
-<div class="ecg-side right" aria-hidden="true"><svg viewBox="0 0 90 800" preserveAspectRatio="none"><path class="ecg-path" d="M42 -40 V100 L30 114 L54 90 L42 136 L42 240 L28 254 L56 228 L42 290 V400 L30 414 L54 390 L42 436 L42 540 L28 554 L56 528 L42 590 V700 L30 714 L54 690 L42 736 V840" fill="none" stroke="#3182f6" stroke-width="2.5" stroke-linejoin="round"/></svg></div>
+<div class="ecg-side left" aria-hidden="true"><svg viewBox="0 0 90 800" preserveAspectRatio="none"><path class="ecg-path" d="M48 -40 V60 L36 74 L60 50 L48 96 L48 200 L34 214 L62 188 L48 250 V360 L36 374 L60 350 L48 396 L48 500 L34 514 L62 488 L48 550 V660 L36 674 L60 650 L48 696 V840" fill="none" stroke="#16e0a3" stroke-width="2.5" stroke-linejoin="round"/></svg></div>
+<div class="ecg-side right" aria-hidden="true"><svg viewBox="0 0 90 800" preserveAspectRatio="none"><path class="ecg-path" d="M42 -40 V100 L30 114 L54 90 L42 136 L42 240 L28 254 L56 228 L42 290 V400 L30 414 L54 390 L42 436 L42 540 L28 554 L56 528 L42 590 V700 L30 714 L54 690 L42 736 V840" fill="none" stroke="#16e0a3" stroke-width="2.5" stroke-linejoin="round"/></svg></div>
 
 <div id="sync-status" style="display:none;background:var(--accent);color:#fff;font-size:12px;text-align:center;padding:6px;position:sticky;top:56px;z-index:99">구글 시트 동기화 중...</div>
 
@@ -245,8 +249,9 @@
 <!-- 정론지 -->
 <div class="page" id="page-brief">
   <div class="page-header">
+    <div class="hero-eyebrow">AUBE Medical Intelligence</div>
     <h1>정론지</h1>
-    <p>키워드 조합을 붙여넣으면 검증 DB 기반 원고 정론과 인용 출처를 펼칩니다.</p>
+    <p>검증된 의학 정설로 원고의 신뢰를 설계합니다</p>
   </div>
 
   <div class="brief-disclaimer brief-disclaimer-mini">
