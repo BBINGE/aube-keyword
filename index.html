@@ -583,11 +583,51 @@ function initSync(){
     syncFromSheet(k,function(){
       done++;
       if(done===keys.length){
+        seedDefaultClients();
         hideSyncStatus();
         renderClientList();
       }
     });
   });
+}
+
+// ===== 기본 클라이언트 시드 =====
+// 시트·로컬 어디에도 클라이언트가 없을 때만 1회 심는다.
+// 이미 등록된 데이터가 있으면 절대 덮어쓰지 않는다.
+// id는 9000번대로 띄워 시트에서 오는 숫자 id와 충돌을 피한다.
+var DEFAULT_CLIENTS=[
+  {
+    id:9001,name:'동탄신경외과의원',city:'동탄',type:'신경외과',
+    note:'목·허리 척추 전문. 일반 정형외과와 차별화(척추 제대로 보는 정형외과 드묾). 두통은 경추성 접근(대후두·소후두신경차단술, 경추 MBB). C-arm만 보유.',
+    exclude:['보톡스','고주파 신경차단술','고주파','신경성형술','경피적 경막외강 신경성형술','풍선확장술','신경 감압술','B-PEN','L-PEN','C-PEN','PEN'],
+    surg:false,equip:false,fixedDepts:['신경외과'],rgGroups:[]
+  },
+  {
+    id:9002,name:'로코모재활의학과의원',city:'동탄',type:'재활의학과',
+    note:'마운자로(티르제파타이드) 다이어트 이벤트 운영(2.5mg 32만/5mg 43만/7.5mg 57만, 각 4회). 콘텐츠는 주사치료·신경치료·PRP·관절주사·체외충격파·물리치료 비중 확대, 도수치료 비중 축소(완전 제외 아님 — 관리급여 이슈). C-arm·초음파 보유.',
+    exclude:[],
+    surg:false,equip:false,fixedDepts:[],rgGroups:[]
+  },
+  {
+    id:9003,name:'자연방한의원',city:'',type:'한의원',
+    note:'통증은 침, 다이어트·소아성장은 한약 중심. 기승전 한약 선호. 순수 침+한약 운영(추나·봉침·약침 미시행). 지역은 관리자에서 직접 입력 필요.',
+    exclude:['추나요법','추나','봉침','봉독약침','약침'],
+    surg:false,equip:false,fixedDepts:[],rgGroups:[]
+  }
+];
+function seedDefaultClients(){
+  var existing=load(KEY_CLIENTS,[]);
+  if(existing && existing.length) return; // 이미 데이터 있으면 시드 안 함
+  // 한 번 시드했다는 표식 (사용자가 전부 삭제한 경우 재생성 방지)
+  if(localStorage.getItem('aube_seeded_v1')==='1') return;
+  var seeded=JSON.parse(JSON.stringify(DEFAULT_CLIENTS));
+  _cache[KEY_CLIENTS]=seeded;
+  localStorage.setItem('aube_'+KEY_CLIENTS,JSON.stringify(seeded));
+  localStorage.setItem('aube_seeded_v1','1');
+  // 시트에도 1회 업로드 (각 클라이언트를 save 흐름으로 영구 보존)
+  try{
+    fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'write',sheet:KEY_CLIENTS,data:seeded})}).catch(function(e){console.warn('시드 시트 업로드 실패:',e);});
+  }catch(e){console.warn('시드 업로드 예외:',e);}
 }
 function showSyncStatus(msg){
   var el=document.getElementById('sync-status');
