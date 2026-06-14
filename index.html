@@ -1036,41 +1036,42 @@ var SOURCE_WHITELIST=[
   {tier:1,name:'질병관리청 (KDCA)',domain:'kdca.go.kr',hint:'질환 통계·예방·표준 정보',base:'https://www.kdca.go.kr',guide:'질환의 유병률·통계 수치가 필요할 때 사용하세요. 공신력 있는 숫자는 원고 도입부 근거로 좋습니다.'},
   // Tier 2 — 임상 권위 (전문학회·표준 정설)
   {tier:2,name:'대한의학회 / 임상진료지침정보센터',domain:'guideline.or.kr',hint:'전문학회 진료지침 표준',base:'https://www.guideline.or.kr',guide:'학회가 공인한 진료지침이 가장 신뢰도 높습니다. 지침에 적힌 표준 치료 순서를 원고 골격으로 삼으세요.'},
-  {tier:1,name:'PubMed (NIH)',domain:'pubmed.ncbi.nlm.nih.gov',hint:'국제 의학논문 검색 관문 — 논문 유형별 검토 필요',base:'https://pubmed.ncbi.nlm.nih.gov',guide:'PubMed는 신뢰도 높은 의학논문 검색 관문이지만, PubMed에 있다는 사실만으로 최고 근거가 되는 것은 아닙니다. Review·Systematic Review·RCT·가이드라인을 우선 보고, 사례보고·소규모 연구·오래된 논문은 참고 수준으로 구분하세요. PMID·DOI로 실재 여부를 확인하고 최근 5년 내 자료를 우선 검토하면 좋습니다.'},
+  {tier:1,name:'PubMed (NIH)',domain:'pubmed.ncbi.nlm.nih.gov',hint:'국제 의학논문 검색 — 논문 종류와 최신성 확인 필요',base:'https://pubmed.ncbi.nlm.nih.gov',guide:'PubMed는 의학 논문을 찾는 대표 검색창입니다. 다만 “PubMed에 검색된다”는 것만으로 바로 강한 근거가 되는 것은 아닙니다. 실무에서는 먼저 제목 아래 논문 유형을 보세요. 가이드라인, Systematic Review, Review, RCT는 우선 검토하고, Case Report나 소규모 연구는 참고 자료로만 두는 편이 안전합니다. 원고에 쓰기 전에는 PMID·DOI가 있는지, 최근 5년 안의 자료인지, 사람 대상 연구인지까지 확인하세요.'},
+  {tier:2,name:'Web of Science (SCIE/SCI급 국제 학술지)',domain:'webofscience.com',hint:'국제 학술지 등재·인용 확인 — 기관 로그인이 필요할 수 있음',base:'https://www.webofscience.com',guide:'SCI/SCIE급 논문인지, 어느 저널에 실렸는지, 인용이 어느 정도 있는지 확인할 때 유용합니다. 다만 의료 원고에서는 “SCI 논문이다”보다 논문 내용이 실제 진료 질문과 맞는지가 더 중요합니다. 제목·초록만 보지 말고 대상자 수, 연구 설계, 발표 연도, 저널명을 함께 확인하세요.'},
   {tier:2,name:'대한신경외과학회',domain:'neurosurgery.or.kr',hint:'척추·말초신경 시술 지침',base:'https://www.neurosurgery.or.kr',guide:'학술자료·진료지침 메뉴에서 해당 시술의 표준 적응증을 확인하세요.'},
   {tier:2,name:'대한정형외과학회',domain:'koa.or.kr',hint:'근골격계 질환·시술 지침',base:'https://www.koa.or.kr',guide:'근골격계 질환의 표준 진단·치료 흐름을 확인하는 용도로 사용하세요.'},
   {tier:2,name:'대한한의학회',domain:'skom.or.kr',hint:'한의학·한방치료 공식 학술/표준 임상 정보',base:'https://www.skom.or.kr',guide:'한의원·한방병원 콘텐츠에서는 대한한의학회 자료를 함께 확인하세요. 한방 치료는 효과 단정·수치 과장 표현을 피하고, 학술자료와 실제 진료 맥락을 구분해 쓰는 것이 안전합니다.'},
   // Tier 3 — 참고 (반드시 사람이 실재·정설 여부 확인)
-  {tier:3,name:'KCI (한국학술지인용색인)',domain:'kci.go.kr',hint:'국내 등재 논문 — 정설 여부 직접 확인 필요',base:'https://www.kci.go.kr',guide:'국내 논문은 품질 편차가 큽니다. 인용수가 어느 정도 있고, 대학병원·국공립기관 소속 저자의 논문을 우선 보세요. 단독 사례보고보다 다수 환자 대상 연구가 신뢰도 높습니다.'},
-  {tier:3,name:'KoreaMed',domain:'koreamed.org',hint:'국내 의학논문 — 개별 검증 필요',base:'https://www.koreamed.org',guide:'국내 의학 학술지 논문을 찾을 때 사용하세요. 학회 공식 학술지(예: 대한OO학회지) 게재 논문을 우선하면 신뢰도가 높습니다.'},
+  {tier:3,name:'KCI (한국학술지인용색인)',domain:'kci.go.kr',hint:'국내 등재 논문 — 국내 맥락 보조 근거',base:'https://www.kci.go.kr',guide:'KCI는 국내 학술지 논문을 찾을 때 유용합니다. 병원 원고에서는 국내 환자·국내 제도·한의학/재활/보건 분야 맥락을 보충하는 자료로 쓰면 좋습니다. 다만 KCI 논문도 품질 차이가 있으니, 등재지 여부, 연구 대상자 수, 발행 연도, 저자 소속을 확인하세요. 단일 사례보고나 오래된 논문은 강한 근거처럼 쓰지 않는 편이 안전합니다.'},
+  {tier:3,name:'KoreaMed',domain:'koreamed.org',hint:'국내 의학 학술지 논문 — 학회지 중심 확인',base:'https://www.koreamed.org',guide:'KoreaMed는 국내 의학 학술지 논문을 찾을 때 좋습니다. 대한OO학회지처럼 전문학회가 발행하는 학술지를 우선 보고, 원고에서는 국내 진료 환경을 설명하는 보조 근거로 활용하세요. PubMed·가이드라인 근거와 함께 비교하면 더 안전합니다.'},
   {tier:3,name:'RISS',domain:'riss.kr',hint:'학술자료 검색 — 출처 품질 편차 큼',base:'https://www.riss.kr',guide:'범위가 넓은 만큼 품질 편차도 큽니다. 학위논문보다 등재지 게재 논문을, 오래된 것보다 최신 자료를 우선하세요.'}
 ];
 
 // 진료분야(cat) → 어느 출처 기관을 찾아보면 되는지 매핑 (도메인 키로 연결)
 var CAT_SOURCE_MAP={
-  '통증':['hira.or.kr','guideline.or.kr','pubmed.ncbi.nlm.nih.gov'],
-  '척추':['neurosurgery.or.kr','koa.or.kr','hira.or.kr','pubmed.ncbi.nlm.nih.gov'],
-  '말초신경':['neurosurgery.or.kr','pubmed.ncbi.nlm.nih.gov','guideline.or.kr'],
-  '신경계':['neurosurgery.or.kr','guideline.or.kr','pubmed.ncbi.nlm.nih.gov'],
-  '두통/어지럼':['guideline.or.kr','pubmed.ncbi.nlm.nih.gov','kdca.go.kr'],
+  '통증':['hira.or.kr','guideline.or.kr','pubmed.ncbi.nlm.nih.gov','webofscience.com'],
+  '척추':['neurosurgery.or.kr','koa.or.kr','hira.or.kr','pubmed.ncbi.nlm.nih.gov','webofscience.com'],
+  '말초신경':['neurosurgery.or.kr','pubmed.ncbi.nlm.nih.gov','webofscience.com','guideline.or.kr'],
+  '신경계':['neurosurgery.or.kr','guideline.or.kr','pubmed.ncbi.nlm.nih.gov','webofscience.com'],
+  '두통/어지럼':['guideline.or.kr','pubmed.ncbi.nlm.nih.gov','webofscience.com','kdca.go.kr'],
   '교통사고':['hira.or.kr','mohw.go.kr','skom.or.kr'],
   '다이어트':['skom.or.kr','kdca.go.kr','kci.go.kr'],
-  '소아성장':['guideline.or.kr','skom.or.kr','pubmed.ncbi.nlm.nih.gov'],
+  '소아성장':['guideline.or.kr','skom.or.kr','pubmed.ncbi.nlm.nih.gov','webofscience.com'],
   '산후':['skom.or.kr','guideline.or.kr','kci.go.kr'],
-  '피부':['skom.or.kr','kci.go.kr','pubmed.ncbi.nlm.nih.gov'],
-  '피부과':['mfds.go.kr','guideline.or.kr','pubmed.ncbi.nlm.nih.gov'],
-  '미용':['mfds.go.kr','pubmed.ncbi.nlm.nih.gov','kci.go.kr'],
-  '성형외과':['mfds.go.kr','guideline.or.kr','pubmed.ncbi.nlm.nih.gov'],
-  '암':['kdca.go.kr','guideline.or.kr','pubmed.ncbi.nlm.nih.gov'],
+  '피부':['skom.or.kr','kci.go.kr','pubmed.ncbi.nlm.nih.gov','webofscience.com'],
+  '피부과':['mfds.go.kr','guideline.or.kr','pubmed.ncbi.nlm.nih.gov','webofscience.com'],
+  '미용':['mfds.go.kr','pubmed.ncbi.nlm.nih.gov','webofscience.com','kci.go.kr'],
+  '성형외과':['mfds.go.kr','guideline.or.kr','pubmed.ncbi.nlm.nih.gov','webofscience.com'],
+  '암':['kdca.go.kr','guideline.or.kr','pubmed.ncbi.nlm.nih.gov','webofscience.com'],
   '재활':['koa.or.kr','guideline.or.kr','hira.or.kr'],
-  '내과':['guideline.or.kr','kdca.go.kr','pubmed.ncbi.nlm.nih.gov'],
-  '이비인후과':['guideline.or.kr','hira.or.kr','pubmed.ncbi.nlm.nih.gov'],
-  '안과':['guideline.or.kr','pubmed.ncbi.nlm.nih.gov','mfds.go.kr'],
-  '산부인과':['guideline.or.kr','kdca.go.kr','pubmed.ncbi.nlm.nih.gov'],
-  '비뇨기과':['guideline.or.kr','pubmed.ncbi.nlm.nih.gov','mfds.go.kr'],
-  '치과':['guideline.or.kr','hira.or.kr','pubmed.ncbi.nlm.nih.gov'],
+  '내과':['guideline.or.kr','kdca.go.kr','pubmed.ncbi.nlm.nih.gov','webofscience.com'],
+  '이비인후과':['guideline.or.kr','hira.or.kr','pubmed.ncbi.nlm.nih.gov','webofscience.com'],
+  '안과':['guideline.or.kr','pubmed.ncbi.nlm.nih.gov','webofscience.com','mfds.go.kr'],
+  '산부인과':['guideline.or.kr','kdca.go.kr','pubmed.ncbi.nlm.nih.gov','webofscience.com'],
+  '비뇨기과':['guideline.or.kr','pubmed.ncbi.nlm.nih.gov','webofscience.com','mfds.go.kr'],
+  '치과':['guideline.or.kr','hira.or.kr','pubmed.ncbi.nlm.nih.gov','webofscience.com'],
   '여성질환':['skom.or.kr','guideline.or.kr','kci.go.kr'],
-  '공황/불면':['guideline.or.kr','kdca.go.kr','pubmed.ncbi.nlm.nih.gov']
+  '공황/불면':['guideline.or.kr','kdca.go.kr','pubmed.ncbi.nlm.nih.gov','webofscience.com']
 };
 function srcByDomain(d){return SOURCE_WHITELIST.find(function(s){return s.domain===d;});}
 
@@ -1310,7 +1311,7 @@ function buildSearchUrl(domain,item){
 
 function renderSources(item){
   var cat=item.cat;
-  var domains=(CAT_SOURCE_MAP[cat]||['guideline.or.kr','pubmed.ncbi.nlm.nih.gov','hira.or.kr']).slice();
+  var domains=(CAT_SOURCE_MAP[cat]||['guideline.or.kr','pubmed.ncbi.nlm.nih.gov','webofscience.com','hira.or.kr']).slice();
   if(item.type&&(item.type==='한의원'||item.type==='한방병원')&&domains.indexOf('skom.or.kr')<0){
     domains.unshift('skom.or.kr');
   }
