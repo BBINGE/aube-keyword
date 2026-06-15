@@ -274,7 +274,8 @@
   .brief-idea-drawer.open{transform:translateX(0);}
   .brief-idea-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:18px 20px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#fff,#f7fafe);}
   .brief-idea-title{font-size:17px;font-weight:800;color:var(--text);line-height:1.4;}
-  .brief-idea-sub{font-size:11px;color:var(--text3);line-height:1.6;margin-top:3px;}
+  .brief-idea-sub{font-size:12px;color:var(--text2);line-height:1.7;margin-top:4px;font-weight:700;}
+  .brief-idea-sub b{color:var(--accent);font-weight:800;}
   .brief-idea-body{padding:16px 20px 22px;overflow:auto;}
   .brief-idea-type{border:1px solid var(--border);border-radius:var(--radius);background:#fff;padding:14px;margin-bottom:12px;}
   .brief-idea-type-title{font-size:13px;font-weight:800;color:var(--accent);margin-bottom:8px;}
@@ -2108,7 +2109,7 @@ function openBriefIdeaDrawer(diseaseId,productId){
   if(!disease||!product)return;
   var drawer=document.getElementById('brief-idea-drawer');
   document.getElementById('brief-idea-title').textContent=disease.name+' × '+product.name;
-  document.getElementById('brief-idea-sub').textContent='빨간펜처럼 잡힌 질환·연결 시술 조합 기준의 원고 전개 후보입니다.';
+  document.getElementById('brief-idea-sub').innerHTML='<b>아래 내용을 복사해 GPT, Gemini, Claude 등에 붙여넣고</b> 원고 뼈대로 삼아보세요.';
   document.getElementById('brief-idea-body').innerHTML=briefIdeaHtml(disease,product);
   drawer.classList.add('open');
   drawer.setAttribute('aria-hidden','false');
