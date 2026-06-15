@@ -32,15 +32,16 @@
     radial-gradient(circle at 78% 78%,rgba(22,224,163,.08),transparent 26%);
     opacity:.96;}
   body::after{content:"";position:fixed;right:-54px;bottom:-38px;width:430px;height:164px;z-index:0;pointer-events:none;opacity:0.07;background-repeat:no-repeat;background-position:right bottom;background-size:contain;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 636 148' fill='%233182f6'%3E%3Crect x='0' y='36' width='28' height='112'/%3E%3Crect x='0' y='0' width='156' height='28'/%3E%3Crect x='128' y='0' width='28' height='148'/%3E%3Crect x='172' y='0' width='28' height='148'/%3E%3Crect x='172' y='120' width='156' height='28'/%3E%3Crect x='300' y='0' width='28' height='148'/%3E%3Crect x='344' y='0' width='156' height='28'/%3E%3Crect x='344' y='60' width='156' height='28'/%3E%3Crect x='344' y='120' width='156' height='28'/%3E%3Crect x='472' y='0' width='28' height='148'/%3E%3Crect x='516' y='0' width='120' height='28'/%3E%3Crect x='516' y='60' width='120' height='28'/%3E%3Crect x='516' y='120' width='120' height='28'/%3E%3C/svg%3E");}
-  nav{position:relative;z-index:2;}
-  .page{position:relative;z-index:1;}
-  .ptc-field{position:fixed;inset:56px 0 0;z-index:0;pointer-events:none;overflow:hidden;background:
+  nav{position:relative;z-index:3;}
+  .page{position:relative;z-index:2;}
+  .cinema-video-bg{position:fixed;inset:56px 0 0;width:100vw;height:calc(100vh - 56px);z-index:0;pointer-events:none;opacity:.62;mix-blend-mode:multiply;filter:saturate(1.12) contrast(1.08);}
+  .ptc-field{position:fixed;inset:56px 0 0;z-index:1;pointer-events:none;overflow:hidden;background:
     linear-gradient(90deg,rgba(49,130,246,.050) 1px,transparent 1px),
     linear-gradient(rgba(22,224,163,.040) 1px,transparent 1px),
     linear-gradient(90deg,transparent 0%,rgba(255,255,255,.38) 30%,rgba(255,255,255,.62) 50%,rgba(255,255,255,.38) 70%,transparent 100%);
     background-size:72px 72px,72px 72px,100% 100%;
     mask-image:linear-gradient(180deg,rgba(0,0,0,.82),rgba(0,0,0,.46) 66%,transparent);}
-  .ptc-field::before,.ptc-field::after{content:"";position:absolute;top:68px;width:288px;height:560px;border:1px solid rgba(196,213,235,.46);border-radius:22px;opacity:.58;background:
+  .ptc-field::before,.ptc-field::after{content:"";position:absolute;top:68px;width:288px;height:560px;border:1px solid rgba(196,213,235,.40);border-radius:22px;opacity:.36;background:
     linear-gradient(180deg,rgba(255,255,255,.42),rgba(255,255,255,.12)),
     linear-gradient(115deg,rgba(255,255,255,.32),transparent 40%,rgba(49,130,246,.055) 72%,transparent),
     repeating-linear-gradient(180deg,transparent 0 52px,rgba(49,130,246,.075) 53px,transparent 54px),
@@ -90,8 +91,8 @@
   @keyframes streamFlow{0%{transform:translate3d(-18px,0,0) rotate(var(--rot,0deg));opacity:.16;}45%{opacity:.46;}100%{transform:translate3d(42px,-18px,0) rotate(var(--rot,0deg));opacity:.24;}}
   @keyframes scanDrop{0%{transform:translateY(-90%);opacity:0;}18%{opacity:.62;}72%{opacity:.28;}100%{transform:translateY(430%);opacity:0;}}
   @media(max-width:1180px){.ptc-field::before{left:-150px}.ptc-field::after{right:-150px}.ptc-stream{width:42vw;opacity:.28;}}
-  @media(max-width:760px){body::before{opacity:.62}.ptc-field{inset:56px 0 0}.ptc-field::before,.ptc-field::after{display:none}.ptc-cinema{opacity:.60}.ptc-beam{width:72vw;opacity:.18;filter:blur(16px)}.ptc-media{opacity:.34}.ptc-stream{width:78vw;min-width:0;opacity:.15}.ptc-stream.s1{left:-18vw;top:24%}.ptc-stream.s2{right:-26vw;top:54%}.ptc-stream.s3{display:none}.ptc-scan{height:120px;opacity:.28}.ptc-node{opacity:.16;transform:scale(.86);}}
-  @media(prefers-reduced-motion:reduce){.ptc-field::before,.ptc-field::after,.ptc-node,.ptc-media::before,.ptc-media::after,.ptc-stream,.ptc-scan,.ptc-cinema::before,.ptc-beam{animation:none;}}
+  @media(max-width:760px){body::before{opacity:.62}.cinema-video-bg{opacity:.42;mix-blend-mode:multiply}.ptc-field{inset:56px 0 0}.ptc-field::before,.ptc-field::after{display:none}.ptc-cinema{opacity:.45}.ptc-beam{width:72vw;opacity:.12;filter:blur(16px)}.ptc-media{opacity:.22}.ptc-stream{width:78vw;min-width:0;opacity:.10}.ptc-stream.s1{left:-18vw;top:24%}.ptc-stream.s2{right:-26vw;top:54%}.ptc-stream.s3{display:none}.ptc-scan{height:120px;opacity:.20}.ptc-node{opacity:.10;transform:scale(.86);}}
+  @media(prefers-reduced-motion:reduce){.cinema-video-bg{opacity:.36}.ptc-field::before,.ptc-field::after,.ptc-node,.ptc-media::before,.ptc-media::after,.ptc-stream,.ptc-scan,.ptc-cinema::before,.ptc-beam{animation:none;}}
   nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;}
   .nav-logo{font-size:13px;font-weight:700;letter-spacing:.04em;color:var(--accent);}
   .nav-brand{display:flex;align-items:center;gap:10px;}
@@ -392,6 +393,7 @@
   <div class="nav-right">오늘의브랜딩 기획부 제작 및 문의<br><strong>박성호 기획팀장</strong></div>
 </nav>
 
+<canvas class="cinema-video-bg" id="cinema-video-bg" aria-hidden="true"></canvas>
 <div class="ptc-field" id="ptc-field" aria-hidden="true"></div>
 
 <div id="sync-status" style="display:none;background:var(--accent);color:#fff;font-size:12px;text-align:center;padding:6px;position:sticky;top:56px;z-index:99">구글 시트 동기화 중...</div>
@@ -1563,6 +1565,92 @@ function getAllIssues(){
 }
 
 // ===== NAV =====
+function startCinemaVideoBg(){
+  var canvas=document.getElementById('cinema-video-bg');
+  if(!canvas||!canvas.getContext)return;
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ctx=canvas.getContext('2d');
+  var dpr=Math.min(window.devicePixelRatio||1,2);
+  var words=['SEO','BLOG','AUBE','MEDICAL','SIGNAL','KEYWORD','CONTENT','CLINIC','질환','시술','원고','검수','보험','횟수'];
+  function resize(){
+    var w=window.innerWidth;
+    var h=Math.max(320,window.innerHeight-56);
+    canvas.width=Math.floor(w*dpr);
+    canvas.height=Math.floor(h*dpr);
+    canvas.style.width=w+'px';
+    canvas.style.height=h+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  function linePath(t,w,h,offset){
+    var y=h*(.22+offset*.18);
+    var x0=-80+((t*140+offset*260)%(w+220));
+    ctx.beginPath();
+    ctx.moveTo(x0,y);
+    ctx.lineTo(x0+w*.10,y);
+    ctx.lineTo(x0+w*.13,y-h*.055);
+    ctx.lineTo(x0+w*.16,y+h*.09);
+    ctx.lineTo(x0+w*.20,y-h*.035);
+    ctx.lineTo(x0+w*.25,y);
+    ctx.lineTo(x0+w*.44,y);
+  }
+  function draw(ts){
+    var w=canvas.clientWidth,h=canvas.clientHeight;
+    var loop=(ts%10000)/10000;
+    ctx.clearRect(0,0,w,h);
+    var bg=ctx.createLinearGradient(0,0,w,h);
+    bg.addColorStop(0,'rgba(8,22,40,.10)');
+    bg.addColorStop(.45,'rgba(255,255,255,.20)');
+    bg.addColorStop(1,'rgba(5,23,36,.12)');
+    ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
+
+    var g1=ctx.createRadialGradient(w*.18,h*.26,0,w*.18,h*.26,w*.34);
+    g1.addColorStop(0,'rgba(22,189,156,.22)');g1.addColorStop(1,'rgba(22,189,156,0)');
+    ctx.fillStyle=g1;ctx.fillRect(0,0,w,h);
+    var g2=ctx.createRadialGradient(w*.82,h*.22,0,w*.82,h*.22,w*.36);
+    g2.addColorStop(0,'rgba(49,130,246,.26)');g2.addColorStop(1,'rgba(49,130,246,0)');
+    ctx.fillStyle=g2;ctx.fillRect(0,0,w,h);
+
+    ctx.save();
+    ctx.globalAlpha=.38;
+    ctx.translate(Math.sin(loop*Math.PI*2)*24,0);
+    var beam=ctx.createLinearGradient(0,0,w,0);
+    beam.addColorStop(0,'rgba(255,255,255,0)');
+    beam.addColorStop(.42,'rgba(255,255,255,.34)');
+    beam.addColorStop(.52,'rgba(49,130,246,.10)');
+    beam.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.fillStyle=beam;
+    ctx.beginPath();ctx.moveTo(w*.08,-h*.1);ctx.lineTo(w*.38,-h*.1);ctx.lineTo(w*.72,h*1.1);ctx.lineTo(w*.42,h*1.1);ctx.closePath();ctx.fill();
+    ctx.restore();
+
+    ctx.lineWidth=1.4;
+    for(var i=0;i<4;i++){
+      linePath(loop,w,h,i*.9);
+      ctx.strokeStyle=i%2?'rgba(49,130,246,.34)':'rgba(22,189,156,.38)';
+      ctx.shadowBlur=14;ctx.shadowColor=i%2?'rgba(49,130,246,.25)':'rgba(22,189,156,.25)';
+      ctx.stroke();
+    }
+    ctx.shadowBlur=0;
+
+    ctx.font='700 11px -apple-system, BlinkMacSystemFont, sans-serif';
+    for(var j=0;j<18;j++){
+      var x=(w*((j*0.173+loop*.24)%1));
+      var y=h*(0.13+((j*97)%71)/100);
+      var alpha=.08+((j%5)*.025);
+      ctx.fillStyle=j%3===0?'rgba(22,143,113,'+alpha+')':'rgba(49,96,150,'+alpha+')';
+      ctx.fillText(words[j%words.length],x,y);
+    }
+
+    ctx.globalAlpha=.08;
+    ctx.strokeStyle='rgba(5,23,36,.40)';
+    for(var yy=0;yy<h;yy+=4){ctx.beginPath();ctx.moveTo(0,yy+.5);ctx.lineTo(w,yy+.5);ctx.stroke();}
+    ctx.globalAlpha=1;
+
+    if(!reduce)requestAnimationFrame(draw);
+  }
+  resize();
+  window.addEventListener('resize',resize);
+  requestAnimationFrame(draw);
+}
 function spawnParticles(){
   var field=document.getElementById('ptc-field');
   if(!field)return;
@@ -1594,8 +1682,8 @@ function spawnParticles(){
     field.appendChild(el);
   });
 }
-if(document.readyState!=='loading')spawnParticles();
-else document.addEventListener('DOMContentLoaded',spawnParticles);
+if(document.readyState!=='loading'){startCinemaVideoBg();spawnParticles();}
+else document.addEventListener('DOMContentLoaded',function(){startCinemaVideoBg();spawnParticles();});
 function findNavTab(id){
   return document.querySelector(".nav-tab[onclick*=\""+id+"\"]");
 }
