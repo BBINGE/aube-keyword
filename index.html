@@ -3059,6 +3059,7 @@ function pickProduct(diseaseName){
   // 1순위: 질환명 직접 매칭
   var matched=typeProducts.filter(function(p){return p.match&&p.match.split(',').map(function(x){return x.trim();}).indexOf(diseaseName)>=0;});
   if(matched.length)return weightedPickProducts(matched,signal);
+  if(selectedClient.type==='신경외과'&&disCat==='통증')return null;
   // 2순위: 같은 카테고리 상품
   if(disCat){
     var catM=typeProducts.filter(function(p){return p.cat===disCat;});
