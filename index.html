@@ -267,6 +267,8 @@
   .brief-example-text{font-size:12.5px;color:var(--text);line-height:1.75;}
   .brief-example-list{margin:0;padding-left:16px;color:var(--text);font-size:12.5px;line-height:1.75;}
   .brief-example-copy{font-size:11px;color:var(--text3);line-height:1.65;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;}
+  .brief-combo-note{font-size:11px;color:var(--accent);background:var(--accent-bg);border:1px solid var(--accent-border);border-radius:var(--radius-sm);padding:7px 10px;margin-bottom:10px;line-height:1.6;}
+  .brief-mini-label{display:inline-block;font-size:10px;font-weight:800;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin:0 0 8px;}
   .brief-block{margin-bottom:14px;}
   .brief-block:last-child{margin-bottom:0;}
   .brief-block-label{display:inline-block;font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-bg);border:1px solid var(--accent-border);border-radius:var(--radius-sm);padding:2px 9px;margin-bottom:6px;}
@@ -1879,8 +1881,16 @@ function parseBrief(){
     resultEl.innerHTML=html;return;
   }
 
-  foundDis.forEach(function(d){html+=renderBriefCard('질환',d);});
-  foundProd.forEach(function(p){html+=renderBriefCard('시술 / 상품',p);});
+  if(foundDis.length&&foundProd.length){
+    foundDis.forEach(function(d){
+      foundProd.forEach(function(p){
+        html+=renderBriefComboCard(d,p);
+      });
+    });
+  }else{
+    foundDis.forEach(function(d){html+=renderBriefCard('질환',d);});
+    foundProd.forEach(function(p){html+=renderBriefCard('시술 / 상품',p);});
+  }
   resultEl.innerHTML=html;
 }
 
@@ -1895,32 +1905,52 @@ function shortBriefText(text,max){
 }
 function briefExampleData(kind,item,blocks){
   var name=item.name||'해당 주제';
+  var disease=item.comboDisease||null;
+  var product=item.comboProduct||null;
+  var diseaseName=disease?disease.name:name;
+  var productName=product?product.name:'치료/관리';
+  var comboName=product?(diseaseName+' + '+productName):name;
   var definition=getBriefBlockText(blocks,'정의')||getBriefBlockText(blocks,'공통 정의')||getBriefBlockText(blocks,'설명')||name+'에 대한 기본 설명을 먼저 정리합니다.';
   var point=getBriefBlockText(blocks,'원고 포인트')||getBriefBlockText(blocks,'주요 수요')||'환자의 검색 의도와 진료에서 확인해야 할 포인트를 중심으로 구성합니다.';
   var diagnosis=getBriefBlockText(blocks,'진단')||getBriefBlockText(blocks,'진단/치료 흐름')||getBriefBlockText(blocks,'기전')||'상태 확인과 개인차 안내를 함께 제시합니다.';
   var safe='완치, 즉효, 보장, 100% 개선처럼 결과를 단정하는 표현은 피하고 진료 후 판단이 필요하다는 흐름으로 마무리합니다.';
+  var qaQuestions=product?[
+    productName+'는 '+diseaseName+'에 꼭 필요한가요?',
+    '보험 적용이 되나요, 비급여라면 비용 차이는 왜 생기나요?',
+    '보통 몇 회 정도 받아야 하나요?',
+    '시술/치료 후 통증이나 불편감은 어느 정도인가요?',
+    '바로 일상생활이 가능한가요?',
+    '어떤 경우에는 다른 검사나 진료가 먼저 필요한가요?'
+  ]:[
+    name+'는 꼭 치료해야 하나요?',
+    '방치하면 더 심해질 수 있나요?',
+    '검사나 진단은 어떻게 하나요?',
+    '치료 기간은 어느 정도로 봐야 하나요?',
+    '보험 적용이나 비용은 어떻게 달라질 수 있나요?'
+  ];
   return [
     {
       id:'qa',label:'Q&A형',
-      title:name+', 꼭 치료가 필요한가요?',
-      intro:'환자들이 가장 먼저 궁금해하는 질문을 제목으로 두고, 오해를 정리한 뒤 진료에서 확인하는 기준을 설명하는 방식입니다.',
-      flow:['질문 제시','흔한 오해 정리','증상 또는 상태 설명','진료에서 확인하는 항목','치료/관리 방향','내원 판단 기준'],
+      title:product?diseaseName+'에 '+productName+', 보험·횟수·통증이 궁금하다면':name+', 환자들이 자주 묻는 질문',
+      intro:'실제 상담과 검색에서 나올 법한 질문을 먼저 놓고 답하는 형식입니다. 보험, 횟수, 비용, 통증, 일상복귀처럼 환자가 바로 궁금해하는 항목을 중심으로 잡습니다.',
+      questions:qaQuestions,
+      flow:['질문 제시','적용 대상과 아닌 경우 구분','보험/비급여/횟수처럼 민감한 정보는 범위로 설명','진료에서 확인하는 항목','개인차와 주의사항','내원 판단 기준'],
       sample:shortBriefText(definition,150),
       caution:safe
     },
     {
       id:'column',label:'칼럼형',
-      title:'반복되는 '+name+', 단순 증상으로만 보면 안 되는 이유',
-      intro:'병원의 전문성과 원장님의 관점을 보여주기 좋은 형식입니다. 검색량이 높거나 경쟁이 많은 키워드에서 차별화하기 좋습니다.',
-      flow:['문제 제기','흔한 접근의 한계','의학적 배경 설명','병원 관점의 확인 포인트','진료/관리 흐름','주의사항'],
+      title:'반복되는 '+diseaseName+', '+(product?productName+'만 보면 안 되는 이유':'단순 증상으로만 보면 안 되는 이유'),
+      intro:'병원의 전문성과 원장님의 관점을 보여주기 좋은 형식입니다. 질환의 원인과 상품/시술의 역할을 분리해 설명하면 과장 없이 설득력이 생깁니다.',
+      flow:['문제 제기','흔한 오해 또는 단순 접근의 한계','질환의 원인/상태 설명','상품/시술이 맡는 역할','진료에서 확인할 기준','주의사항'],
       sample:shortBriefText(point,150),
       caution:'병원 우월성이나 타 병원 비방처럼 읽히지 않게, 기준과 관점 중심으로 씁니다.'
     },
     {
       id:'case',label:'상담 사례형',
-      title:name+'으로 상담하는 환자들이 자주 말하는 불편감',
-      intro:'실제 후기처럼 보이기보다 흔한 상담 상황을 풀어내는 안전한 사례형입니다. 환자가 “내 이야기 같다”고 느끼게 만드는 데 적합합니다.',
-      flow:['흔한 내원 상황','환자가 표현하는 불편감','진료에서 확인하는 포인트','가능한 원인 설명','치료/관리 방향','개인차 안내'],
+      title:comboName+' 상담에서 자주 나오는 상황',
+      intro:'실제 후기처럼 보이기보다 흔한 상담 상황을 풀어내는 안전한 사례형입니다. 환자가 “내 이야기 같다”고 느끼게 만들되, 특정 치료 결과처럼 쓰지 않습니다.',
+      flow:['흔한 내원 상황','환자가 표현하는 불편감','진료에서 확인하는 포인트','가능한 원인 설명','상품/시술을 고려하는 기준','개인차 안내'],
       sample:shortBriefText(diagnosis,150),
       caution:'특정 환자의 치료 결과처럼 쓰지 말고, 일반적인 상담 상황과 확인 기준으로 표현합니다.'
     }
@@ -1935,6 +1965,7 @@ function renderBriefExamples(kind,item,blocks,cardId){
     return '<div class="brief-example '+(i===0?'active':'')+'" id="'+cardId+'-'+ex.id+'">'+
       '<div class="brief-example-section"><div class="brief-example-label">추천 제목</div><div class="brief-example-text">'+esc(ex.title)+'</div></div>'+
       '<div class="brief-example-section"><div class="brief-example-label">도입 방향</div><div class="brief-example-text">'+esc(ex.intro)+'</div></div>'+
+      (ex.questions?'<div class="brief-example-section"><div class="brief-example-label">실제 질문 후보</div><ol class="brief-example-list">'+ex.questions.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ol></div>':'')+
       '<div class="brief-example-section"><div class="brief-example-label">본문 흐름</div><ol class="brief-example-list">'+ex.flow.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ol></div>'+
       '<div class="brief-example-section"><div class="brief-example-label">본문 참고 문장</div><div class="brief-example-copy">'+esc(ex.sample)+'</div></div>'+
       '<div class="brief-example-section"><div class="brief-example-label">주의 표현</div><div class="brief-example-text">'+esc(ex.caution)+'</div></div>'+
@@ -1948,6 +1979,31 @@ function switchBriefExample(cardId,exampleId,btn){
   var panel=document.getElementById(cardId+'-'+exampleId);
   if(panel)panel.classList.add('active');
   if(btn)btn.classList.add('active');
+}
+function renderBriefComboCard(disease,product){
+  var dBlocks=parseNoteBlocks(disease.note);
+  var pBlocks=parseNoteBlocks(product.note);
+  var comboItem={id:'combo-'+disease.id+'-'+product.id,name:disease.name+' + '+product.name,comboDisease:disease,comboProduct:product};
+  var comboBlocks=dBlocks.concat(pBlocks);
+  var cardId='brief-card-'+String(comboItem.id).replace(/[^a-zA-Z0-9가-힣_-]/g,'-');
+  var standard='<div class="brief-panel"><div class="brief-panel-head"><div class="brief-panel-title">조합 정론 기준</div><span class="verify-flag">질환 + 상품/시술</span></div><div class="brief-panel-body brief-standard">';
+  standard+='<div class="brief-combo-note">실무 원고는 보통 질환과 상품/시술을 함께 다룹니다. 아래 기준은 질환 설명과 시술 역할을 한 화면에서 연결해 보기 위한 조합형 작업대입니다.</div>';
+  standard+='<span class="brief-mini-label">질환 기준</span>';
+  dBlocks.slice(0,4).forEach(function(b){
+    standard+='<div class="brief-block"><span class="brief-block-label">'+esc(b.label)+'</span><div class="brief-block-text">'+esc(b.text)+'</div></div>';
+  });
+  standard+='<span class="brief-mini-label">상품/시술 기준</span>';
+  pBlocks.slice(0,4).forEach(function(b){
+    standard+='<div class="brief-block"><span class="brief-block-label">'+esc(b.label)+'</span><div class="brief-block-text">'+esc(b.text)+'</div></div>';
+  });
+  standard+='</div></div>';
+  var h='<div class="brief-card" id="'+cardId+'">';
+  h+='<div class="brief-card-head"><div><div class="brief-card-kind">질환 + 시술 조합</div><div class="brief-card-name">'+esc(disease.name)+' × '+esc(product.name)+'</div></div><span class="verify-flag">원고 기획 작업대</span></div>';
+  h+='<div class="brief-card-body"><div class="brief-workbench">'+standard+renderBriefExamples('조합',comboItem,comboBlocks,cardId)+'</div></div>';
+  h+=renderSources(disease);
+  h+=renderSources(product);
+  h+='</div>';
+  return h;
 }
 function renderBriefCard(kind,item){
   var blocks=parseNoteBlocks(item.note);
