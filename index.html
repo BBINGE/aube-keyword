@@ -1899,6 +1899,42 @@ function findInText(text,items,nameKey){
   });
   return found;
 }
+function productDisplayName(productOrName){
+  var raw=typeof productOrName==='string'?productOrName:(productOrName&&productOrName.name)||'';
+  var manual={
+    '추나요법 (한방 도수교정치료)':'추나요법',
+    '한약 (화병·불면·스트레스)':'한약',
+    '부인과 한약 (한방 부인과 처방)':'부인과 한약',
+    '경피적 경막외강 신경성형술 (신경성형술)':'경피적 경막외강 신경성형술',
+    '고주파 신경차단술 (열응고술·RF Ablation)':'고주파 신경차단술(RF Ablation)',
+    '뇌혈관 정밀검사 (뇌 MRI·MRA)':'뇌혈관 정밀검사(MRI·MRA)',
+    '초음파 유도 말초신경 차단술 (PNB)':'초음파 유도 말초신경 차단술(PNB)',
+    '신경 감압술 (말초신경 감압술)':'신경 감압술',
+    '영양수액치료 (정맥영양주사·IV Therapy)':'영양수액치료(IV Therapy)',
+    '후두신경차단술 (대후두·소후두)':'후두신경차단술',
+    '경추 MBB (경추 내측지차단술)':'경추 MBB',
+    '관절강내주사 (히알루론산·스테로이드)':'관절강내주사',
+    'PRP주사 (자가혈소판풍부혈장)':'PRP주사',
+    '관절주사 (성분 확인 필요)':'관절주사',
+    '실리프팅 (실 리프팅·Thread Lift)':'실리프팅(Thread Lift)',
+    '울쎄라 (Ultherapy·고강도 집속 초음파)':'울쎄라(Ultherapy)',
+    '써마지 (Thermage·고주파 리프팅)':'써마지(Thermage)',
+    '수면내시경 (진정 내시경·Sedation Endoscopy)':'수면내시경(Sedation Endoscopy)',
+    '수액치료 (영양수액·IV Therapy)':'수액치료(IV Therapy)',
+    '이석정복술 (Epley Maneuver·이석 재위치술)':'이석정복술(Epley Maneuver)',
+    '백내장 수술 (수정체 유화술·Phacoemulsification)':'백내장 수술(Phacoemulsification)',
+    '자궁경부암 검사 (PAP smear·액상세포검사)':'자궁경부암 검사(PAP smear)',
+    'HPV 예방접종 (자궁경부암 예방접종)':'HPV 예방접종',
+    '성병 검사 (STD 검사·성매개감염병 검사)':'성병 검사(STD 검사)'
+  };
+  if(manual[raw])return manual[raw];
+  return raw.replace(/\s*\(([^)]*)\)/g,function(_,inner){
+    var useful=inner.split(/[·,/]/).map(function(part){return part.trim();}).filter(function(part){
+      return /[A-Za-z]/.test(part)||/[灸治療]/.test(part);
+    }).join('·');
+    return useful?'('+useful+')':'';
+  }).replace(/\s+/g,' ').trim();
+}
 function canonicalProductKey(product){
   if(!product)return '';
   var name=product.name||'';
@@ -2004,7 +2040,7 @@ function parseBrief(){
   var chips='';
   if(inferredTypes.length){inferredTypes.forEach(function(t){chips+='<span class="parsed-chip hit">과목 <b>'+esc(t)+'</b></span>';});}
   if(foundDis.length){foundDis.forEach(function(d){chips+='<span class="parsed-chip hit">질환 <b>'+esc(d.name)+'</b></span>';});}
-  if(foundProd.length){foundProd.forEach(function(p){chips+='<span class="parsed-chip hit">연결 시술 <b>'+esc(p.name)+'</b></span>';});}
+  if(foundProd.length){foundProd.forEach(function(p){chips+='<span class="parsed-chip hit">연결 시술 <b>'+esc(productDisplayName(p))+'</b></span>';});}
   if(!foundDis.length&&!foundProd.length){chips='<span class="parsed-chip miss">DB에서 일치하는 질환·시술을 찾지 못했습니다</span>';}
   parsedEl.innerHTML=chips;
 
@@ -2044,7 +2080,7 @@ function briefExampleData(kind,item,blocks){
   var disease=item.comboDisease||null;
   var product=item.comboProduct||null;
   var diseaseName=disease?disease.name:name;
-  var productName=product?product.name:'치료/관리';
+  var productName=product?productDisplayName(product):'치료/관리';
   var comboName=product?(diseaseName+' + '+productName):name;
   var definition=getBriefBlockText(blocks,'정의')||getBriefBlockText(blocks,'공통 정의')||getBriefBlockText(blocks,'설명')||name+'에 대한 기본 설명을 먼저 정리합니다.';
   var point=getBriefBlockText(blocks,'원고 포인트')||getBriefBlockText(blocks,'주요 수요')||'환자의 검색 의도와 진료에서 확인해야 할 포인트를 중심으로 구성합니다.';
@@ -2119,7 +2155,7 @@ function switchBriefExample(cardId,exampleId,btn){
 function renderBriefComboCard(disease,product){
   var dBlocks=parseNoteBlocks(disease.note);
   var pBlocks=parseNoteBlocks(product.note);
-  var comboItem={id:'combo-'+disease.id+'-'+product.id,name:disease.name+' + '+product.name,comboDisease:disease,comboProduct:product};
+  var comboItem={id:'combo-'+disease.id+'-'+product.id,name:disease.name+' + '+productDisplayName(product),comboDisease:disease,comboProduct:product};
   var comboBlocks=dBlocks.concat(pBlocks);
   var cardId='brief-card-'+String(comboItem.id).replace(/[^a-zA-Z0-9가-힣_-]/g,'-');
   var standard='<div class="brief-panel"><div class="brief-panel-head"><div class="brief-panel-title">조합 정론 기준</div><span class="verify-flag">질환 + 상품/시술</span></div><div class="brief-panel-body brief-standard">';
@@ -2134,7 +2170,7 @@ function renderBriefComboCard(disease,product){
   });
   standard+='</div></div>';
   var h='<div class="brief-card" id="'+cardId+'">';
-  h+='<div class="brief-card-head"><div><div class="brief-card-kind">질환 + 시술 조합</div><div class="brief-card-name">'+esc(disease.name)+' × '+esc(product.name)+'</div></div><span class="verify-flag">원고 기획 작업대</span></div>';
+  h+='<div class="brief-card-head"><div><div class="brief-card-kind">질환 + 시술 조합</div><div class="brief-card-name">'+esc(disease.name)+' × '+esc(productDisplayName(product))+'</div></div><span class="verify-flag">원고 기획 작업대</span></div>';
   h+='<div class="brief-card-body"><div class="brief-workbench">'+standard+renderBriefExamples('조합',comboItem,comboBlocks,cardId)+'</div></div>';
   h+=renderSources(disease);
   h+=renderSources(product);
@@ -2280,7 +2316,7 @@ function briefIdeaHtml(disease,product){
   var dBlocks=parseNoteBlocks(disease.note);
   var pBlocks=parseNoteBlocks(product.note);
   var dName=disease.name;
-  var pName=product.name;
+  var pName=productDisplayName(product);
   var dCore=shortBriefText(getBriefBlockText(dBlocks,'정의')||getBriefBlockText(dBlocks,'기전')||getBriefBlockText(dBlocks,'설명'),120);
   var pCore=shortBriefText(getBriefBlockText(pBlocks,'원고 포인트')||getBriefBlockText(pBlocks,'공통 정의')||getBriefBlockText(pBlocks,'정의'),120);
   var safe='치료 효과, 횟수, 비용, 회복 기간을 단정하지 말고 진료 후 개인 상태에 따라 달라질 수 있음을 함께 안내하세요.';
@@ -2375,7 +2411,7 @@ function openBriefSingleIdeaDrawer(kind,itemId){
   var item=kind.indexOf('시술')>=0||kind.indexOf('상품')>=0?findBriefProductById(itemId):findBriefDiseaseById(itemId);
   if(!item)return;
   var drawer=document.getElementById('brief-idea-drawer');
-  document.getElementById('brief-idea-title').textContent=item.name;
+  document.getElementById('brief-idea-title').textContent=kind.indexOf('시술')>=0||kind.indexOf('상품')>=0?productDisplayName(item):item.name;
   document.getElementById('brief-idea-sub').innerHTML='<b>아래 내용을 복사해 GPT, Gemini, Claude 등에 붙여넣고</b> 단독 원고 뼈대로 삼아보세요.';
   document.getElementById('brief-idea-body').innerHTML=briefSingleIdeaHtml(kind,item);
   drawer.classList.add('open');
@@ -2386,7 +2422,7 @@ function openBriefIdeaDrawer(diseaseId,productId){
   var product=findBriefProductById(productId);
   if(!disease||!product)return;
   var drawer=document.getElementById('brief-idea-drawer');
-  document.getElementById('brief-idea-title').textContent=disease.name+' × '+product.name;
+  document.getElementById('brief-idea-title').textContent=disease.name+' × '+productDisplayName(product);
   document.getElementById('brief-idea-sub').innerHTML='<b>아래 내용을 복사해 GPT, Gemini, Claude 등에 붙여넣고</b> 원고 뼈대로 삼아보세요.';
   document.getElementById('brief-idea-body').innerHTML=briefIdeaHtml(disease,product);
   drawer.classList.add('open');
@@ -3035,8 +3071,8 @@ function roll(n){
   if(!selectedClient){alert('먼저 클라이언트를 선택해 주세요.');return;}
   if(n===1){var rc=pickRegionAndCats();ST.region=rc.region;ST.cats=rc.cats;document.getElementById('v1').textContent=rc.region;document.getElementById('s1').textContent=rc.cats.join(' · ');document.getElementById('btn1').classList.add('active');}
   if(n===2){var d=pickDept();ST.dept=d;document.getElementById('v2').textContent=d;document.getElementById('s2').textContent='병원 유형 연관 과목';document.getElementById('btn2').classList.add('active');}
-  if(n===3){var cats=ST.cats||ALL_CATS;var dis=pickDisease(cats);if(!dis){alert('해당 카테고리에 등록된 질환이 없습니다. DB를 확인해 주세요.');return;}ST.disease=dis;document.getElementById('v3').textContent=dis.name;var vl={high:'검색량 높음 — 경쟁 주의',med:'검색량 중간',low:'검색량 낮음 — 조합 필수'};document.getElementById('s3').textContent=vl[dis.vol]||'';document.getElementById('btn3').classList.add('active');var pr=pickProduct(dis.name);ST.product=pr;if(pr){document.getElementById('v4').textContent=pr.name;document.getElementById('s4').textContent='질환 자동 매칭';document.getElementById('btn4').classList.add('active');}else{document.getElementById('v4').textContent='—';document.getElementById('s4').textContent='해당 시술 없음';document.getElementById('btn4').classList.remove('active');}}
-  if(n===4){var pr2=pickProduct((ST.disease||{name:''}).name);ST.product=pr2;if(pr2){document.getElementById('v4').textContent=pr2.name;document.getElementById('s4').textContent='매칭 재선택';document.getElementById('btn4').classList.add('active');}else{document.getElementById('v4').textContent='—';document.getElementById('s4').textContent='해당 시술 없음';document.getElementById('btn4').classList.remove('active');}}
+  if(n===3){var cats=ST.cats||ALL_CATS;var dis=pickDisease(cats);if(!dis){alert('해당 카테고리에 등록된 질환이 없습니다. DB를 확인해 주세요.');return;}ST.disease=dis;document.getElementById('v3').textContent=dis.name;var vl={high:'검색량 높음 — 경쟁 주의',med:'검색량 중간',low:'검색량 낮음 — 조합 필수'};document.getElementById('s3').textContent=vl[dis.vol]||'';document.getElementById('btn3').classList.add('active');var pr=pickProduct(dis.name);ST.product=pr;if(pr){document.getElementById('v4').textContent=productDisplayName(pr);document.getElementById('s4').textContent='질환 자동 매칭';document.getElementById('btn4').classList.add('active');}else{document.getElementById('v4').textContent='—';document.getElementById('s4').textContent='해당 시술 없음';document.getElementById('btn4').classList.remove('active');}}
+  if(n===4){var pr2=pickProduct((ST.disease||{name:''}).name);ST.product=pr2;if(pr2){document.getElementById('v4').textContent=productDisplayName(pr2);document.getElementById('s4').textContent='매칭 재선택';document.getElementById('btn4').classList.add('active');}else{document.getElementById('v4').textContent='—';document.getElementById('s4').textContent='해당 시술 없음';document.getElementById('btn4').classList.remove('active');}}
   if(ST.region&&ST.dept&&ST.disease&&ST.product)showResult();
 }
 function rollAll(){
@@ -3045,7 +3081,7 @@ function rollAll(){
   document.getElementById('v1').textContent=rc.region;document.getElementById('s1').textContent=rc.cats.join(' · ');document.getElementById('btn1').classList.add('active');
   var d=pickDept();ST.dept=d;document.getElementById('v2').textContent=d;document.getElementById('s2').textContent='병원 유형 연관 과목';document.getElementById('btn2').classList.add('active');
   var dis=pickDisease(rc.cats);if(!dis){alert('해당 카테고리에 등록된 질환이 없습니다.');return;}ST.disease=dis;document.getElementById('v3').textContent=dis.name;var vl={high:'검색량 높음 — 경쟁 주의',med:'검색량 중간',low:'검색량 낮음 — 조합 필수'};document.getElementById('s3').textContent=vl[dis.vol]||'';document.getElementById('btn3').classList.add('active');
-  var pr=pickProduct(dis.name);ST.product=pr;if(pr){document.getElementById('v4').textContent=pr.name;document.getElementById('s4').textContent='질환 자동 매칭';document.getElementById('btn4').classList.add('active');}else{document.getElementById('v4').textContent='없음';document.getElementById('s4').textContent='해당 시술 없음';document.getElementById('btn4').classList.remove('active');}
+  var pr=pickProduct(dis.name);ST.product=pr;if(pr){document.getElementById('v4').textContent=productDisplayName(pr);document.getElementById('s4').textContent='질환 자동 매칭';document.getElementById('btn4').classList.add('active');}else{document.getElementById('v4').textContent='없음';document.getElementById('s4').textContent='해당 시술 없음';document.getElementById('btn4').classList.remove('active');}
   showResult();
 }
 function resetBtns(){
@@ -3071,13 +3107,13 @@ function showResult(){
     {t:r+' '+dis.name+' 원인',star:false}
   ];
   if(prod){
-    variants.splice(2,0,{t:r+' '+dis.name+' '+prod.name,star:true});
-    variants.splice(4,0,{t:r+' '+dept+' '+prod.name,star:false});
+    variants.splice(2,0,{t:r+' '+dis.name+' '+productDisplayName(prod),star:true});
+    variants.splice(4,0,{t:r+' '+dept+' '+productDisplayName(prod),star:false});
   }
   document.getElementById('combo-chips').innerHTML=variants.map(function(v){
     return '<span class="chip'+(v.star?' star':'')+'" onclick="copyChip(this)">'+v.t+'</span>';
   }).join('');
-  var allKws=[r,dept,dis.name,prod?prod.name:''].join(' ').toLowerCase();
+  var allKws=[r,dept,dis.name,prod?productDisplayName(prod):''].join(' ').toLowerCase();
   var triggered=getAllIssues().filter(function(iss){return iss.kw.split(',').map(function(k){return k.trim();}).some(function(k){return allKws.includes(k.toLowerCase());});});
   document.getElementById('issue-alerts').innerHTML=triggered.map(function(iss){
     var isW=iss.level==='warn';var isD=iss.level==='danger';
