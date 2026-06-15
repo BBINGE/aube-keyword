@@ -310,7 +310,7 @@
     </div>
   </div>
   <div class="nav-tabs">
-    <button class="nav-tab active" onclick="goPage('survey',this)">🩺 콘텐츠 진단 설문</button>
+    <button class="nav-tab" onclick="goPage('survey',this)">🩺 콘텐츠 진단 설문</button>
     <button class="nav-tab" onclick="goPage('gen',this)">⛏️ 키워드 마이닝</button>
     <button class="nav-tab" onclick="goPage('brief',this)">📖 정론지</button>
     <button class="nav-tab" onclick="goPage('admin',this)">🔒 관리자</button>
@@ -324,7 +324,7 @@
 
 
 <!-- 콘텐츠 진단 설문 -->
-<div class="page active" id="page-survey">
+<div class="page" id="page-survey">
   <div class="page-header">
     <div class="hero-shield" aria-hidden="true"></div>
     <div class="hero-visual" aria-hidden="true">
@@ -345,7 +345,7 @@
     <p>원장님의 진료 철학과 병원의 강점이 더 정확한 블로그 원고로 이어지도록, 오늘의브랜딩이 사전 브리프를 정리합니다.</p>
   </div>
 
-  <div class="survey-modal show" id="survey-intro-modal" role="dialog" aria-modal="true">
+  <div class="survey-modal" id="survey-intro-modal" role="dialog" aria-modal="true">
     <div class="survey-modal-box">
       <div class="survey-modal-kicker">AUBE Brief</div>
       <div class="survey-modal-title">원장님의 무한한 발전을 응원합니다.</div>
@@ -461,7 +461,7 @@
 </div>
 
 <!-- 직원 로그인 -->
-<div class="page" id="page-staff-login">
+<div class="page active" id="page-staff-login">
   <div class="login-wrap">
     <div class="login-title">직원 로그인</div>
     <div class="login-sub">키워드 마이닝과 정론지는 오늘의브랜딩 내부 직원 전용입니다.</div>
@@ -1484,9 +1484,24 @@ function spawnParticles(){
 }
 if(document.readyState!=='loading')spawnParticles();
 else document.addEventListener('DOMContentLoaded',spawnParticles);
-function initSurveyPage(){showSurveyIntroOnce();}
-if(document.readyState!=='loading')initSurveyPage();
-else document.addEventListener('DOMContentLoaded',initSurveyPage);
+function findNavTab(id){
+  return document.querySelector(".nav-tab[onclick*=\""+id+"\"]");
+}
+function currentRoute(){
+  var h=(location.hash||'').replace('#','');
+  return ['survey','gen','brief','admin'].indexOf(h)>=0?h:'gen';
+}
+function initRoute(){
+  var id=currentRoute();
+  var tab=findNavTab(id);
+  if(id==='survey'){setActivePage('survey',tab);return;}
+  if(id==='admin'){setActivePage('admin',tab);return;}
+  if((id==='gen'||id==='brief')&&!isStaff){showStaffLogin(id,tab);return;}
+  setActivePage(id,tab);
+}
+if(document.readyState!=='loading')initRoute();
+else document.addEventListener('DOMContentLoaded',initRoute);
+window.addEventListener('hashchange',initRoute);
 
 function setActivePage(id,el){
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
@@ -1507,6 +1522,7 @@ function showStaffLogin(targetId,el){
   setTimeout(function(){var input=document.getElementById('staff-pw');if(input)input.focus();},0);
 }
 function goPage(id,el){
+  if(location.hash!=='#'+id){location.hash=id;return;}
   if((id==='gen'||id==='brief')&&!isStaff){showStaffLogin(id,el);return;}
   setActivePage(id,el);
 }
