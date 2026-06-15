@@ -285,7 +285,7 @@
     </div>
   </div>
   <div class="nav-tabs">
-    <button class="nav-tab active" onclick="goPage('gen',this)">⛏️ 키워드 마이닝</button>
+    <button class="nav-tab" onclick="goPage('gen',this)">⛏️ 키워드 마이닝</button>
     <button class="nav-tab" onclick="goPage('brief',this)">📖 정론지</button>
     <button class="nav-tab" onclick="goPage('admin',this)">🔒 관리자</button>
   </div>
@@ -296,8 +296,23 @@
 
 <div id="sync-status" style="display:none;background:var(--accent);color:#fff;font-size:12px;text-align:center;padding:6px;position:sticky;top:56px;z-index:99">구글 시트 동기화 중...</div>
 
+<!-- 직원 로그인 -->
+<div class="page active" id="page-staff-login">
+  <div class="login-wrap">
+    <div class="login-title">직원 로그인</div>
+    <div class="login-sub">키워드 마이닝과 정론지는 오늘의브랜딩 내부 직원 전용입니다.</div>
+    <div class="fg" style="margin-bottom:12px">
+      <label>직원용 비밀번호</label>
+      <input type="password" id="staff-pw" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter')checkStaffLogin()"/>
+    </div>
+    <button class="btn btn-primary" style="width:100%" onclick="checkStaffLogin()">입장</button>
+    <div id="staff-login-err" style="margin-top:10px;font-size:12px;color:var(--red);display:none">비밀번호가 틀렸습니다.</div>
+    <div style="margin-top:14px;font-size:11px;color:var(--text3);line-height:1.7">원장 인터뷰 페이지는 별도 공개 섹션으로 분리 예정입니다.</div>
+  </div>
+</div>
+
 <!-- 키워드 생성 -->
-<div class="page active" id="page-gen">
+<div class="page" id="page-gen">
   <div class="page-header">
     <div class="hero-shield" aria-hidden="true"></div>
     <div class="hero-visual" aria-hidden="true">
@@ -639,8 +654,12 @@
 </div>
 
 <script>
-var ADMIN_PW='aube2026';
+var STAFF_PW='aube2026';
+var ADMIN_PW='aube-admin-2026';
+var isStaff=false;
 var isAdmin=false;
+var pendingStaffPage='gen';
+var pendingStaffTab=null;
 var ALL_CATS=['통증','교통사고','다이어트','소아성장','피부','암','공황/불면','산후','척추','말초신경','두통/어지럼','신경계','피부과','미용','치과','내과','이비인후과','안과','산부인과','비뇨기과','성형외과','여성질환','재활'];
 
 // ===== Google Sheets 연동 =====
@@ -1300,13 +1319,30 @@ function spawnParticles(){
 }
 if(document.readyState!=='loading')spawnParticles();
 else document.addEventListener('DOMContentLoaded',spawnParticles);
+function initStaffGate(){showStaffLogin('gen',document.querySelector(".nav-tab[onclick*=\"gen\"]"));}
+if(document.readyState!=='loading')initStaffGate();
+else document.addEventListener('DOMContentLoaded',initStaffGate);
 
-function goPage(id,el){
+function setActivePage(id,el){
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
   document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('active');});
   document.getElementById('page-'+id).classList.add('active');
-  el.classList.add('active');
+  if(el)el.classList.add('active');
   if(id==='gen')renderClientList();
+}
+function showStaffLogin(targetId,el){
+  pendingStaffPage=targetId||'gen';
+  pendingStaffTab=el||null;
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('active');});
+  document.getElementById('page-staff-login').classList.add('active');
+  var err=document.getElementById('staff-login-err');
+  if(err)err.style.display='none';
+  setTimeout(function(){var input=document.getElementById('staff-pw');if(input)input.focus();},0);
+}
+function goPage(id,el){
+  if((id==='gen'||id==='brief')&&!isStaff){showStaffLogin(id,el);return;}
+  setActivePage(id,el);
 }
 
 // ===== 정론지 로직 =====
@@ -1538,6 +1574,17 @@ function renderSources(item){
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 // ===== LOGIN =====
+function checkStaffLogin(){
+  var input=document.getElementById('staff-pw');
+  if(input&&input.value===STAFF_PW){
+    isStaff=true;
+    input.value='';
+    setActivePage(pendingStaffPage,pendingStaffTab);
+  }else{
+    var err=document.getElementById('staff-login-err');
+    if(err)err.style.display='block';
+  }
+}
 function checkLogin(){
   if(document.getElementById('admin-pw').value===ADMIN_PW){
     isAdmin=true;
