@@ -1024,13 +1024,13 @@ var DEFAULT_CLIENTS=[
     id:9001,name:'동탄신경외과의원',city:'동탄',type:'신경외과',
     note:'목·허리 척추 전문. 일반 정형외과와 차별화(척추 제대로 보는 정형외과 드묾). 두통은 경추성 접근(대후두·소후두신경차단술, 경추 MBB). C-arm만 보유.',
     exclude:['보톡스','고주파 신경차단술','고주파','신경성형술','경피적 경막외강 신경성형술','풍선확장술','신경 감압술','B-PEN','L-PEN','C-PEN','PEN'],
-    surg:false,equip:false,active:true,fixedDepts:['신경외과'],rgGroups:[]
+    surg:false,equip:true,active:true,fixedDepts:['신경외과'],rgGroups:[]
   },
   {
     id:9002,name:'로코모재활의학과의원',city:'동탄',type:'재활의학과',
     note:'마운자로(티르제파타이드) 다이어트 이벤트 운영(2.5mg 32만/5mg 43만/7.5mg 57만, 각 4회). 콘텐츠는 주사치료·신경치료·PRP·관절주사·체외충격파·물리치료 비중 확대, 도수치료 비중 축소(완전 제외 아님 — 관리급여 이슈). C-arm·초음파 보유.',
     exclude:[],
-    surg:false,equip:false,active:true,fixedDepts:[],rgGroups:[]
+    surg:false,equip:true,active:true,fixedDepts:[],rgGroups:[]
   },
   {
     id:9003,name:'자연방한의원',city:'',type:'한의원',
@@ -3034,13 +3034,13 @@ function weightedPickProducts(items,signal){
 // 상품 표시가 불필요한 카테고리 (질환명 자체가 완결형 검색어)
 var NO_PRODUCT_CATS=['암','재활','내과','이비인후과','안과','산부인과','비뇨기과','치과'];
 
-var DIRECT_ONLY_PRODUCT_CATS_BY_TYPE={
-  '신경외과':['통증','신경계','척추']
-};
+var DIRECT_ONLY_PRODUCT_CATS_BY_CLIENT=[
+  {match:'동탄신경외과',cats:['통증','신경계','척추']}
+];
 function shouldStopProductFallback(client,disCat){
-  if(!client||!disCat)return false;
-  var cats=DIRECT_ONLY_PRODUCT_CATS_BY_TYPE[client.type]||[];
-  return cats.indexOf(disCat)>=0;
+  if(!client||!client.name||!disCat)return false;
+  var rule=DIRECT_ONLY_PRODUCT_CATS_BY_CLIENT.find(function(r){return client.name.indexOf(r.match)>=0||r.match.indexOf(client.name)>=0;});
+  return !!(rule&&rule.cats&&rule.cats.indexOf(disCat)>=0);
 }
 
 function pickProduct(diseaseName){
