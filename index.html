@@ -370,56 +370,60 @@
       <div class="survey-progress"><span id="survey-progress-bar"></span></div>
 
       <div class="card survey-panel active" id="survey-step-0">
-        <div class="card-title">01 병원 정보</div>
+        <div class="card-title">01 병원 기본 정보</div>
+        <p class="survey-help">콘텐츠와 키워드의 기준이 되는 기본 정보입니다.</p>
         <div class="survey-question-grid">
           <div class="fg"><label>병원명</label><input type="text" id="sv-clinic" placeholder="예: 오늘의브랜딩의원"/></div>
-          <div class="fg"><label>진료과 / 병원 유형</label><input type="text" id="sv-type" placeholder="예: 신경외과, 한의원, 피부과"/></div>
+          <div class="fg"><label>진료과 / 병원 유형</label><select id="sv-type"><option value="">선택해 주세요</option><option>한의원</option><option>신경외과</option><option>정형외과</option><option>재활의학과</option><option>통증의학과</option><option>피부과/미용의원</option><option>성형외과</option><option>치과</option><option>내과/가정의학과</option><option>산부인과/여성의원</option><option>비뇨기과/남성의원</option><option>기타</option></select></div>
           <div class="fg"><label>지역</label><input type="text" id="sv-region" placeholder="예: 동탄, 평택, 양천구"/></div>
-          <div class="fg"><label>대표 진료</label><input type="text" id="sv-main-care" placeholder="예: 척추, 다이어트, 리프팅"/></div>
-          <div class="fg wide"><label>병원의 강점</label><textarea id="sv-strength" placeholder="원장님이 생각하시는 병원의 차별점, 환자들이 자주 칭찬하는 부분을 적어주세요."></textarea></div>
+          <div class="fg"><label>대표 진료/상품 3개</label><input type="text" id="sv-main-care" placeholder="예: 도수치료, 신경차단술, 체외충격파"/></div>
+          <div class="fg wide"><label>병원의 강점</label><textarea id="sv-strength" placeholder="장비, 원장님 경력, 설명 방식, 치료 철학, 환자들이 자주 칭찬하는 점을 적어주세요."></textarea></div>
         </div>
       </div>
 
       <div class="card survey-panel" id="survey-step-1">
-        <div class="card-title">02 환자 흐름</div>
+        <div class="card-title">02 환자/매출 흐름</div>
+        <p class="survey-help">정확한 키워드 우선순위를 잡기 위한 주관식 문항입니다. 대략적인 수치여도 괜찮습니다.</p>
         <div class="survey-question-grid">
           <div class="fg"><label>월 초진 환자 수</label><input type="text" id="sv-new-patients" placeholder="예: 월 80명"/></div>
           <div class="fg"><label>초진 대비 재진율</label><input type="text" id="sv-revisit" placeholder="예: 약 60%"/></div>
-          <div class="fg"><label>주 방문 연령대</label><input type="text" id="sv-age" placeholder="예: 30-50대 여성"/></div>
-          <div class="fg"><label>가장 많은 내원 이유</label><input type="text" id="sv-main-symptom" placeholder="예: 허리통증, 여드름, 체중감량"/></div>
-          <div class="fg wide"><label>상담에서 자주 듣는 고민</label><textarea id="sv-patient-worry" placeholder="환자들이 어떤 말로 불편함을 표현하는지 적어주세요."></textarea></div>
+          <div class="fg"><label>비급여 비중</label><input type="text" id="sv-noncovered" placeholder="예: 약 40%"/></div>
+          <div class="fg"><label>매출 상위 3개 진료</label><input type="text" id="sv-top-sales" placeholder="예: 도수치료, 주사치료, 다이어트"/></div>
+          <div class="fg wide"><label>수익 구조상 특히 중요한 상품/시술</label><textarea id="sv-revenue-note" placeholder="객단가가 높거나, 재진/패키지로 이어지거나, 앞으로 더 중요해질 상품/시술을 적어주세요."></textarea></div>
         </div>
       </div>
 
       <div class="card survey-panel" id="survey-step-2">
-        <div class="card-title">03 진료/매출 구조</div>
+        <div class="card-title">03 키워드 방향</div>
+        <p class="survey-help">상품/시술명은 실제 블로그 키워드 마이닝에 바로 연결됩니다.</p>
         <div class="survey-question-grid">
-          <div class="fg"><label>비급여 비중</label><input type="text" id="sv-noncovered" placeholder="예: 약 40%"/></div>
-          <div class="fg"><label>매출 상위 3개 진료</label><input type="text" id="sv-top-sales" placeholder="예: 도수치료, 주사치료, 다이어트"/></div>
-          <div class="fg"><label>더 늘리고 싶은 진료</label><input type="text" id="sv-grow-care" placeholder="예: PRP, 리프팅, 성장한약"/></div>
-          <div class="fg"><label>줄이고 싶은 진료</label><input type="text" id="sv-reduce-care" placeholder="예: 단순 물리치료"/></div>
-          <div class="fg wide"><label>시술/진료 설명 시 조심할 점</label><textarea id="sv-caution" placeholder="과장되면 안 되는 표현, 원장님이 선호하지 않는 표현을 적어주세요."></textarea></div>
+          <div class="fg"><label>앞으로 더 키우고 싶은 상품/시술</label><input type="text" id="sv-grow-care" placeholder="예: PRP, 리프팅, 성장한약"/></div>
+          <div class="fg"><label>강조하지 않았으면 하는 상품/시술</label><input type="text" id="sv-reduce-care" placeholder="예: 단순 물리치료, 가격 이벤트"/></div>
+          <div class="fg"><label>참고하거나 의식하고 있는 인근 병원</label><input type="text" id="sv-competitor" placeholder="없으면 비워두셔도 됩니다. 병원명, 지역, 블로그 URL 등"/></div>
+          <div class="fg"><label>현재 가장 늘리고 싶은 문의 유형</label><select id="sv-inquiry-goal"><option value="">선택해 주세요</option><option>신규 환자 문의</option><option>특정 진료/시술 문의</option><option>비급여 상담 문의</option><option>재진/관리 프로그램 문의</option><option>검사·진단 문의</option><option>잘 모르겠음</option></select></div>
+          <div class="fg wide"><label>시술/진료 설명 시 조심할 점</label><textarea id="sv-caution" placeholder="과장되면 안 되는 표현, 피하고 싶은 질환/시술명, 광고법상 특히 조심했으면 하는 부분을 적어주세요."></textarea></div>
         </div>
       </div>
 
       <div class="card survey-panel" id="survey-step-3">
-        <div class="card-title">04 콘텐츠/마케팅 현황</div>
+        <div class="card-title">04 콘텐츠 현황</div>
+        <p class="survey-help">애매하게 답하기 쉬운 부분은 선택형으로 줄였습니다.</p>
         <div class="survey-question-grid">
-          <div class="fg"><label>현재 운영 채널</label><input type="text" id="sv-channels" placeholder="예: 블로그, 플레이스, 인스타그램"/></div>
+          <div class="fg"><label>현재 운영 채널</label><select id="sv-channels"><option value="">선택해 주세요</option><option>블로그 중심</option><option>플레이스 중심</option><option>블로그 + 플레이스</option><option>블로그 + SNS</option><option>거의 운영하지 않음</option><option>기타</option></select></div>
+          <div class="fg"><label>현재 블로그에서 가장 아쉬운 점</label><select id="sv-blog-problem"><option value="">선택해 주세요</option><option>유입 자체가 적음</option><option>원하는 진료 문의가 적음</option><option>가격 문의만 많음</option><option>내원 전환이 낮음</option><option>병원 강점이 잘 드러나지 않음</option><option>잘 모르겠음</option></select></div>
           <div class="fg"><label>반응이 좋았던 키워드</label><input type="text" id="sv-good-kw" placeholder="예: 동탄 허리디스크"/></div>
-          <div class="fg"><label>반응이 약했던 키워드</label><input type="text" id="sv-weak-kw" placeholder="예: 도수치료"/></div>
-          <div class="fg"><label>의식되는 경쟁 병원</label><input type="text" id="sv-competitor" placeholder="병원명 또는 지역/유형"/></div>
+          <div class="fg"><label>반응이 약했던 키워드</label><input type="text" id="sv-weak-kw" placeholder="예: 도수치료, 리프팅"/></div>
           <div class="fg wide"><label>블로그에서 꼭 전달되었으면 하는 인상</label><textarea id="sv-tone" placeholder="예: 차분하고 전문적인 병원, 과잉진료 없는 병원, 설명을 잘해주는 병원"></textarea></div>
         </div>
       </div>
 
       <div class="card survey-panel" id="survey-step-4">
-        <div class="card-title">05 성장 목표</div>
+        <div class="card-title">05 콘텐츠 톤과 주의사항</div>
         <div class="survey-question-grid">
-          <div class="fg"><label>3개월 내 늘리고 싶은 환자군</label><input type="text" id="sv-target" placeholder="예: 40대 허리통증 환자"/></div>
-          <div class="fg"><label>가장 시급한 문제</label><input type="text" id="sv-urgent" placeholder="예: 신규 환자 유입, 객단가, 재진율"/></div>
-          <div class="fg"><label>원장님이 피하고 싶은 마케팅</label><input type="text" id="sv-avoid" placeholder="예: 자극적 가격 광고, 과장 표현"/></div>
-          <div class="fg"><label>원하시는 콘텐츠 분위기</label><input type="text" id="sv-content-style" placeholder="예: 신뢰감, 친절함, 전문성"/></div>
+          <div class="fg"><label>3개월 내 늘리고 싶은 환자군</label><input type="text" id="sv-target" placeholder="예: 40대 허리통증 환자, 여드름 흉터 환자"/></div>
+          <div class="fg"><label>가장 시급한 문제</label><select id="sv-urgent"><option value="">선택해 주세요</option><option>신규 환자 유입</option><option>특정 진료/시술 매출 강화</option><option>비급여 비중 확대</option><option>재진율 개선</option><option>브랜드 신뢰도 강화</option><option>경쟁 병원과 차별화</option></select></div>
+          <div class="fg"><label>피하고 싶은 마케팅/표현</label><input type="text" id="sv-avoid" placeholder="예: 자극적 가격 광고, 과장 표현, 전후사진 중심"/></div>
+          <div class="fg"><label>선호하는 콘텐츠 톤</label><select id="sv-content-style"><option value="">선택해 주세요</option><option>담백하고 전문적인 톤</option><option>친절하고 쉬운 설명 톤</option><option>신뢰감 있는 병원 소개 톤</option><option>증상 설명 중심</option><option>치료 과정 설명 중심</option><option>원장님 철학 중심</option></select></div>
           <div class="fg wide"><label>마지막으로 꼭 전하고 싶은 말</label><textarea id="sv-final-note" placeholder="블로그 원고에 반영되었으면 하는 원장님의 생각을 자유롭게 적어주세요."></textarea></div>
         </div>
       </div>
@@ -1557,11 +1561,11 @@ var surveyStep=0;
 var surveySubmitted=false;
 var surveyIntroSeen=false;
 var surveyFieldMap=[
-  ['병원명','sv-clinic'],['진료과/병원 유형','sv-type'],['지역','sv-region'],['대표 진료','sv-main-care'],['병원의 강점','sv-strength'],
-  ['월 초진 환자 수','sv-new-patients'],['초진 대비 재진율','sv-revisit'],['주 방문 연령대','sv-age'],['가장 많은 내원 이유','sv-main-symptom'],['상담에서 자주 듣는 고민','sv-patient-worry'],
-  ['비급여 비중','sv-noncovered'],['매출 상위 3개 진료','sv-top-sales'],['더 늘리고 싶은 진료','sv-grow-care'],['줄이고 싶은 진료','sv-reduce-care'],['시술/진료 설명 시 조심할 점','sv-caution'],
-  ['현재 운영 채널','sv-channels'],['반응이 좋았던 키워드','sv-good-kw'],['반응이 약했던 키워드','sv-weak-kw'],['의식되는 경쟁 병원','sv-competitor'],['블로그에서 꼭 전달되었으면 하는 인상','sv-tone'],
-  ['3개월 내 늘리고 싶은 환자군','sv-target'],['가장 시급한 문제','sv-urgent'],['피하고 싶은 마케팅','sv-avoid'],['원하시는 콘텐츠 분위기','sv-content-style'],['마지막으로 꼭 전하고 싶은 말','sv-final-note']
+  ['병원명','sv-clinic'],['진료과/병원 유형','sv-type'],['지역','sv-region'],['대표 진료/상품 3개','sv-main-care'],['병원의 강점','sv-strength'],
+  ['월 초진 환자 수','sv-new-patients'],['초진 대비 재진율','sv-revisit'],['비급여 비중','sv-noncovered'],['매출 상위 3개 진료','sv-top-sales'],['수익 구조상 중요한 상품/시술','sv-revenue-note'],
+  ['앞으로 더 키우고 싶은 상품/시술','sv-grow-care'],['강조하지 않았으면 하는 상품/시술','sv-reduce-care'],['참고하거나 의식하고 있는 인근 병원','sv-competitor'],['현재 가장 늘리고 싶은 문의 유형','sv-inquiry-goal'],['시술/진료 설명 시 조심할 점','sv-caution'],
+  ['현재 운영 채널','sv-channels'],['현재 블로그에서 가장 아쉬운 점','sv-blog-problem'],['반응이 좋았던 키워드','sv-good-kw'],['반응이 약했던 키워드','sv-weak-kw'],['블로그에서 꼭 전달되었으면 하는 인상','sv-tone'],
+  ['3개월 내 늘리고 싶은 환자군','sv-target'],['가장 시급한 문제','sv-urgent'],['피하고 싶은 마케팅/표현','sv-avoid'],['선호하는 콘텐츠 톤','sv-content-style'],['마지막으로 꼭 전하고 싶은 말','sv-final-note']
 ];
 function showSurveyIntroOnce(){
   if(surveyIntroSeen)return;
