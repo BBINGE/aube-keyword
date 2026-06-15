@@ -3034,6 +3034,15 @@ function weightedPickProducts(items,signal){
 // 상품 표시가 불필요한 카테고리 (질환명 자체가 완결형 검색어)
 var NO_PRODUCT_CATS=['암','재활','내과','이비인후과','안과','산부인과','비뇨기과','치과'];
 
+var DIRECT_ONLY_PRODUCT_CATS_BY_TYPE={
+  '신경외과':['통증','신경계','척추']
+};
+function shouldStopProductFallback(client,disCat){
+  if(!client||!disCat)return false;
+  var cats=DIRECT_ONLY_PRODUCT_CATS_BY_TYPE[client.type]||[];
+  return cats.indexOf(disCat)>=0;
+}
+
 function pickProduct(diseaseName){
   if(!selectedClient)return null;
   // 현재 카테고리가 상품 불필요 카테고리면 null 반환
@@ -3059,7 +3068,7 @@ function pickProduct(diseaseName){
   // 1순위: 질환명 직접 매칭
   var matched=typeProducts.filter(function(p){return p.match&&p.match.split(',').map(function(x){return x.trim();}).indexOf(diseaseName)>=0;});
   if(matched.length)return weightedPickProducts(matched,signal);
-  if(selectedClient.type==='신경외과'&&disCat==='통증')return null;
+  if(shouldStopProductFallback(selectedClient,disCat))return null;
   // 2순위: 같은 카테고리 상품
   if(disCat){
     var catM=typeProducts.filter(function(p){return p.cat===disCat;});
