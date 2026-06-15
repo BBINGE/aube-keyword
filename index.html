@@ -694,7 +694,7 @@
     <div class="tab-content" id="tab-survey-requests">
       <div style="background:var(--accent-bg);border:1px solid var(--accent-border);border-radius:var(--radius);padding:14px 18px;margin-bottom:16px;font-size:12px;color:var(--accent);line-height:1.7">
         <b>원장 설문지 요청</b>은 콘텐츠 진단 설문이 바로 확정 DB로 들어가지 않도록 잠시 모아두는 검토함입니다.<br>
-        승인하면 확정 설문 답변으로 반영되고, 수정은 내부 메모와 요약 보정용으로 사용합니다.
+        승인하면 확정 설문 답변으로 반영되고, 비승인하면 최종 반영 없이 기록만 보관됩니다. 수정은 내부 메모와 요약 보정용으로 사용합니다.
       </div>
       <div id="survey-request-edit" style="display:none" class="card">
         <div class="card-title">설문 요청 수정</div>
@@ -707,7 +707,7 @@
         </div>
       </div>
       <div class="card">
-        <div class="card-title">접수된 콘텐츠 진단 설문</div>
+        <div class="card-title">접수된 콘텐츠 진단 설문 <span style="font-size:10px;font-weight:400;color:var(--text3)">(검토 대기 · 승인 · 비승인 기록 보관)</span></div>
         <div id="survey-request-cards"><div class="empty">접수된 설문이 없습니다.</div></div>
       </div>
     </div>
@@ -2208,7 +2208,7 @@ function surveyRequestDateLabel(value){
 }
 function surveyRequestStatusLabel(status){
   if(status==='approved')return '<span class="badge badge-accent">승인</span>';
-  if(status==='rejected')return '<span class="badge badge-red">반려</span>';
+  if(status==='rejected')return '<span class="badge badge-red">비승인</span>';
   return '<span class="badge badge-amber">검토 대기</span>';
 }
 function surveyRequestSummary(req){
@@ -2233,10 +2233,14 @@ function renderSurveyRequestCards(){
     var meta=[req.region,req.type,req.phone||req.email].filter(Boolean).join(' · ');
     var summary=esc(surveyRequestSummary(req)).replace(/\n/g,'<br>');
     var memo=req.adminMemo?'<div class="db-card-meta" style="margin-top:8px;color:var(--accent)">관리자 메모: '+esc(req.adminMemo)+'</div>':'';
+    var reviewMeta=req.rejectedAt?'<div class="db-card-meta" style="margin-top:4px;color:var(--red)">비승인 처리: '+esc(surveyRequestDateLabel(req.rejectedAt))+(req.rejectReason?' · '+esc(req.rejectReason):'')+'</div>':(req.approvedAt?'<div class="db-card-meta" style="margin-top:4px;color:var(--accent)">승인 처리: '+esc(surveyRequestDateLabel(req.approvedAt))+'</div>':'');
     var approveBtn=req.status==='approved'
       ? '<button class="btn btn-sm" disabled>승인 완료</button>'
       : '<button class="btn btn-sm btn-accent" onclick="approveSurveyRequest(&quot;'+id+'&quot;)">승인</button>';
-    return '<div class="db-card"><div class="db-card-header"><div style="flex:1"><div class="db-card-title">'+surveyRequestStatusLabel(req.status)+' '+esc(surveyRequestTitle(req))+'</div><div class="db-card-meta">'+esc(meta||'기본 정보 미입력')+' · 접수 '+esc(surveyRequestDateLabel(req.receivedAt||req.submittedAt))+'</div><div class="db-card-meta" style="margin-top:8px;line-height:1.7">'+summary+'</div>'+memo+'</div><div class="db-card-actions">'+approveBtn+'<button class="btn btn-sm btn-edit" onclick="editSurveyRequest(&quot;'+id+'&quot;)">수정</button><button class="btn btn-sm btn-danger" onclick="deleteSurveyRequest(&quot;'+id+'&quot;)">삭제</button></div></div></div>';
+    var rejectBtn=req.status==='rejected'
+      ? '<button class="btn btn-sm" disabled>비승인 완료</button>'
+      : '<button class="btn btn-sm btn-danger" onclick="rejectSurveyRequest(&quot;'+id+'&quot;)">비승인</button>';
+    return '<div class="db-card"><div class="db-card-header"><div style="flex:1"><div class="db-card-title">'+surveyRequestStatusLabel(req.status)+' '+esc(surveyRequestTitle(req))+'</div><div class="db-card-meta">'+esc(meta||'기본 정보 미입력')+' · 접수 '+esc(surveyRequestDateLabel(req.receivedAt||req.submittedAt))+'</div><div class="db-card-meta" style="margin-top:8px;line-height:1.7">'+summary+'</div>'+memo+reviewMeta+'</div><div class="db-card-actions">'+approveBtn+rejectBtn+'<button class="btn btn-sm btn-edit" onclick="editSurveyRequest(&quot;'+id+'&quot;)">수정</button><button class="btn btn-sm btn-danger" onclick="deleteSurveyRequest(&quot;'+id+'&quot;)">기록 삭제</button></div></div></div>';
   }).join('');
 }
 function findSurveyRequest(id){
@@ -2262,6 +2266,25 @@ function approveSurveyRequest(id){
     renderSurveyRequestCards();
     alert('승인되었습니다. 확정 설문 답변에 반영했습니다.');
   });
+}
+function rejectSurveyRequest(id){
+  var requests=load(KEY_SURVEY_REQUESTS,[]);
+  var req=requests.find(function(r){return String(r.id)===String(id);});
+  if(!req)return;
+  if(!confirm('이 설문 요청을 비승인으로 기록할까요? 확정 답변에는 반영되지 않습니다.'))return;
+  var reason='';
+  if(typeof prompt==='function'){
+    reason=prompt('비승인 사유를 짧게 남길까요? (예: 테스트 입력, 중복 제출, 계약 보류)',req.rejectReason||'')||'';
+  }
+  req.status='rejected';
+  req.reviewStatus='rejected';
+  req.rejectReason=reason.trim();
+  req.rejectedAt=new Date().toISOString();
+  req.updatedAt=req.rejectedAt;
+  save(KEY_SURVEY_REQUESTS,requests);
+  closeSurveyRequestEdit();
+  renderSurveyRequestCards();
+  alert('비승인으로 기록했습니다. 확정 설문 답변에는 반영하지 않았습니다.');
 }
 function editSurveyRequest(id){
   var req=findSurveyRequest(id);
