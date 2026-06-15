@@ -617,6 +617,7 @@
     </div>
     <div class="tab-row">
       <div class="tab active" onclick="switchTab('clients',this)">클라이언트</div>
+      <div class="tab" onclick="switchTab('survey-requests',this)">원장 설문지 요청</div>
       <div class="tab" onclick="switchTab('db',this)">데이터베이스</div>
       <div class="tab" onclick="switchTab('issues',this)">업계 이슈 모니터링</div>
     </div>
@@ -686,6 +687,28 @@
       <div class="card">
         <div class="card-title">등록된 클라이언트 <span style="font-size:10px;font-weight:400;color:var(--text3)">(배포 업데이트에도 데이터 보존)</span></div>
         <div id="client-cards"><div class="empty">등록된 클라이언트가 없습니다.</div></div>
+      </div>
+    </div>
+
+    <!-- 원장 설문지 요청 탭 -->
+    <div class="tab-content" id="tab-survey-requests">
+      <div style="background:var(--accent-bg);border:1px solid var(--accent-border);border-radius:var(--radius);padding:14px 18px;margin-bottom:16px;font-size:12px;color:var(--accent);line-height:1.7">
+        <b>원장 설문지 요청</b>은 콘텐츠 진단 설문이 바로 확정 DB로 들어가지 않도록 잠시 모아두는 검토함입니다.<br>
+        승인하면 확정 설문 답변으로 반영되고, 수정은 내부 메모와 요약 보정용으로 사용합니다.
+      </div>
+      <div id="survey-request-edit" style="display:none" class="card">
+        <div class="card-title">설문 요청 수정</div>
+        <input type="hidden" id="sr-id"/>
+        <div class="fg" style="margin-bottom:8px"><label>요약 보정</label><textarea id="sr-summary" style="min-height:150px"></textarea></div>
+        <div class="fg" style="margin-bottom:12px"><label>관리자 메모</label><textarea id="sr-memo" placeholder="대표님 확인 사항, 후속 연락 메모 등을 적어두세요."></textarea></div>
+        <div class="btn-row">
+          <button class="btn btn-accent" onclick="saveSurveyRequestEdit()">수정 저장</button>
+          <button class="btn" onclick="closeSurveyRequestEdit()">취소</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">접수된 콘텐츠 진단 설문</div>
+        <div id="survey-request-cards"><div class="empty">접수된 설문이 없습니다.</div></div>
       </div>
     </div>
 
@@ -833,6 +856,7 @@ var KEY_CUSTOM_DISEASES='custom_diseases';
 var KEY_CUSTOM_PRODUCTS='custom_products';
 var KEY_CUSTOM_DEPTS='custom_depts';
 var KEY_ISSUES='issues';
+var KEY_SURVEY_REQUESTS='survey_requests';
 var KEY_SURVEY_ANSWERS='survey_answers';
 
 // 로컬 캐시 (빠른 렌더링용)
@@ -887,7 +911,7 @@ function syncFromSheet(k,callback){
 // 앱 시작 시 구글 시트 동기화
 function initSync(){
   showSyncStatus('구글 시트 동기화 중...');
-  var keys=[KEY_CLIENTS,KEY_CUSTOM_DISEASES,KEY_CUSTOM_PRODUCTS,KEY_CUSTOM_DEPTS,KEY_ISSUES];
+  var keys=[KEY_CLIENTS,KEY_CUSTOM_DISEASES,KEY_CUSTOM_PRODUCTS,KEY_CUSTOM_DEPTS,KEY_ISSUES,KEY_SURVEY_REQUESTS,KEY_SURVEY_ANSWERS];
   var done=0;
   keys.forEach(function(k){
     syncFromSheet(k,function(){
@@ -1620,27 +1644,30 @@ function copySurveySummary(){
 }
 function submitSurvey(){
   var answer=collectSurveyAnswer();
-  setSurveySubmitStatus('제출 중입니다. 잠시만 기다려 주세요.','');
+  answer.status='pending';
+  answer.reviewStatus='pending';
+  answer.receivedAt=new Date().toISOString();
+  setSurveySubmitStatus('접수 중입니다. 잠시만 기다려 주세요.','');
   surveySubmitted=false;
-  syncFromSheet(KEY_SURVEY_ANSWERS,function(existing){
+  syncFromSheet(KEY_SURVEY_REQUESTS,function(existing){
     var rows=Array.isArray(existing)?existing:[];
     rows.push(answer);
-    save(KEY_SURVEY_ANSWERS,rows);
+    save(KEY_SURVEY_REQUESTS,rows);
     surveySubmitted=true;
-    setSurveySubmitStatus('제출되었습니다. 감사합니다.','ok');
+    setSurveySubmitStatus('접수되었습니다. 담당자 검토 후 콘텐츠 기획에 반영됩니다.','ok');
     goSurveyStep(6);
   });
   setTimeout(function(){
     if(!surveySubmitted){
       try{
-        var fallback=load(KEY_SURVEY_ANSWERS,[]);
+        var fallback=load(KEY_SURVEY_REQUESTS,[]);
         fallback.push(answer);
-        save(KEY_SURVEY_ANSWERS,fallback);
+        save(KEY_SURVEY_REQUESTS,fallback);
         surveySubmitted=true;
-        setSurveySubmitStatus('제출되었습니다. 네트워크 상태에 따라 시트 반영이 지연될 수 있습니다.','ok');
+        setSurveySubmitStatus('접수되었습니다. 네트워크 상태에 따라 관리자 검토함 반영이 지연될 수 있습니다.','ok');
         goSurveyStep(6);
       }catch(e){
-        setSurveySubmitStatus('자동 제출에 실패했습니다. 요약 복사 후 담당자에게 전달해 주세요.','error');
+        setSurveySubmitStatus('자동 접수에 실패했습니다. 요약 복사 후 담당자에게 전달해 주세요.','error');
       }
     }
   },4500);
@@ -2172,7 +2199,104 @@ function renderIssueCards(){
     return '<div class="db-card"><div class="db-card-header"><div><div class="db-card-title"><span class="badge '+(lb[iss.level]||'badge-accent')+'">'+(lt[iss.level]||iss.level)+'</span> '+iss.title+'</div><div class="db-card-meta">트리거: '+iss.kw+(iss.src?' · '+iss.src:'')+'</div><div class="db-card-meta">'+(iss.msg||'').substring(0,80)+'...</div></div>'+act+'</div></div>';
   }).join('');
 }
-function renderAll(){renderClientCards();renderDiseaseCards();renderProductCards();renderDeptCards();renderIssueCards();}
+
+function surveyRequestDateLabel(value){
+  if(!value)return '-';
+  var d=new Date(value);
+  if(isNaN(d.getTime()))return String(value).slice(0,16);
+  return d.toLocaleString('ko-KR',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+}
+function surveyRequestStatusLabel(status){
+  if(status==='approved')return '<span class="badge badge-accent">승인</span>';
+  if(status==='rejected')return '<span class="badge badge-red">반려</span>';
+  return '<span class="badge badge-amber">검토 대기</span>';
+}
+function surveyRequestSummary(req){
+  return req.summaryEdited||req.summary||'요약이 없습니다.';
+}
+function surveyRequestTitle(req){
+  var clinic=req.clinic||'병원명 미입력';
+  var name=req.name?(' · '+req.name):'';
+  return clinic+name;
+}
+function renderSurveyRequestCards(){
+  var el=document.getElementById('survey-request-cards');
+  if(!el)return;
+  var rows=load(KEY_SURVEY_REQUESTS,[]);
+  if(!Array.isArray(rows))rows=[];
+  var visible=rows.filter(function(r){return r.status!=='deleted';}).sort(function(a,b){
+    return String(b.receivedAt||b.submittedAt||'').localeCompare(String(a.receivedAt||a.submittedAt||''));
+  });
+  if(!visible.length){el.innerHTML='<div class="empty">접수된 설문이 없습니다.</div>';return;}
+  el.innerHTML=visible.map(function(req){
+    var id=String(req.id||'');
+    var meta=[req.region,req.type,req.phone||req.email].filter(Boolean).join(' · ');
+    var summary=esc(surveyRequestSummary(req)).replace(/\n/g,'<br>');
+    var memo=req.adminMemo?'<div class="db-card-meta" style="margin-top:8px;color:var(--accent)">관리자 메모: '+esc(req.adminMemo)+'</div>':'';
+    var approveBtn=req.status==='approved'
+      ? '<button class="btn btn-sm" disabled>승인 완료</button>'
+      : '<button class="btn btn-sm btn-accent" onclick="approveSurveyRequest(&quot;'+id+'&quot;)">승인</button>';
+    return '<div class="db-card"><div class="db-card-header"><div style="flex:1"><div class="db-card-title">'+surveyRequestStatusLabel(req.status)+' '+esc(surveyRequestTitle(req))+'</div><div class="db-card-meta">'+esc(meta||'기본 정보 미입력')+' · 접수 '+esc(surveyRequestDateLabel(req.receivedAt||req.submittedAt))+'</div><div class="db-card-meta" style="margin-top:8px;line-height:1.7">'+summary+'</div>'+memo+'</div><div class="db-card-actions">'+approveBtn+'<button class="btn btn-sm btn-edit" onclick="editSurveyRequest(&quot;'+id+'&quot;)">수정</button><button class="btn btn-sm btn-danger" onclick="deleteSurveyRequest(&quot;'+id+'&quot;)">삭제</button></div></div></div>';
+  }).join('');
+}
+function findSurveyRequest(id){
+  return load(KEY_SURVEY_REQUESTS,[]).find(function(r){return String(r.id)===String(id);});
+}
+function approveSurveyRequest(id){
+  var requests=load(KEY_SURVEY_REQUESTS,[]);
+  var req=requests.find(function(r){return String(r.id)===String(id);});
+  if(!req)return;
+  req.status='approved';
+  req.reviewStatus='approved';
+  req.approvedAt=new Date().toISOString();
+  req.summary=req.summaryEdited||req.summary;
+  save(KEY_SURVEY_REQUESTS,requests);
+  syncFromSheet(KEY_SURVEY_ANSWERS,function(existing){
+    var answers=Array.isArray(existing)?existing:[];
+    var already=answers.some(function(a){return String(a.approvedSourceId||a.id)===String(req.id);});
+    if(!already){
+      var approved=Object.assign({},req,{approvedSourceId:req.id,exportedAt:new Date().toISOString()});
+      answers.push(approved);
+      save(KEY_SURVEY_ANSWERS,answers);
+    }
+    renderSurveyRequestCards();
+    alert('승인되었습니다. 확정 설문 답변에 반영했습니다.');
+  });
+}
+function editSurveyRequest(id){
+  var req=findSurveyRequest(id);
+  if(!req)return;
+  document.getElementById('sr-id').value=req.id;
+  document.getElementById('sr-summary').value=surveyRequestSummary(req);
+  document.getElementById('sr-memo').value=req.adminMemo||'';
+  document.getElementById('survey-request-edit').style.display='block';
+  document.getElementById('survey-request-edit').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function saveSurveyRequestEdit(){
+  var id=document.getElementById('sr-id').value;
+  var rows=load(KEY_SURVEY_REQUESTS,[]);
+  var req=rows.find(function(r){return String(r.id)===String(id);});
+  if(!req)return;
+  req.summaryEdited=document.getElementById('sr-summary').value.trim();
+  req.adminMemo=document.getElementById('sr-memo').value.trim();
+  req.updatedAt=new Date().toISOString();
+  save(KEY_SURVEY_REQUESTS,rows);
+  closeSurveyRequestEdit();
+  renderSurveyRequestCards();
+}
+function closeSurveyRequestEdit(){
+  var box=document.getElementById('survey-request-edit');
+  if(box)box.style.display='none';
+}
+function deleteSurveyRequest(id){
+  if(!confirm('이 설문 요청을 대기 목록에서 삭제할까요?'))return;
+  var rows=load(KEY_SURVEY_REQUESTS,[]).filter(function(r){return String(r.id)!==String(id);});
+  save(KEY_SURVEY_REQUESTS,rows);
+  closeSurveyRequestEdit();
+  renderSurveyRequestCards();
+}
+
+function renderAll(){renderClientCards();renderSurveyRequestCards();renderDiseaseCards();renderProductCards();renderDeptCards();renderIssueCards();}
 
 // ===== 키워드 생성 클라이언트 목록 =====
 function renderClientList(){
