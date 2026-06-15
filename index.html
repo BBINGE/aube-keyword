@@ -363,6 +363,7 @@
       <button class="survey-step-pill" onclick="goSurveyStep(3)"><span class="survey-step-no">04</span><span>콘텐츠 현황</span></button>
       <button class="survey-step-pill" onclick="goSurveyStep(4)"><span class="survey-step-no">05</span><span>성장 목표</span></button>
       <button class="survey-step-pill" onclick="goSurveyStep(5)"><span class="survey-step-no">06</span><span>확인</span></button>
+      <button class="survey-step-pill" onclick="goSurveyStep(6)"><span class="survey-step-no">07</span><span>완료</span></button>
     </div>
 
     <div>
@@ -425,17 +426,35 @@
 
       <div class="card survey-panel" id="survey-step-5">
         <div class="card-title">06 확인 및 제출</div>
-        <p class="survey-help">아래 내용은 제출 전 확인용 요약입니다. 지금 단계에서는 서버 저장 없이 결과를 정리해 복사할 수 있게 구성했습니다.</p>
+        <p class="survey-help">아래 내용은 제출 전 확인용 요약입니다. 내용을 확인하신 뒤 제출하기를 눌러주세요.</p>
         <div class="survey-result" id="survey-summary">아직 요약이 생성되지 않았습니다.</div>
+        <div id="survey-submit-status" style="margin-top:10px;font-size:12px;color:var(--text3);display:none"></div>
         <div class="btn-row">
-          <button class="btn btn-accent" onclick="buildSurveySummary()">요약 생성</button>
+          <button class="btn" onclick="buildSurveySummary()">제출 내용 확인</button>
           <button class="btn" onclick="copySurveySummary()">요약 복사</button>
+          <button class="btn btn-accent" onclick="submitSurvey()">제출하기</button>
+        </div>
+      </div>
+
+      <div class="card survey-panel" id="survey-step-6">
+        <div class="card-title">07 제출 완료</div>
+        <div style="font-size:22px;font-weight:800;color:var(--text);margin-bottom:8px">수고하셨습니다.</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:16px">
+          소중한 답변을 남겨주셔서 감사합니다. 오늘의브랜딩은 원장님의 진료 철학과 병원의 강점이 블로그 콘텐츠 안에서 더 정확하고 품격 있게 전달될 수 있도록 반영하겠습니다.
+        </p>
+        <div class="survey-modal-note" style="margin-bottom:14px">
+          제출 내용은 오늘의브랜딩 내부 확인용 시트에 저장됩니다. 담당자가 확인 후 콘텐츠 방향과 키워드 설계에 반영합니다.
+        </div>
+        <div class="survey-result" id="survey-final-summary">제출 요약을 불러오는 중입니다.</div>
+        <div class="btn-row">
+          <button class="btn" onclick="copySurveySummary()">제출 내용 복사</button>
+          <button class="btn btn-accent" onclick="restartSurvey()">새 설문 작성</button>
         </div>
       </div>
 
       <div class="btn-row" style="justify-content:space-between">
         <button class="btn" onclick="prevSurveyStep()">이전</button>
-        <button class="btn btn-accent" onclick="nextSurveyStep()">다음</button>
+        <button class="btn btn-accent" id="survey-next-btn" onclick="nextSurveyStep()">다음</button>
       </div>
     </div>
   </div>
@@ -814,6 +833,7 @@ var KEY_CUSTOM_DISEASES='custom_diseases';
 var KEY_CUSTOM_PRODUCTS='custom_products';
 var KEY_CUSTOM_DEPTS='custom_depts';
 var KEY_ISSUES='issues';
+var KEY_SURVEY_ANSWERS='survey_answers';
 
 // 로컬 캐시 (빠른 렌더링용)
 var _cache={};
@@ -1494,6 +1514,7 @@ function goPage(id,el){
 
 // ===== 콘텐츠 진단 설문 =====
 var surveyStep=0;
+var surveySubmitted=false;
 var surveyIntroSeen=false;
 var surveyFieldMap=[
   ['병원명','sv-clinic'],['진료과/병원 유형','sv-type'],['지역','sv-region'],['대표 진료','sv-main-care'],['병원의 강점','sv-strength'],
@@ -1513,7 +1534,7 @@ function closeSurveyIntro(){
   if(modal)modal.classList.remove('show');
 }
 function goSurveyStep(n){
-  surveyStep=Math.max(0,Math.min(5,n));
+  surveyStep=Math.max(0,Math.min(6,n));
   document.querySelectorAll('.survey-panel').forEach(function(p){p.classList.remove('active');});
   document.querySelectorAll('.survey-step-pill').forEach(function(p){p.classList.remove('active');});
   var panel=document.getElementById('survey-step-'+surveyStep);
@@ -1521,31 +1542,101 @@ function goSurveyStep(n){
   var pills=document.querySelectorAll('.survey-step-pill');
   if(pills[surveyStep])pills[surveyStep].classList.add('active');
   var bar=document.getElementById('survey-progress-bar');
-  if(bar)bar.style.width=((surveyStep+1)/6*100)+'%';
+  if(bar)bar.style.width=((surveyStep+1)/7*100)+'%';
+  var nextBtn=document.getElementById('survey-next-btn');
+  if(nextBtn){
+    nextBtn.textContent=surveyStep===5?'제출하기':(surveyStep===6?'완료':'다음');
+    nextBtn.style.display=surveyStep===6?'none':'inline-flex';
+  }
   if(surveyStep===5)buildSurveySummary();
+  if(surveyStep===6)showSurveyCompletion();
 }
-function nextSurveyStep(){goSurveyStep(surveyStep+1);}
-function prevSurveyStep(){goSurveyStep(surveyStep-1);}
+function nextSurveyStep(){
+  if(surveyStep===5){submitSurvey();return;}
+  goSurveyStep(surveyStep+1);
+}
+function prevSurveyStep(){
+  if(surveyStep===6){goSurveyStep(5);return;}
+  goSurveyStep(surveyStep-1);
+}
 function surveyVal(id){
   var el=document.getElementById(id);
   return el&&el.value?el.value.trim():'-';
 }
-function buildSurveySummary(){
+function collectSurveyAnswer(){
+  var answer={
+    id:'survey_'+Date.now(),
+    submittedAt:new Date().toISOString()
+  };
+  surveyFieldMap.forEach(function(item){answer[item[1].replace('sv-','')]=surveyVal(item[1]);});
+  answer.summary=buildSurveySummary(false);
+  return answer;
+}
+function buildSurveySummary(showStatus){
   var lines=['[콘텐츠 진단 설문 결과]',''];
   surveyFieldMap.forEach(function(item){lines.push('- '+item[0]+': '+surveyVal(item[1]));});
   var summary=lines.join('\n');
   var el=document.getElementById('survey-summary');
   if(el)el.textContent=summary;
+  var finalEl=document.getElementById('survey-final-summary');
+  if(finalEl)finalEl.textContent=summary;
+  if(showStatus!==false){
+    var status=document.getElementById('survey-submit-status');
+    if(status){status.style.display='block';status.style.color='var(--text3)';status.textContent='제출 내용이 갱신되었습니다.';}
+  }
   return summary;
 }
+function setSurveySubmitStatus(msg,type){
+  var status=document.getElementById('survey-submit-status');
+  if(!status)return;
+  status.style.display='block';
+  status.style.color=type==='error'?'var(--red)':(type==='ok'?'var(--accent)':'var(--text3)');
+  status.textContent=msg;
+}
 function copySurveySummary(){
-  var text=buildSurveySummary();
+  var text=buildSurveySummary(false);
   if(navigator.clipboard&&navigator.clipboard.writeText){
     navigator.clipboard.writeText(text);
     alert('설문 요약을 복사했습니다.');
   }else{
     alert('복사를 지원하지 않는 브라우저입니다. 요약 영역을 직접 선택해 복사해 주세요.');
   }
+}
+function submitSurvey(){
+  var answer=collectSurveyAnswer();
+  setSurveySubmitStatus('제출 중입니다. 잠시만 기다려 주세요.','');
+  surveySubmitted=false;
+  syncFromSheet(KEY_SURVEY_ANSWERS,function(existing){
+    var rows=Array.isArray(existing)?existing:[];
+    rows.push(answer);
+    save(KEY_SURVEY_ANSWERS,rows);
+    surveySubmitted=true;
+    setSurveySubmitStatus('제출되었습니다. 감사합니다.','ok');
+    goSurveyStep(6);
+  });
+  setTimeout(function(){
+    if(!surveySubmitted){
+      try{
+        var fallback=load(KEY_SURVEY_ANSWERS,[]);
+        fallback.push(answer);
+        save(KEY_SURVEY_ANSWERS,fallback);
+        surveySubmitted=true;
+        setSurveySubmitStatus('제출되었습니다. 네트워크 상태에 따라 시트 반영이 지연될 수 있습니다.','ok');
+        goSurveyStep(6);
+      }catch(e){
+        setSurveySubmitStatus('자동 제출에 실패했습니다. 요약 복사 후 담당자에게 전달해 주세요.','error');
+      }
+    }
+  },4500);
+}
+function showSurveyCompletion(){
+  buildSurveySummary(false);
+}
+function restartSurvey(){
+  surveyFieldMap.forEach(function(item){var el=document.getElementById(item[1]);if(el)el.value='';});
+  buildSurveySummary(false);
+  surveySubmitted=false;
+  goSurveyStep(0);
 }
 
 // ===== 정론지 로직 =====
