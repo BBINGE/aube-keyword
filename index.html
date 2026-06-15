@@ -2228,11 +2228,16 @@ function renderSurveyRequestCards(){
     return String(b.receivedAt||b.submittedAt||'').localeCompare(String(a.receivedAt||a.submittedAt||''));
   });
   if(!visible.length){el.innerHTML='<div class="empty">접수된 설문이 없습니다.</div>';return;}
-  el.innerHTML=visible.map(function(req){
+  el.innerHTML=visible.map(function(req,idx){
     var id=String(req.id||'');
+    var detailId='sr-detail-'+idx;
     var meta=[req.region,req.type,req.phone||req.email].filter(Boolean).join(' · ');
-    var summary=esc(surveyRequestSummary(req)).replace(/\n/g,'<br>');
-    var memo=req.adminMemo?'<div class="db-card-meta" style="margin-top:8px;color:var(--accent)">관리자 메모: '+esc(req.adminMemo)+'</div>':'';
+    var summaryText=surveyRequestSummary(req);
+    var summary=esc(summaryText).replace(/\n/g,'<br>');
+    var preview=summaryText.split('\n').filter(Boolean).slice(0,3).join(' / ');
+    if(preview.length>110)preview=preview.slice(0,110)+'...';
+    var previewHtml=preview?'<div class="db-card-meta" style="margin-top:6px;color:var(--text2)">요약: '+esc(preview)+'</div>':'';
+    var memo=req.adminMemo?'<div class="db-card-meta" style="margin-top:6px;color:var(--accent)">관리자 메모: '+esc(req.adminMemo)+'</div>':'';
     var reviewMeta=req.rejectedAt?'<div class="db-card-meta" style="margin-top:4px;color:var(--red)">비승인 처리: '+esc(surveyRequestDateLabel(req.rejectedAt))+(req.rejectReason?' · '+esc(req.rejectReason):'')+'</div>':(req.approvedAt?'<div class="db-card-meta" style="margin-top:4px;color:var(--accent)">승인 처리: '+esc(surveyRequestDateLabel(req.approvedAt))+'</div>':'');
     var approveBtn=req.status==='approved'
       ? '<button class="btn btn-sm" disabled>승인 완료</button>'
@@ -2240,8 +2245,17 @@ function renderSurveyRequestCards(){
     var rejectBtn=req.status==='rejected'
       ? '<button class="btn btn-sm" disabled>비승인 완료</button>'
       : '<button class="btn btn-sm btn-danger" onclick="rejectSurveyRequest(&quot;'+id+'&quot;)">비승인</button>';
-    return '<div class="db-card"><div class="db-card-header"><div style="flex:1"><div class="db-card-title">'+surveyRequestStatusLabel(req.status)+' '+esc(surveyRequestTitle(req))+'</div><div class="db-card-meta">'+esc(meta||'기본 정보 미입력')+' · 접수 '+esc(surveyRequestDateLabel(req.receivedAt||req.submittedAt))+'</div><div class="db-card-meta" style="margin-top:8px;line-height:1.7">'+summary+'</div>'+memo+reviewMeta+'</div><div class="db-card-actions">'+approveBtn+rejectBtn+'<button class="btn btn-sm btn-edit" onclick="editSurveyRequest(&quot;'+id+'&quot;)">수정</button><button class="btn btn-sm btn-danger" onclick="deleteSurveyRequest(&quot;'+id+'&quot;)">기록 삭제</button></div></div></div>';
+    var toggleBtn='<button class="btn btn-sm" onclick="toggleSurveyRequestDetail(&quot;'+detailId+'&quot;,this)">열기</button>';
+    var detail='<div id="'+detailId+'" class="db-card-meta" style="display:none;margin-top:12px;line-height:1.7;padding:12px 14px;background:#f8fafc;border:1px solid var(--border);border-radius:8px">'+summary+'</div>';
+    return '<div class="db-card"><div class="db-card-header"><div style="flex:1"><div class="db-card-title">'+surveyRequestStatusLabel(req.status)+' '+esc(surveyRequestTitle(req))+'</div><div class="db-card-meta">'+esc(meta||'기본 정보 미입력')+' · 접수 '+esc(surveyRequestDateLabel(req.receivedAt||req.submittedAt))+'</div>'+previewHtml+memo+reviewMeta+detail+'</div><div class="db-card-actions">'+toggleBtn+approveBtn+rejectBtn+'<button class="btn btn-sm btn-edit" onclick="editSurveyRequest(&quot;'+id+'&quot;)">수정</button><button class="btn btn-sm btn-danger" onclick="deleteSurveyRequest(&quot;'+id+'&quot;)">기록 삭제</button></div></div></div>';
   }).join('');
+}
+function toggleSurveyRequestDetail(detailId,btn){
+  var box=document.getElementById(detailId);
+  if(!box)return;
+  var isOpen=box.style.display!=='none';
+  box.style.display=isOpen?'none':'block';
+  if(btn)btn.textContent=isOpen?'열기':'닫기';
 }
 function findSurveyRequest(id){
   return load(KEY_SURVEY_REQUESTS,[]).find(function(r){return String(r.id)===String(id);});
