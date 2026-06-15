@@ -188,6 +188,31 @@
   .db-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:6px;}
   .db-card-header{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
   .db-card-title{font-weight:600;font-size:13px;color:var(--text);}
+  /* ===== 콘텐츠 진단 설문 ===== */
+  .survey-shell{display:grid;grid-template-columns:240px minmax(0,1fr);gap:16px;align-items:start;}
+  .survey-steps{position:sticky;top:76px;background:rgba(255,255,255,.84);border:1px solid var(--border);border-radius:var(--radius);padding:12px;box-shadow:0 18px 42px rgba(28,45,70,.06);backdrop-filter:blur(10px);}
+  .survey-step-pill{display:flex;align-items:center;gap:10px;width:100%;border:none;background:transparent;border-radius:var(--radius-sm);padding:9px 10px;text-align:left;font-family:inherit;color:var(--text2);cursor:pointer;}
+  .survey-step-pill:hover{background:var(--surface2);color:var(--text);}
+  .survey-step-pill.active{background:var(--accent-bg);color:var(--accent);font-weight:700;}
+  .survey-step-no{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#fff;border:1px solid var(--border);font-size:11px;font-weight:700;flex:0 0 auto;}
+  .survey-step-pill.active .survey-step-no{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .survey-panel{display:none;}
+  .survey-panel.active{display:block;}
+  .survey-progress{height:6px;background:var(--surface2);border-radius:99px;overflow:hidden;margin-bottom:16px;border:1px solid var(--border);}
+  .survey-progress span{display:block;height:100%;width:16.6%;background:linear-gradient(90deg,var(--accent),#16bd9c);transition:width .18s;}
+  .survey-question-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .survey-question-grid .wide{grid-column:1 / -1;}
+  .survey-help{font-size:12px;color:var(--text3);line-height:1.7;margin-top:6px;}
+  .survey-result{white-space:pre-wrap;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;font-size:13px;line-height:1.8;color:var(--text2);max-height:360px;overflow:auto;}
+  .survey-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(7,19,33,.42);backdrop-filter:blur(8px);z-index:300;}
+  .survey-modal.show{display:flex;}
+  .survey-modal-box{width:min(520px,100%);background:#fff;border:1px solid rgba(214,224,238,.9);border-radius:14px;padding:26px 28px;box-shadow:0 28px 90px rgba(7,19,33,.28);}
+  .survey-modal-kicker{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:800;margin-bottom:10px;}
+  .survey-modal-title{font-size:24px;line-height:1.35;font-weight:800;color:var(--text);margin-bottom:10px;}
+  .survey-modal-text{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:16px;}
+  .survey-modal-note{border-left:3px solid var(--accent);background:var(--accent-bg);padding:11px 13px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:18px;}
+  @media(max-width:820px){.survey-shell{grid-template-columns:1fr}.survey-steps{position:relative;top:auto;display:grid;grid-template-columns:1fr 1fr;gap:4px}.survey-question-grid{grid-template-columns:1fr}.survey-step-pill{padding:8px}.survey-step-no{width:22px;height:22px}}
+
   .db-card-meta{font-size:11px;color:var(--text3);margin-top:3px;line-height:1.7;}
   .db-card-actions{display:flex;gap:5px;flex-shrink:0;}
   .rg-tag{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:3px 10px;border-radius:99px;background:var(--accent-bg);border:1px solid var(--accent-border);color:var(--accent);margin:2px;}
@@ -285,6 +310,7 @@
     </div>
   </div>
   <div class="nav-tabs">
+    <button class="nav-tab active" onclick="goPage('survey',this)">🩺 콘텐츠 진단 설문</button>
     <button class="nav-tab" onclick="goPage('gen',this)">⛏️ 키워드 마이닝</button>
     <button class="nav-tab" onclick="goPage('brief',this)">📖 정론지</button>
     <button class="nav-tab" onclick="goPage('admin',this)">🔒 관리자</button>
@@ -296,8 +322,127 @@
 
 <div id="sync-status" style="display:none;background:var(--accent);color:#fff;font-size:12px;text-align:center;padding:6px;position:sticky;top:56px;z-index:99">구글 시트 동기화 중...</div>
 
+
+<!-- 콘텐츠 진단 설문 -->
+<div class="page active" id="page-survey">
+  <div class="page-header">
+    <div class="hero-shield" aria-hidden="true"></div>
+    <div class="hero-visual" aria-hidden="true">
+      <svg class="ecg-svg" viewBox="0 0 720 160" preserveAspectRatio="none">
+        <defs>
+          <filter id="ecgGlowSurvey"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="ecgDotGlowSurvey"><feGaussianBlur stdDeviation="3.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <path class="ecg-gridline" d="M46 34H180M548 35H682M72 124H210M538 124H660"/>
+        <path class="ecg-shadow" d="M0 82H196L220 82L238 28L258 136L282 62L306 82H424L446 82L466 30L488 132L512 70L540 82H720"/>
+        <path id="heroEcgSurvey" class="ecg-path" d="M0 82H196L220 82L238 28L258 136L282 62L306 82H424L446 82L466 30L488 132L512 70L540 82H720"/>
+        <circle class="ecg-dot" r="7"><animateMotion dur="4.8s" repeatCount="indefinite" rotate="0"><mpath href="#heroEcgSurvey"/></animateMotion></circle>
+      </svg>
+      <div class="ecg-chip"><span>Clinic Brief</span><span>Blog Strategy</span><span>Content Fit</span></div>
+    </div>
+    <div class="hero-eyebrow">AUBE Content Diagnosis</div>
+    <h1>콘텐츠 진단 설문</h1>
+    <p>원장님의 진료 철학과 병원의 강점이 더 정확한 블로그 원고로 이어지도록, 오늘의브랜딩이 사전 브리프를 정리합니다.</p>
+  </div>
+
+  <div class="survey-modal show" id="survey-intro-modal" role="dialog" aria-modal="true">
+    <div class="survey-modal-box">
+      <div class="survey-modal-kicker">AUBE Brief</div>
+      <div class="survey-modal-title">원장님의 무한한 발전을 응원합니다.</div>
+      <div class="survey-modal-text">이 설문은 병원의 진료 방향과 콘텐츠 우선순위를 더 정확히 이해하기 위한 짧은 사전 인터뷰입니다. 답변은 블로그 원고의 주제 선정, 표현 수위, 환자 관점 구성에 반영됩니다.</div>
+      <div class="survey-modal-note"><b>5분이면 충분합니다.</b><br>정답을 고르는 설문이 아니라, 병원의 현재와 방향을 편하게 알려주시는 과정입니다.</div>
+      <button class="btn btn-accent" style="width:100%" onclick="closeSurveyIntro()">시작하기</button>
+    </div>
+  </div>
+
+  <div class="survey-shell">
+    <div class="survey-steps" id="survey-steps">
+      <button class="survey-step-pill active" onclick="goSurveyStep(0)"><span class="survey-step-no">01</span><span>병원 정보</span></button>
+      <button class="survey-step-pill" onclick="goSurveyStep(1)"><span class="survey-step-no">02</span><span>환자 흐름</span></button>
+      <button class="survey-step-pill" onclick="goSurveyStep(2)"><span class="survey-step-no">03</span><span>진료 구성</span></button>
+      <button class="survey-step-pill" onclick="goSurveyStep(3)"><span class="survey-step-no">04</span><span>콘텐츠 현황</span></button>
+      <button class="survey-step-pill" onclick="goSurveyStep(4)"><span class="survey-step-no">05</span><span>성장 목표</span></button>
+      <button class="survey-step-pill" onclick="goSurveyStep(5)"><span class="survey-step-no">06</span><span>확인</span></button>
+    </div>
+
+    <div>
+      <div class="survey-progress"><span id="survey-progress-bar"></span></div>
+
+      <div class="card survey-panel active" id="survey-step-0">
+        <div class="card-title">01 병원 정보</div>
+        <div class="survey-question-grid">
+          <div class="fg"><label>병원명</label><input type="text" id="sv-clinic" placeholder="예: 오늘의브랜딩의원"/></div>
+          <div class="fg"><label>진료과 / 병원 유형</label><input type="text" id="sv-type" placeholder="예: 신경외과, 한의원, 피부과"/></div>
+          <div class="fg"><label>지역</label><input type="text" id="sv-region" placeholder="예: 동탄, 평택, 양천구"/></div>
+          <div class="fg"><label>대표 진료</label><input type="text" id="sv-main-care" placeholder="예: 척추, 다이어트, 리프팅"/></div>
+          <div class="fg wide"><label>병원의 강점</label><textarea id="sv-strength" placeholder="원장님이 생각하시는 병원의 차별점, 환자들이 자주 칭찬하는 부분을 적어주세요."></textarea></div>
+        </div>
+      </div>
+
+      <div class="card survey-panel" id="survey-step-1">
+        <div class="card-title">02 환자 흐름</div>
+        <div class="survey-question-grid">
+          <div class="fg"><label>월 초진 환자 수</label><input type="text" id="sv-new-patients" placeholder="예: 월 80명"/></div>
+          <div class="fg"><label>초진 대비 재진율</label><input type="text" id="sv-revisit" placeholder="예: 약 60%"/></div>
+          <div class="fg"><label>주 방문 연령대</label><input type="text" id="sv-age" placeholder="예: 30-50대 여성"/></div>
+          <div class="fg"><label>가장 많은 내원 이유</label><input type="text" id="sv-main-symptom" placeholder="예: 허리통증, 여드름, 체중감량"/></div>
+          <div class="fg wide"><label>상담에서 자주 듣는 고민</label><textarea id="sv-patient-worry" placeholder="환자들이 어떤 말로 불편함을 표현하는지 적어주세요."></textarea></div>
+        </div>
+      </div>
+
+      <div class="card survey-panel" id="survey-step-2">
+        <div class="card-title">03 진료/매출 구조</div>
+        <div class="survey-question-grid">
+          <div class="fg"><label>비급여 비중</label><input type="text" id="sv-noncovered" placeholder="예: 약 40%"/></div>
+          <div class="fg"><label>매출 상위 3개 진료</label><input type="text" id="sv-top-sales" placeholder="예: 도수치료, 주사치료, 다이어트"/></div>
+          <div class="fg"><label>더 늘리고 싶은 진료</label><input type="text" id="sv-grow-care" placeholder="예: PRP, 리프팅, 성장한약"/></div>
+          <div class="fg"><label>줄이고 싶은 진료</label><input type="text" id="sv-reduce-care" placeholder="예: 단순 물리치료"/></div>
+          <div class="fg wide"><label>시술/진료 설명 시 조심할 점</label><textarea id="sv-caution" placeholder="과장되면 안 되는 표현, 원장님이 선호하지 않는 표현을 적어주세요."></textarea></div>
+        </div>
+      </div>
+
+      <div class="card survey-panel" id="survey-step-3">
+        <div class="card-title">04 콘텐츠/마케팅 현황</div>
+        <div class="survey-question-grid">
+          <div class="fg"><label>현재 운영 채널</label><input type="text" id="sv-channels" placeholder="예: 블로그, 플레이스, 인스타그램"/></div>
+          <div class="fg"><label>반응이 좋았던 키워드</label><input type="text" id="sv-good-kw" placeholder="예: 동탄 허리디스크"/></div>
+          <div class="fg"><label>반응이 약했던 키워드</label><input type="text" id="sv-weak-kw" placeholder="예: 도수치료"/></div>
+          <div class="fg"><label>의식되는 경쟁 병원</label><input type="text" id="sv-competitor" placeholder="병원명 또는 지역/유형"/></div>
+          <div class="fg wide"><label>블로그에서 꼭 전달되었으면 하는 인상</label><textarea id="sv-tone" placeholder="예: 차분하고 전문적인 병원, 과잉진료 없는 병원, 설명을 잘해주는 병원"></textarea></div>
+        </div>
+      </div>
+
+      <div class="card survey-panel" id="survey-step-4">
+        <div class="card-title">05 성장 목표</div>
+        <div class="survey-question-grid">
+          <div class="fg"><label>3개월 내 늘리고 싶은 환자군</label><input type="text" id="sv-target" placeholder="예: 40대 허리통증 환자"/></div>
+          <div class="fg"><label>가장 시급한 문제</label><input type="text" id="sv-urgent" placeholder="예: 신규 환자 유입, 객단가, 재진율"/></div>
+          <div class="fg"><label>원장님이 피하고 싶은 마케팅</label><input type="text" id="sv-avoid" placeholder="예: 자극적 가격 광고, 과장 표현"/></div>
+          <div class="fg"><label>원하시는 콘텐츠 분위기</label><input type="text" id="sv-content-style" placeholder="예: 신뢰감, 친절함, 전문성"/></div>
+          <div class="fg wide"><label>마지막으로 꼭 전하고 싶은 말</label><textarea id="sv-final-note" placeholder="블로그 원고에 반영되었으면 하는 원장님의 생각을 자유롭게 적어주세요."></textarea></div>
+        </div>
+      </div>
+
+      <div class="card survey-panel" id="survey-step-5">
+        <div class="card-title">06 확인 및 제출</div>
+        <p class="survey-help">아래 내용은 제출 전 확인용 요약입니다. 지금 단계에서는 서버 저장 없이 결과를 정리해 복사할 수 있게 구성했습니다.</p>
+        <div class="survey-result" id="survey-summary">아직 요약이 생성되지 않았습니다.</div>
+        <div class="btn-row">
+          <button class="btn btn-accent" onclick="buildSurveySummary()">요약 생성</button>
+          <button class="btn" onclick="copySurveySummary()">요약 복사</button>
+        </div>
+      </div>
+
+      <div class="btn-row" style="justify-content:space-between">
+        <button class="btn" onclick="prevSurveyStep()">이전</button>
+        <button class="btn btn-accent" onclick="nextSurveyStep()">다음</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- 직원 로그인 -->
-<div class="page active" id="page-staff-login">
+<div class="page" id="page-staff-login">
   <div class="login-wrap">
     <div class="login-title">직원 로그인</div>
     <div class="login-sub">키워드 마이닝과 정론지는 오늘의브랜딩 내부 직원 전용입니다.</div>
@@ -1319,9 +1464,9 @@ function spawnParticles(){
 }
 if(document.readyState!=='loading')spawnParticles();
 else document.addEventListener('DOMContentLoaded',spawnParticles);
-function initStaffGate(){showStaffLogin('gen',document.querySelector(".nav-tab[onclick*=\"gen\"]"));}
-if(document.readyState!=='loading')initStaffGate();
-else document.addEventListener('DOMContentLoaded',initStaffGate);
+function initSurveyPage(){showSurveyIntroOnce();}
+if(document.readyState!=='loading')initSurveyPage();
+else document.addEventListener('DOMContentLoaded',initSurveyPage);
 
 function setActivePage(id,el){
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
@@ -1329,6 +1474,7 @@ function setActivePage(id,el){
   document.getElementById('page-'+id).classList.add('active');
   if(el)el.classList.add('active');
   if(id==='gen')renderClientList();
+  if(id==='survey')showSurveyIntroOnce();
 }
 function showStaffLogin(targetId,el){
   pendingStaffPage=targetId||'gen';
@@ -1343,6 +1489,63 @@ function showStaffLogin(targetId,el){
 function goPage(id,el){
   if((id==='gen'||id==='brief')&&!isStaff){showStaffLogin(id,el);return;}
   setActivePage(id,el);
+}
+
+
+// ===== 콘텐츠 진단 설문 =====
+var surveyStep=0;
+var surveyIntroSeen=false;
+var surveyFieldMap=[
+  ['병원명','sv-clinic'],['진료과/병원 유형','sv-type'],['지역','sv-region'],['대표 진료','sv-main-care'],['병원의 강점','sv-strength'],
+  ['월 초진 환자 수','sv-new-patients'],['초진 대비 재진율','sv-revisit'],['주 방문 연령대','sv-age'],['가장 많은 내원 이유','sv-main-symptom'],['상담에서 자주 듣는 고민','sv-patient-worry'],
+  ['비급여 비중','sv-noncovered'],['매출 상위 3개 진료','sv-top-sales'],['더 늘리고 싶은 진료','sv-grow-care'],['줄이고 싶은 진료','sv-reduce-care'],['시술/진료 설명 시 조심할 점','sv-caution'],
+  ['현재 운영 채널','sv-channels'],['반응이 좋았던 키워드','sv-good-kw'],['반응이 약했던 키워드','sv-weak-kw'],['의식되는 경쟁 병원','sv-competitor'],['블로그에서 꼭 전달되었으면 하는 인상','sv-tone'],
+  ['3개월 내 늘리고 싶은 환자군','sv-target'],['가장 시급한 문제','sv-urgent'],['피하고 싶은 마케팅','sv-avoid'],['원하시는 콘텐츠 분위기','sv-content-style'],['마지막으로 꼭 전하고 싶은 말','sv-final-note']
+];
+function showSurveyIntroOnce(){
+  if(surveyIntroSeen)return;
+  var modal=document.getElementById('survey-intro-modal');
+  if(modal)modal.classList.add('show');
+}
+function closeSurveyIntro(){
+  surveyIntroSeen=true;
+  var modal=document.getElementById('survey-intro-modal');
+  if(modal)modal.classList.remove('show');
+}
+function goSurveyStep(n){
+  surveyStep=Math.max(0,Math.min(5,n));
+  document.querySelectorAll('.survey-panel').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.survey-step-pill').forEach(function(p){p.classList.remove('active');});
+  var panel=document.getElementById('survey-step-'+surveyStep);
+  if(panel)panel.classList.add('active');
+  var pills=document.querySelectorAll('.survey-step-pill');
+  if(pills[surveyStep])pills[surveyStep].classList.add('active');
+  var bar=document.getElementById('survey-progress-bar');
+  if(bar)bar.style.width=((surveyStep+1)/6*100)+'%';
+  if(surveyStep===5)buildSurveySummary();
+}
+function nextSurveyStep(){goSurveyStep(surveyStep+1);}
+function prevSurveyStep(){goSurveyStep(surveyStep-1);}
+function surveyVal(id){
+  var el=document.getElementById(id);
+  return el&&el.value?el.value.trim():'-';
+}
+function buildSurveySummary(){
+  var lines=['[콘텐츠 진단 설문 결과]',''];
+  surveyFieldMap.forEach(function(item){lines.push('- '+item[0]+': '+surveyVal(item[1]));});
+  var summary=lines.join('\n');
+  var el=document.getElementById('survey-summary');
+  if(el)el.textContent=summary;
+  return summary;
+}
+function copySurveySummary(){
+  var text=buildSurveySummary();
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text);
+    alert('설문 요약을 복사했습니다.');
+  }else{
+    alert('복사를 지원하지 않는 브라우저입니다. 요약 영역을 직접 선택해 복사해 주세요.');
+  }
 }
 
 // ===== 정론지 로직 =====
