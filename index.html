@@ -989,7 +989,7 @@ var KEY_SURVEY_ANSWERS='survey_answers';
 
 // 로컬 캐시 (빠른 렌더링용)
 var _cache={};
-var AUBE_BUILD_TAG='manual-boost-v2-2026-06-16';
+var AUBE_BUILD_TAG='manual-boost-v3-2026-06-16';
 console.info('[AUBE]',AUBE_BUILD_TAG);
 
 function load(k,d){
@@ -3304,6 +3304,13 @@ function shouldForceManualTherapy(client,dis,signal){
   if(!shouldPreferManualTherapy(client,dis,signal))return false;
   return Math.random()<manualTherapyForceRate(client,signal);
 }
+var MANUAL_REROLL_STATE={};
+function shouldCycleManualTherapy(client,dis,manual,signal){
+  if(!manual||!shouldPreferManualTherapy(client,dis,signal))return false;
+  var key=[client&&client.id,client&&client.name,dis&&dis.name].join('|');
+  MANUAL_REROLL_STATE[key]=(MANUAL_REROLL_STATE[key]||0)+1;
+  return MANUAL_REROLL_STATE[key]%3===0;
+}
 function getManualTherapyDebug(client,diseaseName){
   var c=client||selectedClient;
   if(!c)return {build:AUBE_BUILD_TAG,error:'selectedClient 없음'};
@@ -3322,7 +3329,8 @@ function getManualTherapyDebug(client,diseaseName){
     diseaseCat:dis&&dis.cat,
     isManualCandidate:isManualTherapyCandidateDisease(dis),
     shouldPrefer:shouldPreferManualTherapy(c,dis,signal),
-    forceRate:manualTherapyForceRate(c,signal)
+    forceRate:manualTherapyForceRate(c,signal),
+    cycleGuarantee:'상품/시술 반복 클릭 시 적합 질환에서는 3회 안에 도수치료 1회 보장'
   };
 }
 window.aubeManualDebug=getManualTherapyDebug;
@@ -3369,6 +3377,7 @@ function pickProduct(diseaseName){
     if(manual&&shouldPreferManualTherapy(selectedClient,dis,signal)&&matched.indexOf(manual)<0){
       matched=matched.concat([manual]);
     }
+    if(shouldCycleManualTherapy(selectedClient,dis,manual,signal))return manual;
     if(manual&&matched.indexOf(manual)>=0&&shouldForceManualTherapy(selectedClient,dis,signal))return manual;
     return weightedPickProducts(matched,signal);
   }
