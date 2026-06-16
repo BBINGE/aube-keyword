@@ -3267,11 +3267,26 @@ function weightedPickProducts(items,signal){
     var w=1;
     if(signal&&signalHas(signal.priority,p))w+=4;
     if(signal&&signalHas(signal.highValue,p))w+=5;
-    if(canonicalProductKey(p)==='도수치료'&&signal&&signalHas(['도수치료','도수재활치료','운동치료','물리치료','재활물리치료'],p))w+=3;
+    if(canonicalProductKey(p)==='도수치료'&&signal&&signalHas(['도수치료','도수재활치료','운동치료','물리치료','재활물리치료'],p))w+=8;
     if(signal&&signalHas(signal.deprioritize,p))w=Math.max(canonicalProductKey(p)==='도수치료'?2:1,w-1);
     for(var i=0;i<w;i++)pool.push(p);
   });
   return pick(pool);
+}
+function isManualTherapyCandidateDisease(dis){
+  if(!dis)return false;
+  var names=['거북목','일자목','목통증','허리통증','어깨통증','오십견','견갑통증','등통증','근막통증','교통사고후유증','교통사고 목통증','교통사고 허리통증','척추측만증','수술 후 재활','스포츠 재활'];
+  if(names.indexOf(dis.name)>=0)return true;
+  if(dis.cat==='척추'&&/목|허리|척추|디스크|협착|측만/.test(dis.name))return true;
+  return false;
+}
+function manualTherapyProductFrom(items){
+  return items.find(function(p){return canonicalProductKey(p)==='도수치료';})||null;
+}
+function shouldPreferManualTherapy(client,dis,signal){
+  if(!client||!dis||!signal)return false;
+  if(!signalHas(signal.priority||[],{name:'도수치료',match:'도수치료',cat:'',type:client.type}))return false;
+  return isManualTherapyCandidateDisease(dis);
 }
 
 // 상품 표시가 불필요한 카테고리 (질환명 자체가 완결형 검색어)
@@ -3311,7 +3326,14 @@ function pickProduct(diseaseName){
   });
   // 1순위: 질환명 직접 매칭
   var matched=typeProducts.filter(function(p){return p.match&&p.match.split(',').map(function(x){return x.trim();}).indexOf(diseaseName)>=0;});
-  if(matched.length)return weightedPickProducts(matched,signal);
+  var manual=manualTherapyProductFrom(typeProducts);
+  if(matched.length){
+    if(manual&&shouldPreferManualTherapy(selectedClient,dis,signal)&&matched.indexOf(manual)<0){
+      matched=matched.concat([manual]);
+    }
+    return weightedPickProducts(matched,signal);
+  }
+  if(manual&&shouldPreferManualTherapy(selectedClient,dis,signal))return manual;
   if(shouldStopProductFallback(selectedClient,disCat))return null;
   // 2순위: 같은 카테고리 상품
   if(disCat){
