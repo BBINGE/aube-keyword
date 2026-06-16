@@ -3225,7 +3225,7 @@ function productEquipmentMeta(product){
     {keys:['C-arm','경막외','선택적 신경근','신경차단술','신경성형술','풍선확장술','MBB'],required:['C-arm'],role:'C-arm은 척추·신경 주사에서 정확한 위치 확인 신호로 쓰되, 부위와 방식은 병원 프로토콜 확인이 필요합니다.'},
     {keys:['도수치료','운동치료','재활치료','재활물리치료'],related:['재활장비'],role:'장비명보다 평가-치료-운동-기능회복 흐름을 우선하세요.'}
   ];
-  var hay=[product&&product.name,product&&product.match,product&&product.note].join(' ');
+  var hay=[product&&product.name,product&&product.match].join(' ');
   var required=[],related=[],roles=[];
   rules.forEach(function(rule){
     if(rule.keys.some(function(k){return hay.indexOf(k)>=0;})){
@@ -3267,7 +3267,8 @@ function weightedPickProducts(items,signal){
     var w=1;
     if(signal&&signalHas(signal.priority,p))w+=4;
     if(signal&&signalHas(signal.highValue,p))w+=5;
-    if(signal&&signalHas(signal.deprioritize,p))w=Math.max(1,w-2);
+    if(canonicalProductKey(p)==='도수치료'&&signal&&signalHas(['도수치료','도수재활치료','운동치료','물리치료','재활물리치료'],p))w+=3;
+    if(signal&&signalHas(signal.deprioritize,p))w=Math.max(canonicalProductKey(p)==='도수치료'?2:1,w-1);
     for(var i=0;i<w;i++)pool.push(p);
   });
   return pick(pool);
