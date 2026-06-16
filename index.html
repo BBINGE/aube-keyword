@@ -989,7 +989,7 @@ var KEY_SURVEY_ANSWERS='survey_answers';
 
 // 로컬 캐시 (빠른 렌더링용)
 var _cache={};
-var AUBE_BUILD_TAG='manual-boost-v3-2026-06-16';
+var AUBE_BUILD_TAG='manual-boost-v4-2026-06-16';
 console.info('[AUBE]',AUBE_BUILD_TAG);
 
 function load(k,d){
@@ -3278,8 +3278,9 @@ function weightedPickProducts(items,signal){
 }
 function isManualTherapyCandidateDisease(dis){
   if(!dis)return false;
-  var names=['거북목','일자목','목통증','허리통증','어깨통증','오십견','견갑통증','등통증','근막통증','교통사고후유증','교통사고 목통증','교통사고 허리통증','척추측만증','수술 후 재활','스포츠 재활'];
+  var names=['거북목','일자목','목통증','허리통증','어깨통증','오십견','견갑통증','등통증','근막통증','만성통증','손목통증','발목통증','무릎통증','테니스엘보','족저근막염','좌골신경통','교통사고후유증','교통사고 목통증','교통사고 허리통증','척추측만증','수술 후 재활','스포츠 재활','도수치료','운동치료'];
   if(names.indexOf(dis.name)>=0)return true;
+  if(['통증','척추','재활','교통사고'].indexOf(dis.cat)>=0)return true;
   if(dis.cat==='척추'&&/목|허리|척추|디스크|협착|측만/.test(dis.name))return true;
   return false;
 }
@@ -3294,11 +3295,11 @@ function shouldPreferManualTherapy(client,dis,signal){
 function manualTherapyForceRate(client,signal){
   if(!client||!signal)return 0;
   var name=client.name||'';
-  if(name.indexOf('동탄신경외과')>=0)return 0.48;
-  if(name.indexOf('서울바른신경외과')>=0)return 0.42;
-  if(name.indexOf('명인')>=0)return 0.38;
+  if(name.indexOf('동탄신경외과')>=0)return 0.58;
+  if(name.indexOf('서울바른신경외과')>=0)return 0.52;
+  if(name.indexOf('명인')>=0)return 0.48;
   if(name.indexOf('로코모')>=0)return 0.18;
-  return signalHas(signal.priority||[],{name:'도수치료',match:'도수치료',cat:'',type:client.type})?0.28:0;
+  return signalHas(signal.priority||[],{name:'도수치료',match:'도수치료',cat:'',type:client.type})?0.38:0;
 }
 function shouldForceManualTherapy(client,dis,signal){
   if(!shouldPreferManualTherapy(client,dis,signal))return false;
@@ -3309,7 +3310,7 @@ function shouldCycleManualTherapy(client,dis,manual,signal){
   if(!manual||!shouldPreferManualTherapy(client,dis,signal))return false;
   var key=[client&&client.id,client&&client.name,dis&&dis.name].join('|');
   MANUAL_REROLL_STATE[key]=(MANUAL_REROLL_STATE[key]||0)+1;
-  return MANUAL_REROLL_STATE[key]%3===0;
+  return MANUAL_REROLL_STATE[key]%2===0;
 }
 function getManualTherapyDebug(client,diseaseName){
   var c=client||selectedClient;
@@ -3330,7 +3331,7 @@ function getManualTherapyDebug(client,diseaseName){
     isManualCandidate:isManualTherapyCandidateDisease(dis),
     shouldPrefer:shouldPreferManualTherapy(c,dis,signal),
     forceRate:manualTherapyForceRate(c,signal),
-    cycleGuarantee:'상품/시술 반복 클릭 시 적합 질환에서는 3회 안에 도수치료 1회 보장'
+    cycleGuarantee:'상품/시술 반복 클릭 시 통증/척추/재활 계열에서는 2회 안에 도수치료 1회 보장'
   };
 }
 window.aubeManualDebug=getManualTherapyDebug;
