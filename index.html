@@ -19,23 +19,20 @@
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:-apple-system,'Pretendard','Apple SD Gothic Neo',sans-serif;background:
-    radial-gradient(circle at 50% -8%,rgba(49,130,246,.16),transparent 38%),
-    radial-gradient(circle at 8% 38%,rgba(22,189,156,.10),transparent 28%),
-    radial-gradient(circle at 92% 30%,rgba(49,130,246,.12),transparent 30%),
-    linear-gradient(180deg,#f8fbff 0%,#edf4fb 48%,#f7f9fc 100%);
+    radial-gradient(circle at 14% 8%,rgba(49,130,246,.10),transparent 30%),
+    radial-gradient(circle at 88% 12%,rgba(99,179,237,.12),transparent 34%),
+    radial-gradient(circle at 50% 52%,rgba(236,244,255,.92),transparent 48%),
+    linear-gradient(135deg,#fbfdff 0%,#eef6ff 44%,#f7fbff 100%);
     color:var(--text);font-size:14px;line-height:1.6;position:relative;}
   body::before{content:"";position:fixed;inset:56px 0 0;z-index:0;pointer-events:none;background:
-    linear-gradient(90deg,rgba(247,249,252,.86) 0%,rgba(247,249,252,.34) 14%,rgba(247,249,252,.12) 31%,rgba(247,249,252,.12) 69%,rgba(247,249,252,.34) 86%,rgba(247,249,252,.86) 100%),
-    radial-gradient(ellipse at 50% 8%,rgba(255,255,255,.72),transparent 38%),
-    radial-gradient(circle at 18% 28%,rgba(22,224,163,.12),transparent 22%),
-    radial-gradient(circle at 82% 24%,rgba(49,130,246,.16),transparent 24%),
-    radial-gradient(circle at 78% 78%,rgba(22,224,163,.08),transparent 26%);
-    opacity:.96;}
+    linear-gradient(180deg,rgba(255,255,255,.78),rgba(255,255,255,.36) 42%,rgba(255,255,255,.72)),
+    radial-gradient(ellipse at 50% 0%,rgba(49,130,246,.08),transparent 44%);
+    opacity:1;}
   body::after{content:"";position:fixed;right:-54px;bottom:-38px;width:430px;height:164px;z-index:0;pointer-events:none;opacity:0.07;background-repeat:no-repeat;background-position:right bottom;background-size:contain;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 636 148' fill='%233182f6'%3E%3Crect x='0' y='36' width='28' height='112'/%3E%3Crect x='0' y='0' width='156' height='28'/%3E%3Crect x='128' y='0' width='28' height='148'/%3E%3Crect x='172' y='0' width='28' height='148'/%3E%3Crect x='172' y='120' width='156' height='28'/%3E%3Crect x='300' y='0' width='28' height='148'/%3E%3Crect x='344' y='0' width='156' height='28'/%3E%3Crect x='344' y='60' width='156' height='28'/%3E%3Crect x='344' y='120' width='156' height='28'/%3E%3Crect x='472' y='0' width='28' height='148'/%3E%3Crect x='516' y='0' width='120' height='28'/%3E%3Crect x='516' y='60' width='120' height='28'/%3E%3Crect x='516' y='120' width='120' height='28'/%3E%3C/svg%3E");}
   nav{position:relative;z-index:3;}
   .page{position:relative;z-index:2;}
   .cinema-video-bg{position:fixed;inset:56px 0 0;width:100vw;height:calc(100vh - 56px);z-index:0;pointer-events:none;opacity:.82;mix-blend-mode:multiply;filter:saturate(1.18) contrast(1.12);display:none;}
-  #aube-drone-bg{position:fixed;inset:56px 0 0;width:100vw;height:calc(100vh - 56px);z-index:1;pointer-events:none;}
+  #aube-drone-bg{display:none;position:fixed;inset:56px 0 0;width:100vw;height:calc(100vh - 56px);z-index:1;pointer-events:none;}
   .ptc-field{position:fixed;inset:56px 0 0;z-index:1;pointer-events:none;overflow:hidden;display:none;background:
     linear-gradient(90deg,rgba(49,130,246,.050) 1px,transparent 1px),
     linear-gradient(rgba(22,224,163,.040) 1px,transparent 1px),
@@ -410,6 +407,23 @@
     .brief-panel-head{align-items:flex-start;flex-direction:column;}
     .brief-idea-drawer{top:88px;width:calc(100vw - 18px);}
   }
+  /* v9: 디자인은 정적 토스톤 그라데이션 + 우측 하단 AUBE 로고만 유지 */
+  body{background:
+    radial-gradient(circle at 16% 10%,rgba(49,130,246,.13),transparent 28%),
+    radial-gradient(circle at 86% 18%,rgba(129,140,248,.10),transparent 30%),
+    radial-gradient(circle at 50% 82%,rgba(45,212,191,.11),transparent 34%),
+    linear-gradient(135deg,#fbfdff 0%,#eef6ff 42%,#f8fbff 100%)!important;}
+  body::before{background:linear-gradient(180deg,rgba(255,255,255,.80),rgba(255,255,255,.42) 46%,rgba(255,255,255,.76))!important;}
+  body::after{opacity:.09!important;right:22px!important;bottom:18px!important;width:310px!important;height:72px!important;}
+  .cinema-video-bg,#aube-drone-bg,.ptc-field,.hero-visual,.hero-shield,.ecg-svg,.ecg-chip{display:none!important;}
+  .page-header{min-height:0!important;padding:24px 28px!important;border-radius:12px!important;background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(238,246,255,.86))!important;border:1px solid rgba(214,224,238,.96)!important;box-shadow:0 18px 42px rgba(28,45,70,.06)!important;}
+  .page-header::before{display:none!important;}
+  .page-header .hero-eyebrow{color:var(--accent)!important;}
+  .page-header h1{color:var(--text)!important;text-shadow:none!important;}
+  .page-header p{color:var(--text2)!important;text-shadow:none!important;max-width:640px!important;}
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important;}
+  .kw-btn:hover,.client-item:hover{transform:none!important;}
+  .brief-idea-drawer.open{transform:translateX(0) scale(1)!important;opacity:1!important;}
 </style>
 </head>
 <body>
@@ -1010,7 +1024,7 @@ var KEY_SURVEY_ANSWERS='survey_answers';
 
 // 로컬 캐시 (빠른 렌더링용)
 var _cache={};
-var AUBE_BUILD_TAG='drone-bg-v8-2026-06-16';
+var AUBE_BUILD_TAG='static-toss-algorithm-v9-2026-06-16';
 // 일부 미리보기/임베드 환경은 console.info 등을 막아둠 — 없으면 안전하게 채워서 스크립트가 죽지 않게 함
 (function(){try{var c=window.console=window.console||{};['info','log','warn','error','debug'].forEach(function(m){if(typeof c[m]!=='function')c[m]=function(){};});}catch(e){}})();
 try{console.info('[AUBE]',AUBE_BUILD_TAG);}catch(e){}
@@ -1939,8 +1953,9 @@ function startAubeDrone(){
   }
   requestAnimationFrame(frame);
 }
-if(document.readyState!=='loading'){startAubeDrone();}
-else document.addEventListener('DOMContentLoaded',function(){startAubeDrone();});
+// v9: 배경 애니메이션 호출 중지. 정적 그라데이션과 우측 하단 로고만 사용.
+if(document.readyState!=='loading'){}
+else document.addEventListener('DOMContentLoaded',function(){});
 function findNavTab(id){
   return document.querySelector(".nav-tab[onclick*=\""+id+"\"]");
 }
@@ -3482,15 +3497,58 @@ function buildEquipmentAdvice(client,product){
   if(!parts.length)return '';
   return '<div class="adv equip'+(missing.length?' warn':'')+'"><div class="adv-title">의료기기 연결 가이드</div><div class="adv-msg">'+parts.map(function(p){return '<span class="equip-guide-row">'+p+'</span>';}).join('')+'</div></div>';
 }
+
+function textSignalTokens(text){
+  var raw=(text||'').toString();
+  var cleaned=raw.replace(/[()\[\]{}]/g,' ').replace(/[·ㆍ\/|+]/g,',');
+  var tokens=[];
+  cleaned.split(/[,\n]/).forEach(function(part){
+    var p=part.trim();
+    if(!p)return;
+    var m=p.match(/(?:대표|주력|중점|희망|늘리고 싶은|매출 상위|비중 확대|우선|상품|시술|진료|장비|콘텐츠는|운영)[^.,。;:：]*?(?:[:：]|은|는|:)?\s*([^.,。;]+)/);
+    var src=m?m[1]:p;
+    src.split(/[\s,]+/).forEach(function(v){
+      v=v.trim().replace(/[()\[\]{}]/g,'');
+      if(v&&v.length>=2)tokens.push(v);
+    });
+  });
+  return uniqList(tokens).filter(function(v){return !/^(및|중심|확대|축소|운영|콘텐츠|비중|대표|주력|진료|상품|시술|장비|필요|확인)$/.test(v);});
+}
+function clientPriorityTokens(client){
+  var signal=getClientRevenueSignal(client);
+  var tokens=[];
+  tokens=tokens.concat((signal&&signal.priority)||[]);
+  tokens=tokens.concat((signal&&signal.highValue)||[]);
+  tokens=tokens.concat(textSignalTokens(client&&client.note));
+  tokens=tokens.concat((client&&client.equipment)||[]);
+  return uniqList(tokens);
+}
+function clientDeprioritizeTokens(client){
+  var signal=getClientRevenueSignal(client);
+  var tokens=[].concat((signal&&signal.deprioritize)||[]);
+  var note=(client&&client.note)||'';
+  if(/도수치료[^.。\n]*(축소|관리급여|비중 축소|줄)/.test(note))tokens.push('도수치료');
+  return uniqList(tokens);
+}
+function isManagedBenefitSensitiveProduct(product){
+  var key=canonicalProductKey(product);
+  var hay=[product&&product.name,product&&product.match,product&&product.note].join(' ');
+  return key==='도수치료'||/관리급여|실손보험|5세대/.test(hay);
+}
+function productPriorityScore(product,client,signal){
+  var w=1;
+  if(signal&&signalHas(signal.priority,product))w+=4;
+  if(signal&&signalHas(signal.highValue,product))w+=5;
+  clientPriorityTokens(client).forEach(function(k){if(signalHas([k],product))w+=3;});
+  clientDeprioritizeTokens(client).forEach(function(k){if(signalHas([k],product))w=Math.max(1,w-4);});
+  if(isManagedBenefitSensitiveProduct(product))w=Math.max(1,Math.floor(w*.35));
+  return w;
+}
 function weightedPickProducts(items,signal){
   if(!items.length)return null;
   var pool=[];
   items.forEach(function(p){
-    var w=1;
-    if(signal&&signalHas(signal.priority,p))w+=4;
-    if(signal&&signalHas(signal.highValue,p))w+=5;
-    if(canonicalProductKey(p)==='도수치료'&&signal&&signalHas(['도수치료','도수재활치료','운동치료','물리치료','재활물리치료'],p))w+=8;
-    if(signal&&signalHas(signal.deprioritize,p))w=Math.max(canonicalProductKey(p)==='도수치료'?2:1,w-1);
+    var w=productPriorityScore(p,selectedClient,signal);
     for(var i=0;i<w;i++)pool.push(p);
   });
   return pick(pool);
@@ -3508,17 +3566,14 @@ function manualTherapyProductFrom(items){
 }
 function shouldPreferManualTherapy(client,dis,signal){
   if(!client||!dis||!signal)return false;
+  if(clientDeprioritizeTokens(client).indexOf('도수치료')>=0)return false;
   if(!signalHas(signal.priority||[],{name:'도수치료',match:'도수치료',cat:'',type:client.type}))return false;
   return isManualTherapyCandidateDisease(dis);
 }
 function manualTherapyForceRate(client,signal){
   if(!client||!signal)return 0;
-  var name=client.name||'';
-  if(name.indexOf('동탄신경외과')>=0)return 0.58;
-  if(name.indexOf('서울바른신경외과')>=0)return 0.52;
-  if(name.indexOf('명인')>=0)return 0.48;
-  if(name.indexOf('로코모')>=0)return 0.18;
-  return signalHas(signal.priority||[],{name:'도수치료',match:'도수치료',cat:'',type:client.type})?0.38:0;
+  if(clientDeprioritizeTokens(client).indexOf('도수치료')>=0)return 0;
+  return signalHas(signal.priority||[],{name:'도수치료',match:'도수치료',cat:'',type:client.type})?0.08:0;
 }
 function shouldForceManualTherapy(client,dis,signal){
   if(!shouldPreferManualTherapy(client,dis,signal))return false;
@@ -3526,10 +3581,7 @@ function shouldForceManualTherapy(client,dis,signal){
 }
 var MANUAL_REROLL_STATE={};
 function shouldCycleManualTherapy(client,dis,manual,signal){
-  if(!manual||!shouldPreferManualTherapy(client,dis,signal))return false;
-  var key=[client&&client.id,client&&client.name,dis&&dis.name].join('|');
-  MANUAL_REROLL_STATE[key]=(MANUAL_REROLL_STATE[key]||0)+1;
-  return MANUAL_REROLL_STATE[key]%2===0;
+  return false;
 }
 function getManualTherapyDebug(client,diseaseName){
   var c=client||selectedClient;
@@ -3550,7 +3602,7 @@ function getManualTherapyDebug(client,diseaseName){
     isManualCandidate:isManualTherapyCandidateDisease(dis),
     shouldPrefer:shouldPreferManualTherapy(c,dis,signal),
     forceRate:manualTherapyForceRate(c,signal),
-    cycleGuarantee:'상품/시술 반복 클릭 시 통증/척추/재활 계열에서는 2회 안에 도수치료 1회 보장'
+    cycleGuarantee:'v9에서는 관리급여 이슈로 도수치료 강제 보장 없음. 병원 주력 시술/상품 우선.'
   };
 }
 window.aubeManualDebug=getManualTherapyDebug;
@@ -3616,7 +3668,7 @@ function pickProduct(diseaseName){
     if(manual&&matched.indexOf(manual)>=0&&shouldForceManualTherapy(selectedClient,dis,signal))return manual;
     return weightedPickProducts(matched,signal);
   }
-  if(manual&&shouldPreferManualTherapy(selectedClient,dis,signal))return manual;
+  if(manual&&shouldPreferManualTherapy(selectedClient,dis,signal)&&shouldForceManualTherapy(selectedClient,dis,signal))return manual;
   if(disCat&&shouldUseStrictDirectMatch(disCat))return null;
   if(shouldStopProductFallback(selectedClient,disCat))return null;
   // 2순위: 같은 카테고리 상품
@@ -3687,7 +3739,12 @@ function showResult(){
   var advHtml='';
   if(dis.vol==='low')advHtml+='<div class="adv warn"><div class="adv-title">검색량 주의</div><div class="adv-msg"><b>'+dis.name+'</b>은 단독 검색량이 낮습니다. 지역+과목+증상 구체화 조합으로 롱테일을 공략하세요.'+(dis.note?' '+dis.note:'')+'</div></div>';
   if(dis.vol==='high')advHtml+='<div class="adv"><div class="adv-title">경쟁도 안내</div><div class="adv-msg"><b>'+dis.name+'</b>은 검색량이 높은 만큼 경쟁도도 높습니다. 정보 격차형 제목이나 지역+증상 구체화로 차별화하세요.'+(dis.note?' '+dis.note:'')+'</div></div>';
-  if(prod&&prod.note&&!triggered.some(function(t){return t.msg.includes(prod.name);})){
+  if(prod&&prod.note&&!triggered.some(function(t){return t.msg.includes(prod.name);})) {
+    var priorityTokens=clientPriorityTokens(selectedClient);
+    var matchedPriority=priorityTokens.filter(function(k){return signalHas([k],prod);}).slice(0,5);
+    if(matchedPriority.length){
+      advHtml+='<div class="adv"><div class="adv-title">병원 주력 신호 반영</div><div class="adv-msg"><b>'+esc(selectedClient.name)+'</b> 메모/장비/매출 신호에서 <b>'+matchedPriority.map(esc).join(', ')+'</b>가 감지되어 이 시술·상품의 노출 가중치를 높였습니다. 원고에서는 병원이 실제 운영하는 프로토콜과 확인된 장비만 연결하세요.</div></div>';
+    }
     var isWarnNote=prod.note.includes('금지')||prod.note.includes('위반')||prod.note.includes('주의')||prod.note.includes('이슈');
     advHtml+='<div class="adv'+(isWarnNote?' warn':'')+'">'+
       '<div class="adv-title">✏️ 원고에 이 시술을 적용해 보세요</div>'+
@@ -3695,6 +3752,7 @@ function showResult(){
     '</div>';
   }
   advHtml+=buildEquipmentAdvice(selectedClient,prod);
+  if(prod&&isManagedBenefitSensitiveProduct(prod)){advHtml+='<div class="adv warn"><div class="adv-title">관리급여/실손 이슈 빈도 조절</div><div class="adv-msg">도수치료처럼 최근 급여·실손 이슈가 있는 항목은 자동 추천 빈도를 낮췄습니다. 꼭 필요한 경우에만 병원 확인 후 원고화하고, 비용·횟수·급여 여부는 최신 기준 확인 문장을 넣으세요.</div></div>'; }
   if(ST.cats)advHtml+='<div class="adv"><div class="adv-title">지역 전략</div><div class="adv-msg"><b>'+r+'</b> 지역 — <b>'+ST.cats.join('·')+'</b> 카테고리 설정</div></div>';
   if(!advHtml)advHtml='<div class="adv"><div class="adv-title">조합 적합도 양호</div><div class="adv-msg">지역+과목+질환 구조로 안정적인 조합입니다.</div></div>';
   document.getElementById('advice-area').innerHTML=advHtml;
@@ -3717,3 +3775,4 @@ initSync();
 </script>
 </body>
 </html>
+
