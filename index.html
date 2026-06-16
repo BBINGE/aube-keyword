@@ -415,7 +415,7 @@
     linear-gradient(135deg,#fbfdff 0%,#eef6ff 42%,#f8fbff 100%)!important;}
   body::before{background:linear-gradient(180deg,rgba(255,255,255,.80),rgba(255,255,255,.42) 46%,rgba(255,255,255,.76))!important;}
   body::after{opacity:.09!important;right:22px!important;bottom:18px!important;width:310px!important;height:72px!important;}
-  .cinema-video-bg,#aube-drone-bg,.ptc-field,.hero-visual,.hero-shield,.ecg-svg,.ecg-chip{display:none!important;}
+  .cinema-video-bg,#aube-drone-bg,.ptc-field,.hero-visual{display:none!important;}
   /* v9: 전면 배경 요소만 정지 */
   .cinema-video-bg,#aube-drone-bg,.ptc-field,.ptc-field *,#aube-drone-bg *{animation:none!important;transition:none!important;}
   .page-header{min-height:0!important;padding:24px 28px!important;border-radius:12px!important;background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(238,246,255,.86))!important;border:1px solid rgba(214,224,238,.96)!important;box-shadow:0 18px 42px rgba(28,45,70,.06)!important;}
@@ -3562,10 +3562,14 @@ function weightedPickProducts(items,signal){
 }
 function isManualTherapyCandidateDisease(dis){
   if(!dis)return false;
+  var name=String(dis.name||'');
+  var cat=String(dis.cat||'');
+  var excluded=['만성피로','수액치료','피로회복','비만관리','체중감량','다이어트','만성소화불량'];
+  if(excluded.indexOf(name)>=0)return false;
   var names=['거북목','일자목','목통증','허리통증','어깨통증','오십견','견갑통증','등통증','근막통증','만성통증','손목통증','발목통증','무릎통증','테니스엘보','족저근막염','좌골신경통','교통사고후유증','교통사고 목통증','교통사고 허리통증','척추측만증','수술 후 재활','스포츠 재활'];
-  if(names.indexOf(dis.name)>=0)return true;
-  if(['통증','척추','재활','교통사고'].indexOf(dis.cat)>=0)return true;
-  if(dis.cat==='척추'&&/목|허리|척추|디스크|협착|측만/.test(dis.name))return true;
+  if(names.indexOf(name)>=0)return true;
+  if(['척추','재활','교통사고'].indexOf(cat)>=0)return true;
+  if(cat==='통증'&&/목|허리|척추|디스크|협착|측만|어깨|무릎|손목|발목|팔꿈치|관절|견갑|등통증|근막|염좌|엘보|족저|좌골|거북|일자|오십견/.test(name))return true;
   return false;
 }
 function manualTherapyProductFrom(items){
