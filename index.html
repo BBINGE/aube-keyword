@@ -1046,13 +1046,15 @@ function initSync(){
 var DEFAULT_CLIENTS=[
   {
     id:9001,name:'동탄신경외과의원',city:'동탄',type:'신경외과',
-    note:'목·허리 척추 전문. 일반 정형외과와 차별화(척추 제대로 보는 정형외과 드묾). 두통은 경추성 접근(대후두·소후두신경차단술, 경추 MBB). C-arm만 보유.',
+    note:'목·허리 척추 전문. 일반 정형외과와 차별화(척추 제대로 보는 정형외과 드묾). 두통은 경추성 접근(대후두·소후두신경차단술, 경추 MBB). 홈페이지 기준 고해상도 엑스레이·초음파 기능 C-arm·재활장비 신호.',
+    equipment:['C-arm','초음파 기능 C-arm','고해상도 엑스레이','재활장비'],
     exclude:['보톡스','고주파 신경차단술','고주파','신경성형술','경피적 경막외강 신경성형술','풍선확장술','신경 감압술','B-PEN','L-PEN','C-PEN','PEN'],
     surg:false,equip:true,active:true,fixedDepts:['신경외과'],rgGroups:[]
   },
   {
     id:9002,name:'로코모재활의학과의원',city:'동탄',type:'재활의학과',
-    note:'마운자로(티르제파타이드) 다이어트 이벤트 운영(2.5mg 32만/5mg 43만/7.5mg 57만, 각 4회). 콘텐츠는 주사치료·신경치료·PRP·관절주사·체외충격파·물리치료 비중 확대, 도수치료 비중 축소(완전 제외 아님 — 관리급여 이슈). C-arm·초음파 보유.',
+    note:'마운자로(티르제파타이드) 다이어트 이벤트 운영(2.5mg 32만/5mg 43만/7.5mg 57만, 각 4회). 콘텐츠는 주사치료·신경치료·PRP·관절주사·체외충격파·물리치료 비중 확대, 도수치료 비중 축소(완전 제외 아님 — 관리급여 이슈). 고압산소챔버·체외충격파·수치료기·신장분사기·초음파·자기장치료기·C-arm 등 장비 보유.',
+    equipment:['H-2000 고압산소챔버','MULTI-ioncool 이온치료기','IN-5200 체외충격파','AQUAJET H5 수치료기','CRYO-ONE 신장분사기','LOGIQ P10 초음파','MSL-white 자기장치료기','ZEN-2090 Turbo C-arm','GP1060L 레이저조사기','Osteosys Primus BMD','Accuray D5/D6 엑스선 촬영기','WIN-TRAC 전동식 견인치료기'],
     exclude:[],
     surg:false,equip:true,active:true,fixedDepts:[],rgGroups:[]
   },
@@ -1432,6 +1434,13 @@ var CLAUDE_PRODUCTS=[
   {id:'cp59c',type:'재활의학과',cat:'통증',name:'산소치료',match:'만성통증,근막통증,피로회복,스포츠 재활,상처회복,회복관리,산소치료',note:'【정의】 산소 공급을 보조해 회복 관리에 활용하는 치료 범주입니다. 병원별로 흡입 산소, 고압산소, 회복 프로그램 내 산소 공급 등 실제 방식이 다를 수 있어 장비와 명칭 확인이 필요합니다. 【기전】 조직 산소 공급을 돕고 피로·회복 관리 보조 목적으로 설명할 수 있으나, 모든 통증이나 질환을 치료한다고 단정하면 안 됩니다. 【적용 질환】 피로 회복 상담, 스포츠 재활 후 회복 관리, 만성 통증 환자의 보조 관리 등 병원 프로토콜에 맞춰 제한적으로 연결합니다. 【시행 과목】 재활의학과·가정의학과·내과 등. 【원고 포인트】 로코모 누락 시술 보강 항목입니다. “산소치료로 완치”보다 “재활·통증 치료 과정에서 회복 컨디션을 보조하는 관리”로 쓰고, 실제 산소치료 방식은 병원 확인 문구를 남기세요.',src:'claude'},
   {id:'cp59d',type:'재활의학과',cat:'통증',name:'증식치료 (프롤로테라피)',match:'인대손상,힘줄손상,테니스엘보,골프엘보,어깨통증,무릎통증,발목통증,만성통증,프롤로,증식치료',note:'【정의】 인대·힘줄 부착부 등 약해진 연부조직 주변에 고농도 포도당 등 자극 용액을 주입해 회복 반응을 유도하는 주사 치료입니다. 【기전】 손상 부위에 조절된 자극을 주어 조직 회복 과정이 일어나도록 돕는 방식으로 설명하되, 조직이 즉시 재생된다고 단정하지 않습니다. 【적용 질환】 만성 인대·힘줄 통증, 테니스엘보·골프엘보, 발목 불안정성, 어깨·무릎 주변 연부조직 통증 등. 【시행 과목】 재활의학과·정형외과·통증의학과. 비급여 여부와 약제는 병원 확인 필요. 【원고 포인트】 로코모는 주사치료·PRP·관절주사 비중 확대 신호가 있으므로 도수치료보다 주사치료 맥락으로 연결하세요. “인대를 새로 만든다”보다 “회복 반응을 유도해 통증과 기능 회복을 돕는다”가 안전합니다.',src:'claude'},
   {id:'cp59e',type:'재활의학과',cat:'통증',name:'신장분사치료 (CRYO)',match:'목통증,허리통증,어깨통증,무릎통증,근막통증,급성통증,염좌,스포츠 재활,신장분사치료,CRYO',note:'【정의】 냉각 가스를 통증 부위에 분사해 피부와 연부조직을 빠르게 식히는 물리치료 성격의 보조 처치입니다. 【기전】 국소 냉각으로 통증 감각과 염증성 반응을 일시적으로 낮추고, 재활 치료 전후 근육 긴장 완화에 활용될 수 있습니다. 【적용 질환】 급성 염좌, 운동 후 통증, 근막통증, 목·허리·어깨·무릎 주변 통증 등 의료진 평가 후 적용 가능한 통증. 【시행 과목】 재활의학과·정형외과·신경외과·통증의학과. 【원고 포인트】 로코모 누락 시술 보강 항목입니다. 단독 치료처럼 과장하지 말고 주사치료·물리치료·운동치료와 함께 통증 관리 단계에서 쓰이는 보조 옵션으로 설명하세요.',src:'claude'},
+  {id:'cp59f',type:'재활의학과',cat:'재활',name:'고압산소치료',match:'만성통증,피로회복,스포츠 재활,회복관리,상처회복,고압산소치료,산소치료',requiredEquipment:['고압산소챔버'],note:'【정의】 고압산소챔버를 이용해 일반 대기압보다 높은 압력 환경에서 산소 공급을 보조하는 치료입니다. 【확인 포인트】 실제 장비명, 적용 목적, 금기 질환, 치료 시간과 횟수를 병원 기준으로 확인해야 합니다. 【원고 포인트】 “통증을 치료한다”처럼 직접 효과를 단정하기보다 회복 컨디션 관리, 재활 과정의 보조 옵션, 의료진 평가 후 적용이라는 흐름으로 쓰세요. 로코모는 H-2000 고압산소챔버 보유 신호가 있어 산소치료보다 더 구체적인 상품명으로 연결 가능합니다.',src:'user'},
+  {id:'cp59g',type:'재활의학과',cat:'재활',name:'이온치료',match:'근막통증,만성통증,물리치료,재활치료,이온치료',requiredEquipment:['이온치료기'],note:'【정의】 전기적 자극이나 이온 전달 원리를 활용하는 물리치료 범주입니다. 병원 장비와 프로토콜에 따라 적용 부위와 목적이 달라질 수 있습니다. 【확인 포인트】 장비명, 치료 목적, 병행 치료, 환자 금기사항을 확인하세요. 【원고 포인트】 단독 치료 성과보다 통증 조절과 재활치료 과정에서 보조적으로 활용되는 물리치료 옵션으로 설명하는 편이 안전합니다.',src:'user'},
+  {id:'cp59h',type:'재활의학과',cat:'재활',name:'수치료',match:'수술 후 재활,스포츠 재활,운동치료,관절가동범위,보행재활,수치료',requiredEquipment:['수치료기'],note:'【정의】 물의 저항·부력·온도 등을 활용해 관절 부담을 줄이고 움직임 훈련을 돕는 재활치료입니다. 【확인 포인트】 실제 수치료 장비, 대상 질환, 치료 강도, 운동치료와의 연결 방식을 확인해야 합니다. 【원고 포인트】 “물속에서 편하게 운동한다”보다 “관절 부담을 줄이며 움직임 회복을 돕는 재활 프로그램”으로 쓰면 실무자가 이해하기 쉽습니다.',src:'user'},
+  {id:'cp59i',type:'재활의학과',cat:'재활',name:'자기장치료',match:'근막통증,만성통증,재활치료,물리치료,자기장치료',requiredEquipment:['자기장치료기'],note:'【정의】 자기장 자극을 활용하는 비침습 물리치료 범주입니다. 병원별 장비와 적응증 설명이 다를 수 있어 실제 프로토콜 확인이 필요합니다. 【확인 포인트】 장비명, 적용 부위, 금기사항, 병행 치료 여부를 확인하세요. 【원고 포인트】 강한 치료 효과를 단정하지 말고 통증 관리와 재활 과정에서 선택할 수 있는 보조 치료로 설명하세요.',src:'user'},
+  {id:'cp59j',type:'재활의학과',cat:'재활',name:'레이저치료',match:'근막통증,염좌,스포츠 재활,물리치료,재활치료,레이저치료',requiredEquipment:['레이저조사기'],note:'【정의】 레이저 에너지를 통증 부위나 연부조직에 조사하는 물리치료 범주입니다. 【확인 포인트】 실제 장비명, 출력 방식, 적용 부위, 금기사항을 확인해야 합니다. 【원고 포인트】 “염증을 없앤다”처럼 단정하기보다 통증 관리와 회복 보조 목적의 물리치료 옵션으로 제한해 설명하세요.',src:'user'},
+  {id:'cp59k',type:'재활의학과',cat:'검사',name:'골밀도검사 (BMD)',match:'골다공증,골감소증,폐경,노년층,압박골절,골밀도검사',requiredEquipment:['BMD','골밀도검사기'],note:'【정의】 골밀도검사는 뼈의 밀도를 측정해 골감소증·골다공증 위험을 평가하는 검사입니다. 【확인 포인트】 연령, 폐경 여부, 골절 이력, 스테로이드 복용, 검사 주기를 함께 확인해야 합니다. 【원고 포인트】 압박골절이나 낙상 위험 콘텐츠와 연결하기 좋습니다. 검사 결과 해석과 치료 필요성은 의료진 상담 후 결정된다는 문구를 유지하세요.',src:'user'},
+  {id:'cp59l',type:'재활의학과',cat:'재활',name:'견인치료',match:'목통증,허리통증,목디스크,허리디스크,일자목,거북목,견인치료',requiredEquipment:['견인치료기','전동식 견인치료기'],note:'【정의】 견인치료는 목이나 허리 부위에 일정한 견인력을 적용해 척추 주변 부담 완화를 돕는 물리치료입니다. 【확인 포인트】 디스크·협착증 등 원인 감별, 통증 양상, 금기사항, 치료 강도를 확인해야 합니다. 【원고 포인트】 “디스크가 들어간다”처럼 과장하지 말고 진단 후 보존치료 중 하나로 선택될 수 있다는 톤이 안전합니다.',src:'user'},
   // ===== 요양병원 =====
   {id:'cp60',type:'요양병원',cat:'암',name:'암 요양 입원',match:'암 요양병원,암 환자 입원,암 수술 후 재활,호스피스 요양,항암 후 회복',note:'【정의】 암 수술·항암 치료 후 회복을 위해 요양병원에 장기 입원해 의료진의 집중 케어를 받는 프로그램. 입원 환경·의료진 신뢰 중심 소구. 가족 상담 연계. 【적용 대상】 암 수술 후 회복기 환자. 【시행 과목】 요양병원. 【원고 포인트】 가족 안심 콘텐츠. 입원 환경·의료진 케어 강조.',src:'claude'},
   {id:'cp61',type:'요양병원',cat:'암',name:'호스피스 완화 케어',match:'호스피스 요양,암 통증 관리',note:'【정의】 말기암 환자의 통증·불안·호흡 곤란 등 증상을 완화하고 편안한 임종을 지원하는 완화 케어. 치료보다 삶의 질 유지에 초점. 【적용 대상】 말기암 환자 및 가족. 【시행 과목】 요양병원. 【원고 포인트】 편안한 환경·통증 완화·가족 지지 소구.',src:'claude'},
@@ -3129,10 +3138,10 @@ var INJECTION_PRACTICE_GUIDE=[
 ];
 
 var CLIENT_REVENUE_SIGNALS=[
-  {match:'서울바른신경외과',equipment:['C-arm','초음파'],priority:['B-PEN','L-PEN','C-PEN','신경성형술','풍선확장술','도수치료','운동치료','물리치료','체외충격파','거북목','일자목','목통증','경추성두통','견갑통증','등통증','관절주사','PDRN'],highValue:['B-PEN','L-PEN','C-PEN','신경성형술','풍선확장술'],note:'서울바른 비급여표: L-PEN 200만원, B-PEN 250만원, C-PEN 200만원, 도수치료 10~20만원, 체외충격파 6~8만원, 관절주사/PDRN 확인. 거북목·일자목·목통증·견갑/등통증은 도수·운동·물리치료 같은 보존치료 축도 함께 반영. 유튜브 뉴로썰전 최근 콘텐츠는 거북목·일자목·경추성 두통·등/날개뼈/견갑통증·스트레칭·경추베개 사용가이드 신호가 강함.'},
-  {match:'동탄신경외과',equipment:['C-arm'],priority:['척추','목디스크','허리디스크','척추관협착증','신경차단술','대소후두차단술','경추 MBB','도수치료','운동치료','물리치료','관절주사'],avoid:['보톡스','고주파 신경차단술','신경성형술','풍선확장술','PEN'],note:'원장님: 목·허리 척추 위주. 두통은 경추 관련 블럭, 대소후두차단술·경추 MBB 중심. 보톡스 안 함. 대표님: C-arm만, 고주파/성형술 X. 도수·운동·물리치료는 시술보다 보존치료/재활 보조 축으로 제한 연결.'},
-  {match:'로코모',equipment:['C-arm','초음파'],priority:['마운자로','주사치료','신경치료','신경차단술','PRP','관절주사','체외충격파','물리치료'],deprioritize:['도수치료'],note:'로코모: 마운자로 이벤트가 2.5mg 32만원/5mg 43만원/7.5mg 57만원(각 4회). 리뷰/콘텐츠는 주사치료·신경치료·PRP·관절주사·체외충격파·물리치료 비중 확대, 도수치료 비중 축소.'},
-  {match:'명인',equipment:['C-arm'],priority:['프롤로','프롤로주사','관절주사','인대강화주사','체외충격파','도수치료'],note:'대표님: 명인마취통증의학과는 C-arm, 프롤로주사(관절주사) 중심. 비급여표 최종변경일 2026-01-01.'},
+  {match:'서울바른신경외과',equipment:['C-arm','초음파'],equipmentNeedsConfirm:true,priority:['B-PEN','L-PEN','C-PEN','신경성형술','풍선확장술','신경차단술','도수치료','운동치료','물리치료','체외충격파','수액클리닉','거북목','일자목','목통증','경추성두통','견갑통증','등통증','관절주사','PDRN'],highValue:['B-PEN','L-PEN','C-PEN','신경성형술','풍선확장술'],note:'서울바른 홈페이지: 신경차단술·신경성형술·내시경적 풍선확장술·척추체 성형술·B-MAC 무릎 줄기세포치료·도수재활치료·체외충격파치료·수액클리닉 신호. 기존 실무 신호상 C-arm·초음파는 원고 전 장비명 확인 권장.'},
+  {match:'동탄신경외과',equipment:['C-arm','초음파 기능 C-arm','고해상도 엑스레이','재활장비'],priority:['척추','목디스크','허리디스크','척추관협착증','신경차단술','대소후두차단술','경추 MBB','도수치료','운동치료','물리치료','재활물리치료','특수치료','수액치료','관절주사'],avoid:['보톡스','고주파 신경차단술','신경성형술','풍선확장술','PEN'],note:'동탄 홈페이지: 고해상도 엑스레이, 초음파 기능을 가진 C-ARM, 재활장비 신호. 신경차단술·재생주사치료(PDRN)·체외충격파·도수/재활물리치료·특수치료·수액치료 연결 가능. 기존 제외 신호상 고주파/신경성형술/풍선확장술은 제외.'},
+  {match:'로코모',equipment:['H-2000 고압산소챔버','MULTI-ioncool 이온치료기','IN-5200 체외충격파','AQUAJET H5 수치료기','CRYO-ONE 신장분사기','LOGIQ P10 초음파','MSL-white 자기장치료기','ZEN-2090 Turbo C-arm','GP1060L 레이저조사기','Osteosys Primus BMD','Accuray D5/D6 엑스선 촬영기','WIN-TRAC 전동식 견인치료기'],priority:['마운자로','주사치료','신경치료','신경차단술','PRP','관절주사','체외충격파','고압산소치료','수치료','이온치료','자기장치료','레이저치료','신장분사치료','골밀도검사','견인치료','물리치료'],deprioritize:['도수치료'],note:'로코모: 사용자 제공 장비 기준 H-2000 고압산소챔버, MULTI-ioncool, IN-5200, AQUAJET H5, CRYO-ONE, LOGIQ P10, MSL-white, ZEN-2090 Turbo, GP1060L, Osteosys Primus, Accuray D5/D6, WIN-TRAC 보유. 마운자로와 주사/신경치료/PRP/관절주사/체외충격파/물리치료 비중 확대, 도수치료 비중 축소.'},
+  {match:'명인',equipment:['C-arm','V8 초음파영상진단기','엑스선 촬영 장치','체외충격파'],priority:['프롤로','프롤로주사','관절주사','인대강화주사','신경차단술','초음파 주사치료','C-arm 주사치료','체외충격파','도수치료','PRP','PDRN'],note:'명인 홈페이지: 엑스선 촬영 장치, 초음파영상진단기, C-arm, V8 초음파영상진단기 신호. 시술은 C-arm 주사치료, 초음파 주사치료, 신경차단술, 프롤로, PDRN, PRP, 체외충격파, 통증/관절/교정 도수치료 연결 가능.'},
   {match:'자연방',priority:['한약','침치료','다이어트 한약','성장 한약','부인과 한약','산후보약'],avoid:['추나요법','추나'],note:'자연방한의원: 통증은 침, 다이어트는 한약, 소아성장은 성장한약 중심. 기승전 한약 선호, 추나는 안 하는 메커니즘.'}
 ];
 function getClientRevenueSignal(client){
@@ -3143,6 +3152,99 @@ function signalHas(list,product){
   if(!list||!product)return false;
   var hay=[product.name,product.match,product.cat,product.type].join(' ');
   return list.some(function(k){return hay.indexOf(k)>=0;});
+}
+function uniqList(arr){
+  var seen={};
+  return (arr||[]).filter(function(v){
+    v=(v||'').toString().trim();
+    if(!v||seen[v])return false;
+    seen[v]=1;
+    return true;
+  });
+}
+function clientEquipmentList(client){
+  var signal=getClientRevenueSignal(client);
+  return uniqList([].concat((client&&client.equipment)||[],(signal&&signal.equipment)||[]));
+}
+function normalizeEquipmentName(v){
+  return (v||'').toString().toLowerCase().replace(/\s+/g,'').replace(/[·ㆍ\-\_\/\(\)]/g,'');
+}
+function equipmentMatches(owned,required){
+  var o=normalizeEquipmentName(owned),r=normalizeEquipmentName(required);
+  if(!o||!r)return false;
+  if(o.indexOf(r)>=0||r.indexOf(o)>=0)return true;
+  var aliases={
+    'carm':['carm','씨암','c-arm','zen2090turbo'],
+    '초음파':['초음파','logiqp10','v8초음파영상진단기','초음파영상진단기'],
+    '체외충격파':['체외충격파','eswt','in5200'],
+    '고압산소챔버':['고압산소챔버','h2000'],
+    '신장분사기':['신장분사기','cryo','cryoone'],
+    '수치료기':['수치료기','aquajeth5'],
+    '이온치료기':['이온치료기','multiioncool'],
+    '자기장치료기':['자기장치료기','mslwhite'],
+    '레이저조사기':['레이저조사기','gp1060l'],
+    'bmd':['bmd','골밀도검사기','osteosysprimus'],
+    '견인치료기':['견인치료기','전동식견인치료기','wintrac'],
+    '엑스레이':['엑스레이','xray','엑스선','accurayd5d6']
+  };
+  return Object.keys(aliases).some(function(key){
+    var bucket=aliases[key].map(normalizeEquipmentName);
+    return bucket.some(function(a){return o.indexOf(a)>=0;})&&bucket.some(function(a){return r.indexOf(a)>=0;});
+  });
+}
+function hasClientEquipment(client,required){
+  if(!required)return true;
+  return clientEquipmentList(client).some(function(owned){return equipmentMatches(owned,required);});
+}
+function productEquipmentMeta(product){
+  var rules=[
+    {keys:['고압산소치료','산소치료'],required:['고압산소챔버'],role:'고압산소챔버 보유 병원은 산소치료보다 고압산소치료처럼 장비명이 드러나는 키워드로 구체화할 수 있습니다.'},
+    {keys:['체외충격파'],required:['체외충격파'],role:'장비명은 제목보다 본문에서 치료 방식 설명과 보유 장비 신뢰 신호로 쓰는 편이 안전합니다.'},
+    {keys:['신장분사','CRYO'],required:['신장분사기'],role:'단독 치료로 과장하지 말고 통증 관리 전후 보조 처치로 설명하세요.'},
+    {keys:['수치료'],required:['수치료기'],role:'관절 부담을 줄이는 재활 프로그램 맥락으로 연결하면 실무자가 이해하기 쉽습니다.'},
+    {keys:['이온치료'],required:['이온치료기'],role:'물리치료 세부 옵션으로 다루고 효과 단정은 피하세요.'},
+    {keys:['자기장치료'],required:['자기장치료기'],role:'비침습 물리치료 보조 옵션으로 설명하세요.'},
+    {keys:['레이저치료'],required:['레이저조사기'],role:'회복 보조 물리치료 옵션으로 제한해 설명하세요.'},
+    {keys:['골밀도검사','BMD'],required:['BMD'],role:'골다공증·압박골절·폐경 후 검진 콘텐츠와 연결하기 좋습니다.'},
+    {keys:['견인치료'],required:['견인치료기'],role:'디스크 완치 표현 대신 보존치료 중 하나로 설명하세요.'},
+    {keys:['초음파 유도','초음파 주사'],required:['초음파'],role:'초음파는 시술명이 아니라 유도 방식입니다. 실제 주입 성분과 목적을 함께 확인하세요.'},
+    {keys:['C-arm','경막외','선택적 신경근','신경차단술','신경성형술','풍선확장술','MBB'],required:['C-arm'],role:'C-arm은 척추·신경 주사에서 정확한 위치 확인 신호로 쓰되, 부위와 방식은 병원 프로토콜 확인이 필요합니다.'},
+    {keys:['도수치료','운동치료','재활치료','재활물리치료'],related:['재활장비'],role:'장비명보다 평가-치료-운동-기능회복 흐름을 우선하세요.'}
+  ];
+  var hay=[product&&product.name,product&&product.match,product&&product.note].join(' ');
+  var required=[],related=[],roles=[];
+  rules.forEach(function(rule){
+    if(rule.keys.some(function(k){return hay.indexOf(k)>=0;})){
+      required=required.concat(rule.required||[]);
+      related=related.concat(rule.related||rule.required||[]);
+      if(rule.role)roles.push(rule.role);
+    }
+  });
+  required=uniqList([].concat((product&&product.requiredEquipment)||[],required));
+  related=uniqList([].concat((product&&product.equipment)||[],required,related));
+  return {required:required,related:related,role:uniqList(roles).join(' ')};
+}
+function productMissingEquipment(product,client){
+  var meta=productEquipmentMeta(product);
+  if(!clientEquipmentList(client).length&&client&&client.equip)return [];
+  return meta.required.filter(function(eq){return !hasClientEquipment(client,eq);});
+}
+function buildEquipmentAdvice(client,product){
+  if(!client||!product)return '';
+  var meta=productEquipmentMeta(product);
+  var clientEq=clientEquipmentList(client);
+  if(!meta.related.length&&!clientEq.length)return '';
+  var matched=meta.related.filter(function(eq){return hasClientEquipment(client,eq);});
+  var missing=meta.required.filter(function(eq){return !hasClientEquipment(client,eq);});
+  var signal=getClientRevenueSignal(client);
+  var parts=[];
+  if(meta.related.length)parts.push('<b>시술 관련 장비</b>: '+meta.related.join(', '));
+  if(matched.length)parts.push('<b>보유 확인</b>: '+uniqList(matched).join(', '));
+  if(missing.length)parts.push('<b>확인 필요</b>: '+uniqList(missing).join(', ')+' 장비 보유가 확인되지 않으면 이 시술은 추천에서 제외하거나 원고 전 병원 확인이 필요합니다.');
+  if(signal&&signal.equipmentNeedsConfirm)parts.push('<b>장비명 주의</b>: 이 고객사는 홈페이지 텍스트에서 세부 장비명이 충분히 확인되지 않은 항목이 있어 원고 전 재확인이 좋습니다.');
+  if(meta.role)parts.push('<b>서술 방식</b>: '+meta.role);
+  if(!parts.length)return '';
+  return '<div class="adv'+(missing.length?' warn':'')+'"><div class="adv-title">의료기기 연결 가이드</div><div class="adv-msg">'+parts.join('<br>')+'</div></div>';
 }
 function weightedPickProducts(items,signal){
   if(!items.length)return null;
@@ -3187,6 +3289,7 @@ function pickProduct(diseaseName){
     if(p.type!==selectedClient.type)return false;
     if(p.surg && !selectedClient.surg)return false;   // 수술 불가 클라이언트 → 수술 시술 제외
     if(p.equip && !selectedClient.equip)return false; // 영상장비 미보유 → MRI·CT 검사 제외
+    if(productMissingEquipment(p,selectedClient).length)return false; // 필수 장비 미확인 → 장비 기반 시술 제외
     // 제외 시술: 부분 일치 (예: "도수치료" 입력 시 "도수치료 (Manual Therapy)"도 제외)
     if(excludes.some(function(e){return p.name.indexOf(e)>=0;}))return false;
     return true;
@@ -3270,6 +3373,7 @@ function showResult(){
       '<div class="adv-msg" style="white-space:pre-line">'+prod.note.replace(/【/g,'<b>【').replace(/】/g,'】</b>')+'</div>'+
     '</div>';
   }
+  advHtml+=buildEquipmentAdvice(selectedClient,prod);
   if(ST.cats)advHtml+='<div class="adv"><div class="adv-title">지역 전략</div><div class="adv-msg"><b>'+r+'</b> 지역 — <b>'+ST.cats.join('·')+'</b> 카테고리 설정</div></div>';
   if(!advHtml)advHtml='<div class="adv"><div class="adv-title">조합 적합도 양호</div><div class="adv-msg">지역+과목+질환 구조로 안정적인 조합입니다.</div></div>';
   document.getElementById('advice-area').innerHTML=advHtml;
