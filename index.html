@@ -989,6 +989,8 @@ var KEY_SURVEY_ANSWERS='survey_answers';
 
 // 로컬 캐시 (빠른 렌더링용)
 var _cache={};
+var AUBE_BUILD_TAG='manual-boost-v2-2026-06-16';
+console.info('[AUBE]',AUBE_BUILD_TAG);
 
 function load(k,d){
   if(_cache[k]!==undefined) return _cache[k];
@@ -3289,6 +3291,41 @@ function shouldPreferManualTherapy(client,dis,signal){
   if(!signalHas(signal.priority||[],{name:'도수치료',match:'도수치료',cat:'',type:client.type}))return false;
   return isManualTherapyCandidateDisease(dis);
 }
+function manualTherapyForceRate(client,signal){
+  if(!client||!signal)return 0;
+  var name=client.name||'';
+  if(name.indexOf('동탄신경외과')>=0)return 0.48;
+  if(name.indexOf('서울바른신경외과')>=0)return 0.42;
+  if(name.indexOf('명인')>=0)return 0.38;
+  if(name.indexOf('로코모')>=0)return 0.18;
+  return signalHas(signal.priority||[],{name:'도수치료',match:'도수치료',cat:'',type:client.type})?0.28:0;
+}
+function shouldForceManualTherapy(client,dis,signal){
+  if(!shouldPreferManualTherapy(client,dis,signal))return false;
+  return Math.random()<manualTherapyForceRate(client,signal);
+}
+function getManualTherapyDebug(client,diseaseName){
+  var c=client||selectedClient;
+  if(!c)return {build:AUBE_BUILD_TAG,error:'selectedClient 없음'};
+  var dis=getAllDiseases().find(function(d){return d.name===diseaseName;})||null;
+  var signal=getClientRevenueSignal(c);
+  var products=getAllProducts().filter(function(p){return p.type===c.type;});
+  var manual=manualTherapyProductFrom(products);
+  return {
+    build:AUBE_BUILD_TAG,
+    client:c.name,
+    type:c.type,
+    exclude:c.exclude||[],
+    signalPriority:signal&&signal.priority,
+    manualProduct:manual&&manual.name,
+    disease:dis&&dis.name,
+    diseaseCat:dis&&dis.cat,
+    isManualCandidate:isManualTherapyCandidateDisease(dis),
+    shouldPrefer:shouldPreferManualTherapy(c,dis,signal),
+    forceRate:manualTherapyForceRate(c,signal)
+  };
+}
+window.aubeManualDebug=getManualTherapyDebug;
 
 // 상품 표시가 불필요한 카테고리 (질환명 자체가 완결형 검색어)
 var NO_PRODUCT_CATS=['암','재활','내과','이비인후과','안과','산부인과','비뇨기과','치과'];
@@ -3332,6 +3369,7 @@ function pickProduct(diseaseName){
     if(manual&&shouldPreferManualTherapy(selectedClient,dis,signal)&&matched.indexOf(manual)<0){
       matched=matched.concat([manual]);
     }
+    if(manual&&matched.indexOf(manual)>=0&&shouldForceManualTherapy(selectedClient,dis,signal))return manual;
     return weightedPickProducts(matched,signal);
   }
   if(manual&&shouldPreferManualTherapy(selectedClient,dis,signal))return manual;
