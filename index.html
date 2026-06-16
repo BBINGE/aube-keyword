@@ -1008,7 +1008,7 @@ var KEY_SURVEY_ANSWERS='survey_answers';
 
 // 로컬 캐시 (빠른 렌더링용)
 var _cache={};
-var AUBE_BUILD_TAG='match-guard-v6-2026-06-16';
+var AUBE_BUILD_TAG='manual-equip-fix-v7-2026-06-16';
 console.info('[AUBE]',AUBE_BUILD_TAG);
 
 function load(k,d){
@@ -3308,9 +3308,17 @@ function productEquipmentMeta(product){
     {keys:['도수치료','운동치료','재활치료','재활물리치료'],related:['재활장비'],role:'장비명보다 평가-치료-운동-기능회복 흐름을 우선하세요.'}
   ];
   var hay=[product&&product.name,product&&product.match].join(' ');
+  // '수치료' 키가 '도수치료'를 부분일치로 오인하지 않도록 보정한 매칭
+  function keyHit(k){
+    if(k==='수치료'){
+      // "도수치료"를 제거한 나머지 문자열에서만 "수치료"를 찾는다
+      return hay.replace(/도수치료/g,'').indexOf('수치료')>=0;
+    }
+    return hay.indexOf(k)>=0;
+  }
   var required=[],related=[],roles=[];
   rules.forEach(function(rule){
-    if(rule.keys.some(function(k){return hay.indexOf(k)>=0;})){
+    if(rule.keys.some(keyHit)){
       required=required.concat(rule.required||[]);
       related=related.concat(rule.related||rule.required||[]);
       if(rule.role)roles.push(rule.role);
