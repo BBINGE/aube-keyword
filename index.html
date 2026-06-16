@@ -416,14 +416,13 @@
   body::before{background:linear-gradient(180deg,rgba(255,255,255,.80),rgba(255,255,255,.42) 46%,rgba(255,255,255,.76))!important;}
   body::after{opacity:.09!important;right:22px!important;bottom:18px!important;width:310px!important;height:72px!important;}
   .cinema-video-bg,#aube-drone-bg,.ptc-field,.hero-visual,.hero-shield,.ecg-svg,.ecg-chip{display:none!important;}
+  /* v9: 전면 배경 요소만 정지 */
+  .cinema-video-bg,#aube-drone-bg,.ptc-field,.ptc-field *,#aube-drone-bg *{animation:none!important;transition:none!important;}
   .page-header{min-height:0!important;padding:24px 28px!important;border-radius:12px!important;background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(238,246,255,.86))!important;border:1px solid rgba(214,224,238,.96)!important;box-shadow:0 18px 42px rgba(28,45,70,.06)!important;}
   .page-header::before{display:none!important;}
   .page-header .hero-eyebrow{color:var(--accent)!important;}
   .page-header h1{color:var(--text)!important;text-shadow:none!important;}
   .page-header p{color:var(--text2)!important;text-shadow:none!important;max-width:640px!important;}
-  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important;}
-  .kw-btn:hover,.client-item:hover{transform:none!important;}
-  .brief-idea-drawer.open{transform:translateX(0) scale(1)!important;opacity:1!important;}
 </style>
 </head>
 <body>
