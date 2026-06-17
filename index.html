@@ -269,13 +269,9 @@
   .survey-progress span{display:block;height:100%;width:16.6%;background:linear-gradient(90deg,var(--accent),#16bd9c);transition:width .18s;}
   .survey-question-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
   .survey-question-grid .wide{grid-column:1 / -1;}
-  .survey-dept-preview{grid-column:1 / -1;border:1px solid var(--accent-border);background:linear-gradient(180deg,#fff,#f6faff);border-radius:var(--radius);padding:13px 15px;}
-  .survey-dept-preview-title{font-size:11px;font-weight:800;color:var(--accent);letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px;}
-  .survey-dept-preview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-  .survey-dept-preview-item{border:1px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:9px 10px;min-height:72px;}
-  .survey-dept-preview-k{font-size:10px;font-weight:800;color:var(--text3);letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px;}
-  .survey-dept-preview-v{font-size:12px;color:var(--text);line-height:1.65;}
   .survey-help{font-size:12px;color:var(--text3);line-height:1.7;margin-top:6px;}
+  .survey-error{display:none;margin-top:6px;font-size:11px;color:var(--red);line-height:1.5;}
+  .fg.has-error input,.fg.has-error select{border-color:var(--red);box-shadow:0 0 0 3px rgba(255,107,107,.12);}
   .survey-result{white-space:pre-wrap;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;font-size:13px;line-height:1.8;color:var(--text2);max-height:360px;overflow:auto;}
   .survey-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(7,19,33,.42);backdrop-filter:blur(8px);z-index:300;}
   .survey-modal.show{display:flex;}
@@ -284,7 +280,7 @@
   .survey-modal-title{font-size:24px;line-height:1.35;font-weight:800;color:var(--text);margin-bottom:10px;}
   .survey-modal-text{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:16px;}
   .survey-modal-note{border-left:3px solid var(--accent);background:var(--accent-bg);padding:11px 13px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:18px;}
-  @media(max-width:820px){.survey-shell{grid-template-columns:1fr}.survey-steps{position:relative;top:auto;display:grid;grid-template-columns:1fr 1fr;gap:4px}.survey-question-grid{grid-template-columns:1fr}.survey-dept-preview-grid{grid-template-columns:1fr}.survey-step-pill{padding:8px}.survey-step-no{width:22px;height:22px}}
+  @media(max-width:820px){.survey-shell{grid-template-columns:1fr}.survey-steps{position:relative;top:auto;display:grid;grid-template-columns:1fr 1fr;gap:4px}.survey-question-grid{grid-template-columns:1fr}.survey-step-pill{padding:8px}.survey-step-no{width:22px;height:22px}}
 
   .db-card-meta{font-size:11px;color:var(--text3);margin-top:3px;line-height:1.7;}
   .db-card-actions{display:flex;gap:5px;flex-shrink:0;}
@@ -577,14 +573,11 @@
 
       <div class="card survey-panel active" id="survey-step-0">
         <div class="card-title">01 과목 선택 및 병원 기본 정보</div>
-        <p class="survey-help">먼저 과목을 선택해 주세요. 선택한 과목에 맞춰 이후 질문의 예시와 표현이 달라집니다.</p>
+        <p class="survey-help">원장님의 진료 과목 또는 개원 예정 과목을 선택해 주세요.</p>
         <div class="survey-question-grid">
-          <div class="fg wide"><label>과목 / 병원 유형</label><select id="sv-type" onchange="applySurveyDeptPreset()"><option value="">선택해 주세요</option><option>한의원</option><option>신경외과</option><option>정형외과</option><option>재활의학과</option><option>통증의학과</option><option>피부과/미용의원</option><option>성형외과</option><option>치과</option><option>내과/가정의학과</option><option>산부인과/여성의원</option><option>비뇨기과/남성의원</option><option>기타</option></select></div>
-          <div class="survey-dept-preview" id="survey-dept-preview"></div>
-          <div class="fg"><label>병원명</label><input type="text" id="sv-clinic" placeholder="예: 오늘의브랜딩의원"/></div>
-          <div class="fg"><label>지역</label><input type="text" id="sv-region" placeholder="예: 동탄, 평택, 양천구"/></div>
-          <div class="fg"><label>대표 진료/상품 3개</label><input type="text" id="sv-main-care" placeholder="예: 도수치료, 신경차단술, 체외충격파"/></div>
-          <div class="fg wide"><label>병원의 강점</label><textarea id="sv-strength" placeholder="장비, 원장님 경력, 설명 방식, 치료 철학, 환자들이 자주 칭찬하는 점을 적어주세요."></textarea></div>
+          <div class="fg wide"><label>과목 / 병원 유형</label><select id="sv-type" onchange="applySurveyDeptPreset();clearSurveyFieldError('sv-type')"><option value="">선택해 주세요</option><optgroup label="통증·재활 계열"><option>정형외과</option><option>신경외과</option><option>재활의학과</option><option>통증의학과</option></optgroup><optgroup label="한의원 계열"><option>한의원</option><option>한방병원</option></optgroup><optgroup label="미용 계열"><option>피부과</option><option>성형외과</option><option>의원급 미용 클리닉</option></optgroup><optgroup label="치과 계열"><option>치과</option></optgroup><optgroup label="안과 계열"><option>안과</option></optgroup><optgroup label="여성의학 계열"><option>산부인과</option><option>여성의원</option></optgroup><optgroup label="정신건강·내과 계열"><option>정신건강의학과</option><option>내과</option><option>가정의학과</option><option>기타</option></optgroup></select><div class="survey-error" id="sv-type-error">과목 또는 병원 유형을 선택해 주세요.</div></div>
+          <div class="fg"><label>병원명 / 상호</label><input type="text" id="sv-clinic" placeholder="예: 오늘의브랜딩의원" oninput="clearSurveyFieldError('sv-clinic')"/><div class="survey-error" id="sv-clinic-error">병원명을 입력해 주세요.</div></div>
+          <div class="fg"><label>주소지 / 주요 진료 지역</label><input type="text" id="sv-region" placeholder="예: 서울 강남구, 경기 동탄, 양천구" oninput="clearSurveyFieldError('sv-region')"/><div class="survey-error" id="sv-region-error">주소지 또는 주요 진료 지역을 입력해 주세요.</div></div>
         </div>
       </div>
 
@@ -2118,7 +2111,7 @@ var surveyStep=0;
 var surveySubmitted=false;
 var surveyIntroSeen=false;
 var surveyFieldMap=[
-  ['병원명','sv-clinic'],['진료과/병원 유형','sv-type'],['지역','sv-region'],['대표 진료/상품 3개','sv-main-care'],['병원의 강점','sv-strength'],
+  ['병원명 / 상호','sv-clinic'],['과목 / 병원 유형','sv-type'],['주소지 / 주요 진료 지역','sv-region'],
   ['월 초진 환자 수','sv-new-patients'],['초진 대비 재진율','sv-revisit'],['비급여 비중','sv-noncovered'],['매출 상위 3개 진료','sv-top-sales'],['수익 구조상 중요한 상품/시술','sv-revenue-note'],
   ['앞으로 더 키우고 싶은 상품/시술','sv-grow-care'],['강조하지 않았으면 하는 상품/시술','sv-reduce-care'],['참고하거나 의식하고 있는 인근 병원','sv-competitor'],['현재 가장 늘리고 싶은 문의 유형','sv-inquiry-goal'],['시술/진료 설명 시 조심할 점','sv-caution'],
   ['현재 운영 채널','sv-channels'],['현재 블로그에서 가장 아쉬운 점','sv-blog-problem'],['반응이 좋았던 키워드','sv-good-kw'],['반응이 약했던 키워드','sv-weak-kw'],['블로그에서 꼭 전달되었으면 하는 인상','sv-tone'],
@@ -2175,7 +2168,9 @@ var SURVEY_DEPT_PRESETS={
     placeholders:{'sv-main-care':'예: 임플란트, 치아교정, 심미보철','sv-revenue-note':'예: 임플란트, 교정 상담, 라미네이트','sv-target':'예: 50대 임플란트 환자, 투명교정 상담 고객'}
   }
 };
-['내과/가정의학과','산부인과/여성의원','비뇨기과/남성의원','기타'].forEach(function(k){SURVEY_DEPT_PRESETS[k]=SURVEY_DEPT_DEFAULT;});
+['한방병원'].forEach(function(k){SURVEY_DEPT_PRESETS[k]=SURVEY_DEPT_PRESETS['한의원'];});
+['피부과','의원급 미용 클리닉'].forEach(function(k){SURVEY_DEPT_PRESETS[k]=SURVEY_DEPT_PRESETS['피부과/미용의원'];});
+['산부인과','여성의원','안과','정신건강의학과','내과','가정의학과','기타'].forEach(function(k){SURVEY_DEPT_PRESETS[k]=SURVEY_DEPT_DEFAULT;});
 var SURVEY_BASE_UI=null;
 function rememberSurveyBaseUi(){
   if(SURVEY_BASE_UI)return;
@@ -2208,20 +2203,11 @@ function setSurveyPlaceholder(id,text){
   var el=document.getElementById(id);
   if(el&&text)el.setAttribute('placeholder',text);
 }
-function renderSurveyDeptPreview(preset){
-  var box=document.getElementById('survey-dept-preview');
-  if(!box)return;
-  var items=(preset.preview||SURVEY_DEPT_DEFAULT.preview).map(function(item){
-    return '<div class="survey-dept-preview-item"><div class="survey-dept-preview-k">'+esc(item[0])+'</div><div class="survey-dept-preview-v">'+esc(item[1])+'</div></div>';
-  }).join('');
-  box.innerHTML='<div class="survey-dept-preview-title">예시 미리보기</div><div class="survey-dept-preview-grid">'+items+'</div>';
-}
 function applySurveyDeptPreset(){
   resetSurveyBaseUi();
   var preset=surveyPreset();
   Object.keys(preset.labels||{}).forEach(function(id){setSurveyLabel(id,preset.labels[id]);});
   Object.keys(preset.placeholders||{}).forEach(function(id){setSurveyPlaceholder(id,preset.placeholders[id]);});
-  renderSurveyDeptPreview(preset);
 }
 function showSurveyIntroOnce(){
   if(surveyIntroSeen)return;
@@ -2233,7 +2219,38 @@ function closeSurveyIntro(){
   var modal=document.getElementById('survey-intro-modal');
   if(modal)modal.classList.remove('show');
 }
+function clearSurveyFieldError(id){
+  var el=document.getElementById(id);
+  var fg=el&&el.closest?el.closest('.fg'):null;
+  var error=document.getElementById(id+'-error');
+  if(fg)fg.classList.remove('has-error');
+  if(error)error.style.display='none';
+}
+function setSurveyFieldError(id){
+  var el=document.getElementById(id);
+  var fg=el&&el.closest?el.closest('.fg'):null;
+  var error=document.getElementById(id+'-error');
+  if(fg)fg.classList.add('has-error');
+  if(error)error.style.display='block';
+}
+function validateSurveyStepOne(){
+  var required=['sv-type','sv-clinic','sv-region'];
+  var firstInvalid=null;
+  required.forEach(function(id){
+    var el=document.getElementById(id);
+    var value=el&&el.value?el.value.trim():'';
+    if(value){
+      clearSurveyFieldError(id);
+    }else{
+      setSurveyFieldError(id);
+      if(!firstInvalid)firstInvalid=el;
+    }
+  });
+  if(firstInvalid&&firstInvalid.focus)firstInvalid.focus();
+  return !firstInvalid;
+}
 function goSurveyStep(n){
+  if(surveyStep===0&&n>0&&!validateSurveyStepOne())return;
   surveyStep=Math.max(0,Math.min(6,n));
   document.querySelectorAll('.survey-panel').forEach(function(p){p.classList.remove('active');});
   document.querySelectorAll('.survey-step-pill').forEach(function(p){p.classList.remove('active');});
