@@ -258,8 +258,7 @@
   /* ===== 콘텐츠 진단 설문 ===== */
   .survey-shell{display:grid;grid-template-columns:240px minmax(0,1fr);gap:16px;align-items:start;}
   .survey-steps{position:sticky;top:76px;background:rgba(255,255,255,.84);border:1px solid var(--border);border-radius:var(--radius);padding:12px;box-shadow:0 18px 42px rgba(28,45,70,.06);backdrop-filter:blur(10px);}
-  .survey-step-pill{display:flex;align-items:center;gap:10px;width:100%;border:none;background:transparent;border-radius:var(--radius-sm);padding:9px 10px;text-align:left;font-family:inherit;color:var(--text2);cursor:pointer;}
-  .survey-step-pill:hover{background:var(--surface2);color:var(--text);}
+  .survey-step-pill{display:flex;align-items:center;gap:10px;width:100%;border:none;background:transparent;border-radius:var(--radius-sm);padding:9px 10px;text-align:left;font-family:inherit;color:var(--text2);cursor:default;}
   .survey-step-pill.active{background:var(--accent-bg);color:var(--accent);font-weight:700;}
   .survey-step-no{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#fff;border:1px solid var(--border);font-size:11px;font-weight:700;flex:0 0 auto;}
   .survey-step-pill.active .survey-step-no{background:var(--accent);border-color:var(--accent);color:#fff;}
@@ -270,8 +269,6 @@
   .survey-question-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
   .survey-question-grid .wide{grid-column:1 / -1;}
   .survey-help{font-size:12px;color:var(--text3);line-height:1.7;margin-top:6px;}
-  .survey-error{display:none;margin-top:6px;font-size:11px;color:var(--red);line-height:1.5;}
-  .fg.has-error input,.fg.has-error select{border-color:var(--red);box-shadow:0 0 0 3px rgba(255,107,107,.12);}
   .survey-result{white-space:pre-wrap;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;font-size:13px;line-height:1.8;color:var(--text2);max-height:360px;overflow:auto;}
   .survey-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(7,19,33,.42);backdrop-filter:blur(8px);z-index:300;}
   .survey-modal.show{display:flex;}
@@ -559,13 +556,13 @@
 
   <div class="survey-shell">
     <div class="survey-steps" id="survey-steps">
-      <button class="survey-step-pill active" onclick="goSurveyStep(0)"><span class="survey-step-no">01</span><span>과목 선택</span></button>
-      <button class="survey-step-pill" onclick="goSurveyStep(1)"><span class="survey-step-no">02</span><span>환자 흐름</span></button>
-      <button class="survey-step-pill" onclick="goSurveyStep(2)"><span class="survey-step-no">03</span><span>진료 구성</span></button>
-      <button class="survey-step-pill" onclick="goSurveyStep(3)"><span class="survey-step-no">04</span><span>콘텐츠 현황</span></button>
-      <button class="survey-step-pill" onclick="goSurveyStep(4)"><span class="survey-step-no">05</span><span>성장 목표</span></button>
-      <button class="survey-step-pill" onclick="goSurveyStep(5)"><span class="survey-step-no">06</span><span>확인</span></button>
-      <button class="survey-step-pill" onclick="goSurveyStep(6)"><span class="survey-step-no">07</span><span>완료</span></button>
+      <button class="survey-step-pill active" type="button" aria-disabled="true" tabindex="-1"><span class="survey-step-no">01</span><span>과목 선택</span></button>
+      <button class="survey-step-pill" type="button" aria-disabled="true" tabindex="-1"><span class="survey-step-no">02</span><span>환자 흐름</span></button>
+      <button class="survey-step-pill" type="button" aria-disabled="true" tabindex="-1"><span class="survey-step-no">03</span><span>진료 구성</span></button>
+      <button class="survey-step-pill" type="button" aria-disabled="true" tabindex="-1"><span class="survey-step-no">04</span><span>콘텐츠 현황</span></button>
+      <button class="survey-step-pill" type="button" aria-disabled="true" tabindex="-1"><span class="survey-step-no">05</span><span>성장 목표</span></button>
+      <button class="survey-step-pill" type="button" aria-disabled="true" tabindex="-1"><span class="survey-step-no">06</span><span>확인</span></button>
+      <button class="survey-step-pill" type="button" aria-disabled="true" tabindex="-1"><span class="survey-step-no">07</span><span>완료</span></button>
     </div>
 
     <div>
@@ -575,9 +572,9 @@
         <div class="card-title">01 과목 선택 및 병원 기본 정보</div>
         <p class="survey-help">원장님의 진료 과목 또는 개원 예정 과목을 선택해 주세요.</p>
         <div class="survey-question-grid">
-          <div class="fg wide"><label>과목 / 병원 유형</label><select id="sv-type" onchange="applySurveyDeptPreset();clearSurveyFieldError('sv-type')"><option value="">선택해 주세요</option><optgroup label="통증·재활 계열"><option>정형외과</option><option>신경외과</option><option>재활의학과</option><option>통증의학과</option></optgroup><optgroup label="한의원 계열"><option>한의원</option><option>한방병원</option></optgroup><optgroup label="미용 계열"><option>피부과</option><option>성형외과</option><option>의원급 미용 클리닉</option></optgroup><optgroup label="치과 계열"><option>치과</option></optgroup><optgroup label="안과 계열"><option>안과</option></optgroup><optgroup label="여성의학 계열"><option>산부인과</option><option>여성의원</option></optgroup><optgroup label="정신건강·내과 계열"><option>정신건강의학과</option><option>내과</option><option>가정의학과</option><option>기타</option></optgroup></select><div class="survey-error" id="sv-type-error">과목 또는 병원 유형을 선택해 주세요.</div></div>
-          <div class="fg"><label>병원명 / 상호</label><input type="text" id="sv-clinic" placeholder="예: 오늘의브랜딩의원" oninput="clearSurveyFieldError('sv-clinic')"/><div class="survey-error" id="sv-clinic-error">병원명을 입력해 주세요.</div></div>
-          <div class="fg"><label>주소지 / 주요 진료 지역</label><input type="text" id="sv-region" placeholder="예: 서울 강남구, 경기 동탄, 양천구" oninput="clearSurveyFieldError('sv-region')"/><div class="survey-error" id="sv-region-error">주소지 또는 주요 진료 지역을 입력해 주세요.</div></div>
+          <div class="fg wide"><label>과목 / 병원 유형</label><select id="sv-type" onchange="applySurveyDeptPreset()"><option value="">선택해 주세요</option><option>정형외과</option><option>신경외과</option><option>재활의학과</option><option>통증의학과</option><option>한의원</option><option>한방병원</option><option>피부과</option><option>성형외과</option><option>치과</option><option>안과</option><option>산부인과</option><option>여성의원</option><option>정신건강의학과</option><option>내과</option><option>가정의학과</option><option>기타</option></select></div>
+          <div class="fg"><label>병원명 / 상호</label><input type="text" id="sv-clinic" placeholder="예: 오늘의브랜딩의원"/></div>
+          <div class="fg"><label>주소지 / 주요 진료 지역</label><input type="text" id="sv-region" placeholder="예: 서울 강남구, 경기 동탄, 양천구"/></div>
         </div>
       </div>
 
@@ -2169,7 +2166,7 @@ var SURVEY_DEPT_PRESETS={
   }
 };
 ['한방병원'].forEach(function(k){SURVEY_DEPT_PRESETS[k]=SURVEY_DEPT_PRESETS['한의원'];});
-['피부과','의원급 미용 클리닉'].forEach(function(k){SURVEY_DEPT_PRESETS[k]=SURVEY_DEPT_PRESETS['피부과/미용의원'];});
+['피부과'].forEach(function(k){SURVEY_DEPT_PRESETS[k]=SURVEY_DEPT_PRESETS['피부과/미용의원'];});
 ['산부인과','여성의원','안과','정신건강의학과','내과','가정의학과','기타'].forEach(function(k){SURVEY_DEPT_PRESETS[k]=SURVEY_DEPT_DEFAULT;});
 var SURVEY_BASE_UI=null;
 function rememberSurveyBaseUi(){
@@ -2219,38 +2216,7 @@ function closeSurveyIntro(){
   var modal=document.getElementById('survey-intro-modal');
   if(modal)modal.classList.remove('show');
 }
-function clearSurveyFieldError(id){
-  var el=document.getElementById(id);
-  var fg=el&&el.closest?el.closest('.fg'):null;
-  var error=document.getElementById(id+'-error');
-  if(fg)fg.classList.remove('has-error');
-  if(error)error.style.display='none';
-}
-function setSurveyFieldError(id){
-  var el=document.getElementById(id);
-  var fg=el&&el.closest?el.closest('.fg'):null;
-  var error=document.getElementById(id+'-error');
-  if(fg)fg.classList.add('has-error');
-  if(error)error.style.display='block';
-}
-function validateSurveyStepOne(){
-  var required=['sv-type','sv-clinic','sv-region'];
-  var firstInvalid=null;
-  required.forEach(function(id){
-    var el=document.getElementById(id);
-    var value=el&&el.value?el.value.trim():'';
-    if(value){
-      clearSurveyFieldError(id);
-    }else{
-      setSurveyFieldError(id);
-      if(!firstInvalid)firstInvalid=el;
-    }
-  });
-  if(firstInvalid&&firstInvalid.focus)firstInvalid.focus();
-  return !firstInvalid;
-}
 function goSurveyStep(n){
-  if(surveyStep===0&&n>0&&!validateSurveyStepOne())return;
   surveyStep=Math.max(0,Math.min(6,n));
   document.querySelectorAll('.survey-panel').forEach(function(p){p.classList.remove('active');});
   document.querySelectorAll('.survey-step-pill').forEach(function(p){p.classList.remove('active');});
