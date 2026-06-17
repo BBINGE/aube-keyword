@@ -2501,20 +2501,23 @@ function productMatchesDisease(product,disease){
 function findRelatedProducts(raw,products,foundDis,foundProd){
   var out=foundProd.slice();
   var inferredTypes=inferBriefTypes(raw);
-  if(foundProd.length){
-    return {items:out,inferredTypes:inferredTypes};
-  }
-  if(!inferredTypes.length){
-    return {items:out,inferredTypes:inferredTypes};
-  }
   foundDis.forEach(function(d){
     products.forEach(function(p){
       if(isServiceLineOnlyProduct(p))return;
       if(!productMatchesDisease(p,d))return;
-      if(inferredTypes.indexOf(p.type)<0)return;
+      if(inferredTypes.length&&inferredTypes.indexOf(p.type)<0)return;
       if(!out.some(function(x){return x.id===p.id;}))out.push(p);
     });
   });
+  if(foundDis.length&&out.length===foundProd.length){
+    foundDis.forEach(function(d){
+      products.forEach(function(p){
+        if(isServiceLineOnlyProduct(p))return;
+        if(!productMatchesDisease(p,d))return;
+        if(!out.some(function(x){return x.id===p.id;}))out.push(p);
+      });
+    });
+  }
   return {items:out,inferredTypes:inferredTypes};
 }
 
@@ -2557,6 +2560,11 @@ function parseBrief(){
       });
     });
     html+='</div>';
+    foundDis.forEach(function(d){
+      foundProd.forEach(function(p){
+        html+=renderBriefComboCard(d,p);
+      });
+    });
   }
   foundDis.forEach(function(d){html+=renderBriefCard('질환',d);});
   foundProd.forEach(function(p){html+=renderBriefCard('시술 / 상품',p);});
