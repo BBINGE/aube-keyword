@@ -269,6 +269,7 @@
   .survey-question-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
   .survey-question-grid .wide{grid-column:1 / -1;}
   .survey-help{font-size:12px;color:var(--text3);line-height:1.7;margin-top:6px;}
+  .survey-law-note{font-size:11px;color:var(--text3);line-height:1.7;margin-top:6px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 10px;}
   .survey-result{white-space:pre-wrap;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;font-size:13px;line-height:1.8;color:var(--text2);max-height:360px;overflow:auto;}
   .survey-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(7,19,33,.42);backdrop-filter:blur(8px);z-index:300;}
   .survey-modal.show{display:flex;}
@@ -557,12 +558,9 @@
   <div class="survey-shell">
     <div class="survey-steps" id="survey-steps">
       <button class="survey-step-pill active" type="button" aria-disabled="true" tabindex="-1"><span class="survey-step-no">01</span><span>과목 선택</span></button>
-      <button class="survey-step-pill" type="button" aria-disabled="true" tabindex="-1"><span class="survey-step-no">02</span><span>환자 흐름</span></button>
-      <button class="survey-step-pill" type="button" aria-disabled="true" tabindex="-1"><span class="survey-step-no">03</span><span>진료 구성</span></button>
-      <button class="survey-step-pill" type="button" aria-disabled="true" tabindex="-1"><span class="survey-step-no">04</span><span>콘텐츠 현황</span></button>
-      <button class="survey-step-pill" type="button" aria-disabled="true" tabindex="-1"><span class="survey-step-no">05</span><span>성장 목표</span></button>
-      <button class="survey-step-pill" type="button" aria-disabled="true" tabindex="-1"><span class="survey-step-no">06</span><span>확인</span></button>
-      <button class="survey-step-pill" type="button" aria-disabled="true" tabindex="-1"><span class="survey-step-no">07</span><span>완료</span></button>
+      <button class="survey-step-pill" type="button" aria-disabled="true" tabindex="-1"><span class="survey-step-no">02</span><span>핵심 설문</span></button>
+      <button class="survey-step-pill" type="button" aria-disabled="true" tabindex="-1"><span class="survey-step-no">03</span><span>확인</span></button>
+      <button class="survey-step-pill" type="button" aria-disabled="true" tabindex="-1"><span class="survey-step-no">04</span><span>완료</span></button>
     </div>
 
     <div>
@@ -579,54 +577,26 @@
       </div>
 
       <div class="card survey-panel" id="survey-step-1">
-        <div class="card-title">02 환자/매출 흐름</div>
-        <p class="survey-help">정확한 키워드 우선순위를 잡기 위한 주관식 문항입니다. 대략적인 수치여도 괜찮습니다.</p>
+        <div class="card-title">02 핵심 설문</div>
+        <p class="survey-help">정확한 숫자가 아니어도 괜찮습니다. 원장님이 체감하시는 현재 상황과 앞으로의 방향을 편하게 적어주세요.</p>
         <div class="survey-question-grid">
-          <div class="fg"><label>최근 한 달 신규 문의/초진 흐름</label><input type="text" id="sv-new-patients" placeholder="예: 정확한 수치보다 많음/보통/적음, 평일·주말 차이 등"/></div>
-          <div class="fg"><label>재방문·관리로 이어지는 흐름</label><input type="text" id="sv-revisit" placeholder="예: 검사 후 치료 연결, 패키지/관리 재방문, 단회성 내원 등"/></div>
-          <div class="fg"><label>비급여·상담 비중 체감</label><input type="text" id="sv-noncovered" placeholder="예: 상담은 많지만 전환이 낮음, 비급여 문의를 늘리고 싶음"/></div>
-          <div class="fg"><label>현재 문의가 많은 진료/시술</label><input type="text" id="sv-top-sales" placeholder="예: 통증 진료, 피부 상담, 임플란트 등"/></div>
-          <div class="fg wide"><label>앞으로 더 중요해질 진료/시술</label><textarea id="sv-revenue-note" placeholder="매출, 재방문, 병원 방향성상 더 키우고 싶은 항목을 적어주세요."></textarea></div>
+          <div class="fg"><label>월 초진 환자 몇 명이신가요?</label><input type="text" id="sv-new-patients" placeholder="예: 월 120명 정도"/></div>
+          <div class="fg"><label>초진 대비 재진율은 어느 정도인가요?</label><input type="text" id="sv-revisit" placeholder="예: 약 55% 정도"/></div>
+          <div class="fg"><label>비급여 비중이 몇 %인가요?</label><input type="text" id="sv-noncovered" placeholder="예: 약 40%"/></div>
+          <div class="fg"><label>매출 상위 3개 진료가 무엇인가요?</label><input type="text" id="sv-top-sales" placeholder="예: 도수치료, 신경차단술, 체외충격파"/></div>
+          <div class="fg wide"><label>앞으로 기획 중이신 진료 핵심 상품이 있으신가요?</label><textarea id="sv-revenue-note" placeholder="예: 프롤로주사, 재활운동 프로그램, 체외충격파 패키지"></textarea></div>
+          <div class="fg wide"><label>블로그에 이것만큼은 담아달라 하는 홍보 소구 포인트가 있으실까요?</label><textarea id="sv-caution" placeholder="예: 원장님이 직접 설명하는 진료, 과잉진료 없이 단계적으로 치료하는 점"></textarea><div class="survey-law-note">의료광고법, 표시·광고의 공정화에 관한 법률 등에 따라 요청하신 표현을 완벽하게 그대로 담지 못할 수 있습니다. 필요한 경우 적용 가능한 표현으로 정리해 피드백드리겠습니다.</div></div>
+          <div class="fg"><label>현재 운영 중이신 SNS 채널이 어떻게 되시나요?</label><select id="sv-channels" onchange="updateSurveyConditionalFields()"><option value="">선택해 주세요</option><option>홈페이지</option><option>블로그</option><option>홈페이지+블로그</option><option>홈페이지+블로그+SNS</option><option>홈페이지+블로그+SNS+YouTube</option><option>홈페이지+블로그+SNS+YouTube+유료광고</option><option>홈페이지+블로그+SNS+YouTube+유료광고+인플루언서 협업</option><option>홈페이지+블로그+SNS+YouTube+유료광고+인플루언서 협업+언론 광고</option><option>기타</option></select></div>
+          <div class="fg" id="sv-good-kw-wrap" style="display:none"><label>기타 운영 채널</label><input type="text" id="sv-good-kw" placeholder="예: 카카오채널, 인스타그램, 지역 커뮤니티"/></div>
+          <div class="fg wide"><label>경쟁 의원 또는 레퍼런스 의원이 있으신가요?</label><input type="text" id="sv-competitor" placeholder="예: 병원 상호, 블로그 주소, 홈페이지 URL"/></div>
+          <div class="fg wide"><label>그동안 마케팅은 어떻게 진행하셨고, 어떤 점이 어려우셨나요?</label><textarea id="sv-tone" placeholder="예: 원장님이 직접 블로그를 썼지만 시간이 부족했음, 대행사를 썼지만 병원 색이 잘 안 담겼음"></textarea></div>
+          <div class="fg"><label>블로그 마케팅이 안정화되면 향후 하고 싶은 마케팅은 무엇인가요?</label><select id="sv-urgent" onchange="updateSurveyConditionalFields()"><option value="">선택해 주세요</option><option>신환 유입 마케팅</option><option>브랜드 이미지 제고형 광고</option><option>브랜딩을 위한 참여형 기획</option><option>개인 PR에 초점을 맞춰진 마케팅</option><option>기타</option></select></div>
+          <div class="fg" id="sv-final-note-wrap" style="display:none"><label>기타 향후 마케팅 방향</label><input type="text" id="sv-final-note" placeholder="예: 유튜브, 원장님 인터뷰, 지역 캠페인"/></div>
         </div>
       </div>
 
       <div class="card survey-panel" id="survey-step-2">
-        <div class="card-title">03 키워드 방향</div>
-        <p class="survey-help">상품/시술명은 실제 블로그 키워드 마이닝에 바로 연결됩니다.</p>
-        <div class="survey-question-grid">
-          <div class="fg"><label>앞으로 더 키우고 싶은 상품/시술</label><input type="text" id="sv-grow-care" placeholder="예: PRP, 리프팅, 성장한약"/></div>
-          <div class="fg"><label>강조하지 않았으면 하는 상품/시술</label><input type="text" id="sv-reduce-care" placeholder="예: 단순 물리치료, 가격 이벤트"/></div>
-          <div class="fg"><label>참고하거나 의식하고 있는 인근 병원</label><input type="text" id="sv-competitor" placeholder="없으면 비워두셔도 됩니다. 병원명, 지역, 블로그 URL 등"/></div>
-          <div class="fg"><label>현재 가장 늘리고 싶은 문의 유형</label><select id="sv-inquiry-goal"><option value="">선택해 주세요</option><option>신규 환자 문의</option><option>특정 진료/시술 문의</option><option>비급여 상담 문의</option><option>재진/관리 프로그램 문의</option><option>검사·진단 문의</option><option>잘 모르겠음</option></select></div>
-          <div class="fg wide"><label>시술/진료 설명 시 조심할 점</label><textarea id="sv-caution" placeholder="과장되면 안 되는 표현, 피하고 싶은 질환/시술명, 광고법상 특히 조심했으면 하는 부분을 적어주세요."></textarea></div>
-        </div>
-      </div>
-
-      <div class="card survey-panel" id="survey-step-3">
-        <div class="card-title">04 콘텐츠 현황</div>
-        <p class="survey-help">애매하게 답하기 쉬운 부분은 선택형으로 줄였습니다.</p>
-        <div class="survey-question-grid">
-          <div class="fg"><label>현재 운영 채널</label><select id="sv-channels"><option value="">선택해 주세요</option><option>블로그 중심</option><option>플레이스 중심</option><option>블로그 + 플레이스</option><option>블로그 + SNS</option><option>거의 운영하지 않음</option><option>기타</option></select></div>
-          <div class="fg"><label>현재 블로그에서 가장 아쉬운 점</label><select id="sv-blog-problem"><option value="">선택해 주세요</option><option>유입 자체가 적음</option><option>원하는 진료 문의가 적음</option><option>가격 문의만 많음</option><option>내원 전환이 낮음</option><option>병원 강점이 잘 드러나지 않음</option><option>잘 모르겠음</option></select></div>
-          <div class="fg"><label>반응이 좋았던 키워드</label><input type="text" id="sv-good-kw" placeholder="예: 동탄 허리디스크"/></div>
-          <div class="fg"><label>반응이 약했던 키워드</label><input type="text" id="sv-weak-kw" placeholder="예: 도수치료, 리프팅"/></div>
-          <div class="fg wide"><label>블로그에서 꼭 전달되었으면 하는 인상</label><textarea id="sv-tone" placeholder="예: 차분하고 전문적인 병원, 과잉진료 없는 병원, 설명을 잘해주는 병원"></textarea></div>
-        </div>
-      </div>
-
-      <div class="card survey-panel" id="survey-step-4">
-        <div class="card-title">05 콘텐츠 톤과 주의사항</div>
-        <div class="survey-question-grid">
-          <div class="fg"><label>3개월 내 늘리고 싶은 환자군</label><input type="text" id="sv-target" placeholder="예: 40대 허리통증 환자, 여드름 흉터 환자"/></div>
-          <div class="fg"><label>가장 시급한 문제</label><select id="sv-urgent"><option value="">선택해 주세요</option><option>신규 환자 유입</option><option>특정 진료/시술 매출 강화</option><option>비급여 비중 확대</option><option>재진율 개선</option><option>브랜드 신뢰도 강화</option><option>경쟁 병원과 차별화</option></select></div>
-          <div class="fg"><label>피하고 싶은 마케팅/표현</label><input type="text" id="sv-avoid" placeholder="예: 자극적 가격 광고, 과장 표현, 전후사진 중심"/></div>
-          <div class="fg"><label>선호하는 콘텐츠 톤</label><select id="sv-content-style"><option value="">선택해 주세요</option><option>담백하고 전문적인 톤</option><option>친절하고 쉬운 설명 톤</option><option>신뢰감 있는 병원 소개 톤</option><option>증상 설명 중심</option><option>치료 과정 설명 중심</option><option>원장님 철학 중심</option></select></div>
-          <div class="fg wide"><label>마지막으로 꼭 전하고 싶은 말</label><textarea id="sv-final-note" placeholder="블로그 원고에 반영되었으면 하는 원장님의 생각을 자유롭게 적어주세요."></textarea></div>
-        </div>
-      </div>
-
-      <div class="card survey-panel" id="survey-step-5">
-        <div class="card-title">06 확인 및 제출</div>
+        <div class="card-title">03 확인 및 제출</div>
         <p class="survey-help">아래 내용은 제출 전 확인용 요약입니다. 내용을 확인하신 뒤 제출하기를 눌러주세요.</p>
         <div class="survey-result" id="survey-summary">아직 요약이 생성되지 않았습니다.</div>
         <div id="survey-submit-status" style="margin-top:10px;font-size:12px;color:var(--text3);display:none"></div>
@@ -637,8 +607,8 @@
         </div>
       </div>
 
-      <div class="card survey-panel" id="survey-step-6">
-        <div class="card-title">07 제출 완료</div>
+      <div class="card survey-panel" id="survey-step-3">
+        <div class="card-title">04 제출 완료</div>
         <div style="font-size:22px;font-weight:800;color:var(--text);margin-bottom:8px">수고하셨습니다.</div>
         <p style="font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:16px">
           소중한 답변을 남겨주셔서 감사합니다. 오늘의브랜딩은 원장님의 진료 철학과 병원의 강점이 블로그 콘텐츠 안에서 더 정확하고 품격 있게 전달될 수 있도록 반영하겠습니다.
@@ -2109,94 +2079,42 @@ var surveySubmitted=false;
 var surveyIntroSeen=false;
 var surveyFieldMap=[
   ['병원명 / 상호','sv-clinic'],['과목 / 병원 유형','sv-type'],['주소지 / 주요 진료 지역','sv-region'],
-  ['최근 한 달 신규 문의/초진 흐름','sv-new-patients'],['재방문·관리로 이어지는 흐름','sv-revisit'],['비급여·상담 비중 체감','sv-noncovered'],['현재 문의가 많은 진료/시술','sv-top-sales'],['앞으로 더 중요해질 진료/시술','sv-revenue-note'],
-  ['앞으로 더 키우고 싶은 상품/시술','sv-grow-care'],['강조하지 않았으면 하는 상품/시술','sv-reduce-care'],['참고하거나 의식하고 있는 인근 병원','sv-competitor'],['현재 가장 늘리고 싶은 문의 유형','sv-inquiry-goal'],['시술/진료 설명 시 조심할 점','sv-caution'],
-  ['현재 운영 채널','sv-channels'],['현재 블로그에서 가장 아쉬운 점','sv-blog-problem'],['반응이 좋았던 키워드','sv-good-kw'],['반응이 약했던 키워드','sv-weak-kw'],['블로그에서 꼭 전달되었으면 하는 인상','sv-tone'],
-  ['3개월 내 늘리고 싶은 환자군','sv-target'],['가장 시급한 문제','sv-urgent'],['피하고 싶은 마케팅/표현','sv-avoid'],['선호하는 콘텐츠 톤','sv-content-style'],['마지막으로 꼭 전하고 싶은 말','sv-final-note']
+  ['월 초진 환자 수','sv-new-patients'],['초진 대비 재진율','sv-revisit'],['비급여 비중','sv-noncovered'],['매출 상위 3개 진료','sv-top-sales'],
+  ['기획 중인 진료 핵심 상품','sv-revenue-note'],['홍보 소구 포인트','sv-caution'],['현재 운영 중인 SNS 채널','sv-channels'],['기타 운영 채널','sv-good-kw'],
+  ['경쟁 의원 또는 레퍼런스 의원','sv-competitor'],['기존 마케팅 경험과 어려웠던 점','sv-tone'],['향후 하고 싶은 마케팅','sv-urgent'],['기타 향후 마케팅 방향','sv-final-note']
 ];
 var SURVEY_DEPT_DEFAULT={
-  labels:{
-    'sv-new-patients':'최근 한 달 신규 문의/초진 흐름',
-    'sv-revisit':'재방문·관리로 이어지는 흐름',
-    'sv-noncovered':'비급여·상담 비중 체감',
-    'sv-top-sales':'현재 문의가 많은 진료/시술',
-    'sv-revenue-note':'앞으로 더 중요해질 진료/시술',
-    'sv-grow-care':'앞으로 더 키우고 싶은 진료/시술',
-    'sv-reduce-care':'강조하지 않았으면 하는 진료/시술',
-    'sv-caution':'진료/시술 설명 시 조심할 점',
-    'sv-target':'3개월 내 늘리고 싶은 환자군'
-  },
+  labels:{},
   placeholders:{
-    'sv-new-patients':'예: 정확한 수치보다 많음/보통/적음, 평일·주말 차이 등',
-    'sv-revisit':'예: 검사 후 치료 연결, 패키지/관리 재방문, 단회성 내원 등',
-    'sv-noncovered':'예: 상담은 많지만 전환이 낮음, 비급여 문의를 늘리고 싶음',
-    'sv-top-sales':'예: 통증 진료, 피부 상담, 임플란트 등',
-    'sv-revenue-note':'매출, 재방문, 병원 방향성상 더 키우고 싶은 항목을 적어주세요.',
-    'sv-grow-care':'예: 더 알리고 싶은 대표 진료/시술',
-    'sv-reduce-care':'예: 가격 이벤트, 단순 물리치료, 과도한 패키지 강조',
-    'sv-good-kw':'예: 지역명 + 대표 진료명',
-    'sv-weak-kw':'예: 문의는 적거나 전환이 낮았던 키워드',
-    'sv-tone':'예: 전문적이지만 어렵지 않은 병원, 설명을 잘해주는 병원',
-    'sv-target':'예: 앞으로 더 만나고 싶은 환자군',
-    'sv-avoid':'예: 과장 표현, 가격 중심 광고, 전후 비교 과장'
+    'sv-new-patients':'예: 월 120명 정도',
+    'sv-revisit':'예: 약 55% 정도',
+    'sv-noncovered':'예: 약 40%',
+    'sv-top-sales':'예: 대표 진료 3개를 적어주세요',
+    'sv-revenue-note':'예: 앞으로 키우고 싶은 핵심 진료나 상품',
+    'sv-caution':'예: 병원만의 설명 방식, 장비, 원장님 철학, 환자 응대 강점',
+    'sv-good-kw':'예: 카카오채널, 인스타그램, 지역 커뮤니티',
+    'sv-competitor':'예: 병원 상호, 블로그 주소, 홈페이지 URL',
+    'sv-tone':'예: 직접 블로그를 썼지만 시간이 부족했음, 대행사를 썼지만 병원 색이 잘 안 담겼음',
+    'sv-final-note':'예: 유튜브, 원장님 인터뷰, 지역 캠페인'
   }
 };
 var SURVEY_DEPT_PRESETS={
-  '한의원':{
-    labels:{'sv-new-patients':'최근 한 달 신규 상담/초진 흐름','sv-revisit':'한약·추나·약침 재방문 흐름','sv-noncovered':'한방 비급여 상담 비중 체감','sv-top-sales':'현재 문의가 많은 한방 진료','sv-revenue-note':'앞으로 더 중요해질 한방 진료/상품','sv-grow-care':'앞으로 더 키우고 싶은 한방 진료','sv-caution':'한방 진료 설명 시 조심할 점','sv-target':'3개월 내 늘리고 싶은 환자군'},
-    placeholders:{'sv-new-patients':'예: 교통사고 초진이 많음, 다이어트 한약 상담이 줄었음','sv-revisit':'예: 탕약 재처방, 추나 반복 내원, 교통사고 치료 지속 여부','sv-noncovered':'예: 한약 상담은 많지만 결제 전환이 낮음','sv-top-sales':'예: 추나, 약침, 다이어트 한약, 교통사고 치료','sv-revenue-note':'예: 성장한약, 산후보약, 다이어트 한약, 체형교정','sv-grow-care':'예: 성장한약, 산후보약, 다이어트 한약','sv-good-kw':'예: 동탄 추나요법, 교통사고 한의원','sv-target':'예: 30대 산후보약 환자, 교통사고 후유증 환자','sv-tone':'예: 체질과 생활습관까지 함께 보는 한의원'}
-  },
-  '신경외과':{
-    labels:{'sv-new-patients':'최근 한 달 통증 초진/검사 문의 흐름','sv-revisit':'검사 후 주사·재활 연결 흐름','sv-noncovered':'비급여 주사·도수 상담 비중 체감','sv-top-sales':'현재 문의가 많은 통증 질환/치료','sv-revenue-note':'앞으로 더 중요해질 비수술 치료','sv-grow-care':'앞으로 더 키우고 싶은 비수술 치료','sv-caution':'통증·신경 치료 설명 시 조심할 점','sv-target':'3개월 내 늘리고 싶은 통증 환자군'},
-    placeholders:{'sv-new-patients':'예: 허리/목 통증 초진 문의가 많음, MRI 문의가 늘었음','sv-revisit':'예: 검사 후 신경차단술, 도수치료, 재활치료로 연결','sv-noncovered':'예: 주사치료 상담은 많지만 도수 전환이 약함','sv-top-sales':'예: 허리디스크, 목디스크, 신경차단술','sv-revenue-note':'예: 신경차단술, 도수치료, MRI 연계 진료','sv-grow-care':'예: 프롤로주사, 신경차단술, 재활치료','sv-good-kw':'예: 동탄 허리디스크, 목디스크 신경외과','sv-target':'예: 40대 허리통증 환자, 목디스크 의심 환자','sv-tone':'예: 수술부터 권하지 않고 원인을 차분히 확인하는 병원'}
-  },
-  '정형외과':{
-    labels:{'sv-new-patients':'최근 한 달 부위별 통증 초진 흐름','sv-revisit':'검사 후 주사·재활·운동치료 연결 흐름','sv-noncovered':'도수·체외충격파 상담 비중 체감','sv-top-sales':'현재 문의가 많은 부위/치료','sv-revenue-note':'앞으로 더 중요해질 정형외과 치료','sv-grow-care':'앞으로 더 키우고 싶은 치료','sv-caution':'정형외과 진료 설명 시 조심할 점','sv-target':'3개월 내 늘리고 싶은 통증 환자군'},
-    placeholders:{'sv-new-patients':'예: 무릎·어깨 통증 문의가 많음, 스포츠 손상 문의가 늘었음','sv-revisit':'예: X-ray 후 주사치료, 체외충격파, 도수치료로 연결','sv-noncovered':'예: 도수치료 문의는 많지만 가격 비교가 많음','sv-top-sales':'예: 무릎통증, 어깨통증, 체외충격파','sv-revenue-note':'예: 도수치료, 체외충격파, 관절 주사','sv-grow-care':'예: 체외충격파, 초음파 유도 주사, 도수치료','sv-good-kw':'예: 동탄 어깨통증 정형외과','sv-target':'예: 50대 무릎통증 환자, 운동 손상 환자'}
-  },
-  '재활의학과':{
-    labels:{'sv-new-patients':'최근 한 달 재활 상담/초진 흐름','sv-revisit':'운동치료·도수치료 지속 내원 흐름','sv-noncovered':'재활 프로그램 상담 비중 체감','sv-top-sales':'현재 문의가 많은 재활 프로그램','sv-revenue-note':'앞으로 더 중요해질 재활 프로그램','sv-grow-care':'앞으로 더 키우고 싶은 재활 프로그램','sv-caution':'재활 치료 설명 시 조심할 점','sv-target':'3개월 내 늘리고 싶은 재활 환자군'},
-    placeholders:{'sv-new-patients':'예: 수술 후 재활, 자세교정, 만성 통증 상담이 많음','sv-revisit':'예: 평가 후 도수+운동치료를 반복 진행','sv-noncovered':'예: 프로그램 설명은 필요하지만 가격 문의가 많음','sv-top-sales':'예: 도수치료, 운동치료, 수술 후 재활','sv-revenue-note':'예: 도수+운동치료 패키지, 체형교정 프로그램','sv-grow-care':'예: 수술 후 재활, 자세교정, 운동치료','sv-target':'예: 수술 후 재활 환자, 만성 목허리 통증 환자'}
-  },
-  '통증의학과':{
-    labels:{'sv-new-patients':'최근 한 달 급성/만성 통증 초진 흐름','sv-revisit':'주사치료 후 재내원·관리 흐름','sv-noncovered':'비급여 통증 시술 상담 비중 체감','sv-top-sales':'현재 문의가 많은 통증 시술','sv-revenue-note':'앞으로 더 중요해질 통증 시술','sv-grow-care':'앞으로 더 키우고 싶은 통증 시술','sv-caution':'통증 시술 설명 시 조심할 점','sv-target':'3개월 내 늘리고 싶은 통증 환자군'},
-    placeholders:{'sv-new-patients':'예: 허리통증, 어깨통증, 대상포진 후 통증 문의가 많음','sv-revisit':'예: 신경차단술 후 경과 확인, 프롤로 반복 치료','sv-noncovered':'예: 초음파 유도 주사 상담을 늘리고 싶음','sv-top-sales':'예: 신경차단술, 프롤로주사, 대상포진통증','sv-revenue-note':'예: 신경차단술, 초음파 유도 주사, 만성통증 관리','sv-grow-care':'예: 프롤로주사, 신경차단술, 만성통증 관리','sv-good-kw':'예: 동탄 통증의학과, 허리통증 주사'}
-  },
-  '피부과':{
-    labels:{'sv-new-patients':'최근 한 달 피부/미용 상담 흐름','sv-revisit':'관리·패키지 재방문 흐름','sv-noncovered':'시술 상담 전환 체감','sv-top-sales':'현재 문의가 많은 피부/미용 시술','sv-revenue-note':'앞으로 더 중요해질 피부/미용 시술','sv-grow-care':'앞으로 더 키우고 싶은 시술','sv-caution':'피부·미용 시술 설명 시 조심할 점','sv-target':'3개월 내 늘리고 싶은 상담 고객군'},
-    placeholders:{'sv-new-patients':'예: 여드름 상담이 많음, 리프팅 문의가 늘었음','sv-revisit':'예: 색소 패키지, 여드름 관리, 리프팅 후 관리','sv-noncovered':'예: 문의는 많지만 가격 비교가 많음','sv-top-sales':'예: 여드름, 리프팅, 색소, 보톡스, 제모','sv-revenue-note':'예: 리프팅, 색소 패키지, 여드름 관리','sv-grow-care':'예: 인모드, 색소레이저, 여드름 흉터','sv-target':'예: 20대 여드름 환자, 40대 리프팅 상담 고객','sv-avoid':'예: 전후사진 과장, 최저가 이벤트 중심'}
-  },
-  '성형외과':{
-    labels:{'sv-new-patients':'최근 한 달 성형 상담 흐름','sv-revisit':'상담 후 수술 결정/재상담 흐름','sv-noncovered':'수술·시술 상담 전환 체감','sv-top-sales':'현재 문의가 많은 수술/시술','sv-revenue-note':'앞으로 더 중요해질 수술/시술','sv-grow-care':'앞으로 더 키우고 싶은 수술/시술','sv-caution':'성형 콘텐츠 설명 시 조심할 점','sv-target':'3개월 내 늘리고 싶은 상담 고객군'},
-    placeholders:{'sv-new-patients':'예: 눈성형 상담이 많음, 코성형 재상담이 늘었음','sv-revisit':'예: 첫 상담 후 재상담, 수술 일정 확정, 사후관리','sv-noncovered':'예: 상담은 많지만 결정까지 시간이 김','sv-top-sales':'예: 눈성형, 코성형, 리프팅','sv-revenue-note':'예: 눈 재수술, 코성형, 안면거상','sv-grow-care':'예: 눈 재수술, 자연스러운 코성형, 리프팅','sv-target':'예: 첫 눈성형 상담, 재수술 고민 환자','sv-avoid':'예: 결과 보장, 전후사진 과장, 외모 콤플렉스 자극'}
-  },
-  '치과':{
-    labels:{'sv-new-patients':'최근 한 달 치과 초진/상담 흐름','sv-revisit':'검진 후 치료계획·재내원 흐름','sv-noncovered':'임플란트·교정·심미 상담 비중 체감','sv-top-sales':'현재 문의가 많은 치과 진료','sv-revenue-note':'앞으로 더 중요해질 치과 진료','sv-grow-care':'앞으로 더 키우고 싶은 치과 진료','sv-caution':'치과 진료 설명 시 조심할 점','sv-target':'3개월 내 늘리고 싶은 치과 환자군'},
-    placeholders:{'sv-new-patients':'예: 임플란트 상담, 충치 치료, 교정 문의가 많음','sv-revisit':'예: 검진 후 치료계획 수립, 임플란트 상담 재방문','sv-noncovered':'예: 임플란트 상담은 많지만 비용 비교가 많음','sv-top-sales':'예: 임플란트, 교정, 충치치료, 심미보철','sv-revenue-note':'예: 임플란트, 교정 상담, 라미네이트','sv-grow-care':'예: 임플란트, 투명교정, 심미보철','sv-target':'예: 50대 임플란트 환자, 투명교정 상담 고객'}
-  },
-  '안과':{
-    labels:{'sv-new-patients':'최근 한 달 안과 초진/검사 문의 흐름','sv-revisit':'검사 후 치료·수술 상담 연결 흐름','sv-noncovered':'시력교정·렌즈·수술 상담 비중 체감','sv-top-sales':'현재 문의가 많은 안과 진료','sv-revenue-note':'앞으로 더 중요해질 안과 진료/검사','sv-grow-care':'앞으로 더 키우고 싶은 안과 진료','sv-caution':'안과 콘텐츠 설명 시 조심할 점','sv-target':'3개월 내 늘리고 싶은 안과 환자군'},
-    placeholders:{'sv-new-patients':'예: 안구건조증, 백내장 검사, 시력교정 상담이 많음','sv-revisit':'예: 검사 후 렌즈 처방, 백내장 수술 상담, 정기 검진','sv-noncovered':'예: 시력교정 상담은 많지만 결정까지 고민이 김','sv-top-sales':'예: 안구건조증, 백내장, 드림렌즈, 시력교정','sv-revenue-note':'예: 백내장 검사, 드림렌즈, 시력교정 상담','sv-grow-care':'예: 안구건조증 클리닉, 드림렌즈, 백내장 검사','sv-good-kw':'예: 강남 안구건조증, 동탄 드림렌즈','sv-target':'예: 어린이 근시 관리, 50대 백내장 검사'}
-  },
-  '산부인과':{
-    labels:{'sv-new-patients':'최근 한 달 여성 진료 초진/상담 흐름','sv-revisit':'검사 후 치료·관리 재방문 흐름','sv-noncovered':'검진·시술·관리 상담 비중 체감','sv-top-sales':'현재 문의가 많은 여성 진료','sv-revenue-note':'앞으로 더 중요해질 여성 진료/검진','sv-grow-care':'앞으로 더 키우고 싶은 여성 진료','sv-caution':'여성 진료 콘텐츠 설명 시 조심할 점','sv-target':'3개월 내 늘리고 싶은 여성 환자군'},
-    placeholders:{'sv-new-patients':'예: 질염, 생리불순, 피임 상담, 여성검진 문의가 많음','sv-revisit':'예: 검사 후 치료, 정기 검진, 시술 상담으로 연결','sv-noncovered':'예: 여성검진 상담을 늘리고 싶음','sv-top-sales':'예: 여성검진, 질염, 피임 상담, 갱년기 상담','sv-revenue-note':'예: 여성검진, HPV 검사, 피임 상담, 갱년기 관리','sv-grow-care':'예: 여성검진, 갱년기 클리닉, 웨딩검진','sv-good-kw':'예: 양천구 산부인과 여성검진','sv-target':'예: 20대 여성검진, 40대 갱년기 상담'}
-  },
-  '정신건강의학과':{
-    labels:{'sv-new-patients':'최근 한 달 상담/초진 문의 흐름','sv-revisit':'초진 후 치료 지속·재방문 흐름','sv-noncovered':'상담·검사 문의 비중 체감','sv-top-sales':'현재 문의가 많은 증상/진료','sv-revenue-note':'앞으로 더 중요해질 상담/검사 영역','sv-grow-care':'앞으로 더 키우고 싶은 진료 영역','sv-caution':'정신건강 콘텐츠 설명 시 조심할 점','sv-target':'3개월 내 늘리고 싶은 상담 환자군'},
-    placeholders:{'sv-new-patients':'예: 불안, 우울, 불면, ADHD 문의가 많음','sv-revisit':'예: 초진 후 약물 조절, 상담 지속, 검사 후 재방문','sv-noncovered':'예: 심리검사 문의가 있으나 비용 설명이 어려움','sv-top-sales':'예: 불안장애, 우울증, 불면증, ADHD 검사','sv-revenue-note':'예: ADHD 검사, 불면 클리닉, 직장인 스트레스 상담','sv-grow-care':'예: 성인 ADHD, 불면, 직장인 번아웃','sv-good-kw':'예: 강남 정신건강의학과 불면증','sv-target':'예: 직장인 불안·불면 상담, 성인 ADHD 상담','sv-avoid':'예: 낙인감을 주는 표현, 완치 단정, 자극적 사례'}
-  },
-  '내과':{
-    labels:{'sv-new-patients':'최근 한 달 내과 초진/검사 문의 흐름','sv-revisit':'검사 후 관리·재방문 흐름','sv-noncovered':'검진·수액·예방접종 상담 비중 체감','sv-top-sales':'현재 문의가 많은 내과 진료/검사','sv-revenue-note':'앞으로 더 중요해질 내과 진료/검사','sv-grow-care':'앞으로 더 키우고 싶은 내과 진료','sv-caution':'내과 콘텐츠 설명 시 조심할 점','sv-target':'3개월 내 늘리고 싶은 내과 환자군'},
-    placeholders:{'sv-new-patients':'예: 감기보다 건강검진, 수액, 만성질환 문의를 늘리고 싶음','sv-revisit':'예: 검사 결과 상담, 만성질환 관리, 예방접종 재방문','sv-noncovered':'예: 수액·검진 문의는 있지만 목적 설명이 필요함','sv-top-sales':'예: 건강검진, 위내시경, 수액치료, 예방접종','sv-revenue-note':'예: 건강검진, 내시경, 만성질환 관리, 영양수액','sv-grow-care':'예: 건강검진, 수면내시경, 비만관리','sv-good-kw':'예: 동탄 건강검진 내과, 수면내시경','sv-target':'예: 40대 건강검진, 만성질환 관리 환자'}
-  },
-  '가정의학과':{
-    labels:{'sv-new-patients':'최근 한 달 생활질환/검진 문의 흐름','sv-revisit':'검진 후 관리·재방문 흐름','sv-noncovered':'비만·수액·예방 상담 비중 체감','sv-top-sales':'현재 문의가 많은 진료/관리','sv-revenue-note':'앞으로 더 중요해질 관리 프로그램','sv-grow-care':'앞으로 더 키우고 싶은 진료/관리','sv-caution':'가정의학과 콘텐츠 설명 시 조심할 점','sv-target':'3개월 내 늘리고 싶은 환자군'},
-    placeholders:{'sv-new-patients':'예: 비만관리, 수액, 예방접종, 건강상담 문의가 많음','sv-revisit':'예: 검사 후 생활습관 관리, 체중 관리, 만성질환 추적','sv-noncovered':'예: 비만관리 상담은 많지만 지속 관리 전환이 약함','sv-top-sales':'예: 비만관리, 수액치료, 예방접종, 건강검진','sv-revenue-note':'예: 비만관리, 영양수액, 만성질환 관리','sv-grow-care':'예: 비만클리닉, 영양수액, 건강검진','sv-good-kw':'예: 동탄 가정의학과 비만관리','sv-target':'예: 체중관리 희망 환자, 직장인 건강관리'}
-  }
+  '가정의학과':{labels:{},placeholders:{'sv-new-patients':'예: 월 100명 정도','sv-revisit':'예: 만성질환/검진 후 재방문 약 50%','sv-noncovered':'예: 비만관리·수액 포함 약 35%','sv-top-sales':'예: 건강검진, 비만관리, 수액치료','sv-revenue-note':'예: 비만클리닉, 영양수액, 만성질환 관리','sv-caution':'예: 생활습관까지 함께 관리하는 주치의 느낌, 과잉검사 없는 상담','sv-good-kw':'예: 카카오채널, 블로그, 지역 맘카페','sv-competitor':'예: 인근 가정의학과 상호 또는 건강검진 블로그 URL','sv-tone':'예: 직접 관리 콘텐츠를 올렸지만 전문성이 잘 전달되지 않았음','sv-final-note':'예: 건강검진 캠페인, 직장인 건강관리 콘텐츠'}},
+  '내과':{labels:{},placeholders:{'sv-new-patients':'예: 월 150명 정도','sv-revisit':'예: 검사 결과 상담 포함 약 60%','sv-noncovered':'예: 검진·수액·내시경 포함 약 35%','sv-top-sales':'예: 건강검진, 위내시경, 수액치료','sv-revenue-note':'예: 수면내시경, 건강검진, 만성질환 관리','sv-caution':'예: 검사 필요성을 쉽게 설명하는 점, 결과 상담을 꼼꼼히 하는 점','sv-good-kw':'예: 블로그, 홈페이지, 카카오채널','sv-competitor':'예: 인근 내과 상호, 검진센터 블로그 URL','sv-tone':'예: 대행사를 썼지만 감기 콘텐츠만 많아 검진 강점이 안 보였음','sv-final-note':'예: 건강검진 랜딩페이지, 지역 검진 캠페인'}},
+  '산부인과':{labels:{},placeholders:{'sv-new-patients':'예: 월 90명 정도','sv-revisit':'예: 검사 후 관리 포함 약 50%','sv-noncovered':'예: 여성검진·시술 포함 약 45%','sv-top-sales':'예: 여성검진, 질염, 피임 상담','sv-revenue-note':'예: 여성검진, HPV 검사, 갱년기 관리','sv-caution':'예: 편안하게 상담할 수 있는 분위기, 민감한 고민을 배려하는 진료','sv-good-kw':'예: 블로그, 홈페이지, 인스타그램','sv-competitor':'예: 참고하는 여성의원 상호 또는 블로그 주소','sv-tone':'예: 직접 SNS를 했지만 민감한 주제를 어떻게 풀지 어려웠음','sv-final-note':'예: 여성검진 캠페인, 원장님 Q&A 콘텐츠'}},
+  '성형외과':{labels:{},placeholders:{'sv-new-patients':'예: 월 80명 정도','sv-revisit':'예: 상담 후 재상담 약 40%','sv-noncovered':'예: 수술·시술 상담 대부분','sv-top-sales':'예: 눈성형, 코성형, 리프팅','sv-revenue-note':'예: 눈 재수술, 자연스러운 코성형, 안면거상','sv-caution':'예: 자연스러움, 안전한 상담, 원장님 미감과 진단 기준','sv-good-kw':'예: 인스타그램, 블로그, 유튜브 쇼츠','sv-competitor':'예: 레퍼런스 성형외과 인스타그램 또는 블로그 URL','sv-tone':'예: SNS는 했지만 전후사진 중심이라 병원 철학이 잘 안 담겼음','sv-final-note':'예: 원장님 개인 PR, 케이스 스토리 콘텐츠'}},
+  '신경외과':{labels:{},placeholders:{'sv-new-patients':'예: 월 140명 정도','sv-revisit':'예: 검사 후 치료 연결 약 60%','sv-noncovered':'예: 도수·주사치료 포함 약 40%','sv-top-sales':'예: 허리디스크, 목디스크, 신경차단술','sv-revenue-note':'예: 신경차단술, 도수치료, 재활치료','sv-caution':'예: 수술부터 권하지 않고 원인을 먼저 확인하는 점','sv-good-kw':'예: 홈페이지, 블로그, 카카오채널','sv-competitor':'예: 인근 신경외과 블로그 주소 또는 상호','sv-tone':'예: 대행사가 질환 설명을 너무 일반적으로 써서 차별점이 부족했음','sv-final-note':'예: 비수술 치료 브랜딩, 원장님 인터뷰'}},
+  '안과':{labels:{},placeholders:{'sv-new-patients':'예: 월 120명 정도','sv-revisit':'예: 검사 후 처방/수술 상담 약 50%','sv-noncovered':'예: 드림렌즈·시력교정 포함 약 35%','sv-top-sales':'예: 안구건조증, 백내장, 드림렌즈','sv-revenue-note':'예: 드림렌즈, 백내장 검사, 시력교정 상담','sv-caution':'예: 검사 장비, 정확한 설명, 아이 눈 관리 경험','sv-good-kw':'예: 블로그, 홈페이지, 네이버 플레이스','sv-competitor':'예: 참고하는 안과 상호 또는 드림렌즈 블로그 URL','sv-tone':'예: 검사/장비 강점이 콘텐츠에 잘 반영되지 않았음','sv-final-note':'예: 드림렌즈 캠페인, 백내장 검진 콘텐츠'}},
+  '여성의원':{labels:{},placeholders:{'sv-new-patients':'예: 월 80명 정도','sv-revisit':'예: 검사 후 관리 포함 약 50%','sv-noncovered':'예: 여성검진·시술 포함 약 45%','sv-top-sales':'예: 여성검진, 질염, 피임 상담','sv-revenue-note':'예: 여성검진, HPV 검사, 갱년기 관리','sv-caution':'예: 민감한 고민을 편하게 말할 수 있는 분위기','sv-good-kw':'예: 블로그, 홈페이지, 인스타그램','sv-competitor':'예: 참고하는 여성의원 상호 또는 블로그 주소','sv-tone':'예: 민감한 주제를 광고법에 맞게 표현하는 것이 어려웠음','sv-final-note':'예: 여성검진 캠페인, 원장님 Q&A 콘텐츠'}},
+  '재활의학과':{labels:{},placeholders:{'sv-new-patients':'예: 월 130명 정도','sv-revisit':'예: 도수·운동치료 지속 내원 약 65%','sv-noncovered':'예: 재활 프로그램 포함 약 45%','sv-top-sales':'예: 도수치료, 운동치료, 수술 후 재활','sv-revenue-note':'예: 도수+운동치료 패키지, 체형교정 프로그램','sv-caution':'예: 평가 후 맞춤 운동처방, 기능 회복 중심 재활','sv-good-kw':'예: 블로그, 홈페이지, 카카오채널','sv-competitor':'예: 참고하는 재활의학과 상호 또는 블로그 URL','sv-tone':'예: 치료 과정은 좋은데 콘텐츠가 단순 도수치료 홍보처럼 보였음','sv-final-note':'예: 재활 프로그램 브랜딩, 환자 교육 콘텐츠'}},
+  '정신건강의학과':{labels:{},placeholders:{'sv-new-patients':'예: 월 70명 정도','sv-revisit':'예: 치료 지속 약 70%','sv-noncovered':'예: 검사·상담 포함 약 30%','sv-top-sales':'예: 불안, 우울, 불면, ADHD 검사','sv-revenue-note':'예: 성인 ADHD, 불면 클리닉, 직장인 번아웃 상담','sv-caution':'예: 낙인감 없이 편안하게 방문할 수 있는 분위기','sv-good-kw':'예: 블로그, 홈페이지, 카카오채널','sv-competitor':'예: 참고하는 정신건강의학과 상호 또는 블로그 주소','sv-tone':'예: 자극적이지 않게 증상 정보를 전달하는 방식이 어려웠음','sv-final-note':'예: 원장님 칼럼, 직장인 정신건강 캠페인'}},
+  '정형외과':{labels:{},placeholders:{'sv-new-patients':'예: 월 160명 정도','sv-revisit':'예: 검사 후 주사·재활 연결 약 55%','sv-noncovered':'예: 도수·체외충격파 포함 약 40%','sv-top-sales':'예: 무릎통증, 어깨통증, 체외충격파','sv-revenue-note':'예: 도수치료, 체외충격파, 관절 주사','sv-caution':'예: 부위별 원인 감별, 수술 필요 여부를 신중히 판단하는 점','sv-good-kw':'예: 홈페이지, 블로그, 카카오채널','sv-competitor':'예: 인근 정형외과 상호 또는 블로그 주소','sv-tone':'예: 통증 부위별 콘텐츠는 많지만 병원 강점이 잘 안 드러났음','sv-final-note':'예: 스포츠 손상 콘텐츠, 지역 통증 캠페인'}},
+  '치과':{labels:{},placeholders:{'sv-new-patients':'예: 월 100명 정도','sv-revisit':'예: 검진 후 치료계획 연결 약 55%','sv-noncovered':'예: 임플란트·교정 포함 약 50%','sv-top-sales':'예: 임플란트, 치아교정, 심미보철','sv-revenue-note':'예: 임플란트, 투명교정, 라미네이트','sv-caution':'예: 통증 부담을 줄이는 설명, 치료계획을 자세히 안내하는 점','sv-good-kw':'예: 블로그, 홈페이지, 네이버 플레이스','sv-competitor':'예: 참고하는 치과 상호 또는 블로그 주소','sv-tone':'예: 가격 비교 문의가 많아 진료 철학을 전달하기 어려웠음','sv-final-note':'예: 임플란트 브랜딩, 교정 상담 콘텐츠'}},
+  '통증의학과':{labels:{},placeholders:{'sv-new-patients':'예: 월 130명 정도','sv-revisit':'예: 주사 후 경과 확인 약 55%','sv-noncovered':'예: 비급여 통증 시술 약 45%','sv-top-sales':'예: 신경차단술, 프롤로주사, 대상포진통증','sv-revenue-note':'예: 신경차단술, 초음파 유도 주사, 만성통증 관리','sv-caution':'예: 통증 원인을 확인한 뒤 치료를 선택하는 점','sv-good-kw':'예: 블로그, 홈페이지, 카카오채널','sv-competitor':'예: 인근 통증의학과 블로그 주소 또는 상호','sv-tone':'예: 시술 효과를 과장하지 않으면서 필요성을 설명하기 어려웠음','sv-final-note':'예: 만성통증 클리닉 브랜딩, 원장님 설명 콘텐츠'}},
+  '피부과':{labels:{},placeholders:{'sv-new-patients':'예: 월 120명 정도','sv-revisit':'예: 관리/패키지 재방문 약 50%','sv-noncovered':'예: 미용 시술 포함 약 70%','sv-top-sales':'예: 여드름, 리프팅, 색소레이저','sv-revenue-note':'예: 리프팅, 색소 패키지, 여드름 흉터 치료','sv-caution':'예: 피부 타입별 상담, 장비명, 자연스러운 개선 방향','sv-good-kw':'예: 인스타그램, 블로그, 카카오채널','sv-competitor':'예: 참고하는 피부과 인스타그램 또는 블로그 URL','sv-tone':'예: 가격 이벤트 위주로 보여서 전문성이 약해 보였음','sv-final-note':'예: 리프팅 캠페인, 원장님 피부 칼럼'}},
+  '한방병원':{labels:{},placeholders:{'sv-new-patients':'예: 월 150명 정도','sv-revisit':'예: 입원/외래 재방문 약 60%','sv-noncovered':'예: 한약·추나·재활 포함 약 45%','sv-top-sales':'예: 교통사고 치료, 추나, 입원 재활','sv-revenue-note':'예: 교통사고 후유증, 재활치료, 한약 프로그램','sv-caution':'예: 한방·재활 협진, 입원 치료 환경, 체질별 상담','sv-good-kw':'예: 블로그, 홈페이지, 카카오채널','sv-competitor':'예: 참고하는 한방병원 상호 또는 블로그 주소','sv-tone':'예: 치료 범위가 넓어 핵심 진료가 흐려지는 점이 어려웠음','sv-final-note':'예: 교통사고 치료 캠페인, 입원 재활 콘텐츠'}},
+  '한의원':{labels:{},placeholders:{'sv-new-patients':'예: 월 100명 정도','sv-revisit':'예: 한약 재처방·추나 반복 내원 약 55%','sv-noncovered':'예: 한약·약침 포함 약 50%','sv-top-sales':'예: 추나, 약침, 다이어트 한약','sv-revenue-note':'예: 성장한약, 산후보약, 다이어트 한약','sv-caution':'예: 체질별 상담, 생활습관까지 함께 보는 점','sv-good-kw':'예: 블로그, 카카오채널, 지역 커뮤니티','sv-competitor':'예: 참고하는 한의원 상호 또는 블로그 주소','sv-tone':'예: 직접 블로그를 썼지만 한방 설명을 쉽게 풀기 어려웠음','sv-final-note':'예: 성장한약 캠페인, 원장님 건강 칼럼'}}
 };
-['한방병원'].forEach(function(k){SURVEY_DEPT_PRESETS[k]=SURVEY_DEPT_PRESETS['한의원'];});
-['여성의원'].forEach(function(k){SURVEY_DEPT_PRESETS[k]=SURVEY_DEPT_PRESETS['산부인과'];});
 ['기타'].forEach(function(k){SURVEY_DEPT_PRESETS[k]=SURVEY_DEPT_DEFAULT;});
 var SURVEY_BASE_UI=null;
 function rememberSurveyBaseUi(){
@@ -2235,6 +2153,19 @@ function applySurveyDeptPreset(){
   var preset=surveyPreset();
   Object.keys(preset.labels||{}).forEach(function(id){setSurveyLabel(id,preset.labels[id]);});
   Object.keys(preset.placeholders||{}).forEach(function(id){setSurveyPlaceholder(id,preset.placeholders[id]);});
+  updateSurveyConditionalFields();
+}
+function updateSurveyConditionalFields(){
+  var channel=document.getElementById('sv-channels');
+  var channelEtc=document.getElementById('sv-good-kw-wrap');
+  var future=document.getElementById('sv-urgent');
+  var futureEtc=document.getElementById('sv-final-note-wrap');
+  var showChannelEtc=channel&&channel.value==='기타';
+  var showFutureEtc=future&&future.value==='기타';
+  if(channelEtc)channelEtc.style.display=showChannelEtc?'block':'none';
+  if(futureEtc)futureEtc.style.display=showFutureEtc?'block':'none';
+  if(!showChannelEtc){var channelInput=document.getElementById('sv-good-kw');if(channelInput)channelInput.value='';}
+  if(!showFutureEtc){var futureInput=document.getElementById('sv-final-note');if(futureInput)futureInput.value='';}
 }
 function showSurveyIntroOnce(){
   if(surveyIntroSeen)return;
@@ -2247,7 +2178,7 @@ function closeSurveyIntro(){
   if(modal)modal.classList.remove('show');
 }
 function goSurveyStep(n){
-  surveyStep=Math.max(0,Math.min(6,n));
+  surveyStep=Math.max(0,Math.min(3,n));
   document.querySelectorAll('.survey-panel').forEach(function(p){p.classList.remove('active');});
   document.querySelectorAll('.survey-step-pill').forEach(function(p){p.classList.remove('active');});
   var panel=document.getElementById('survey-step-'+surveyStep);
@@ -2255,22 +2186,22 @@ function goSurveyStep(n){
   var pills=document.querySelectorAll('.survey-step-pill');
   if(pills[surveyStep])pills[surveyStep].classList.add('active');
   var bar=document.getElementById('survey-progress-bar');
-  if(bar)bar.style.width=((surveyStep+1)/7*100)+'%';
+  if(bar)bar.style.width=((surveyStep+1)/4*100)+'%';
   var nextBtn=document.getElementById('survey-next-btn');
   if(nextBtn){
-    nextBtn.textContent=surveyStep===5?'제출하기':(surveyStep===6?'완료':'다음');
-    nextBtn.style.display=surveyStep===6?'none':'inline-flex';
+    nextBtn.textContent=surveyStep===2?'제출하기':(surveyStep===3?'완료':'다음');
+    nextBtn.style.display=surveyStep===3?'none':'inline-flex';
   }
-  if(surveyStep===5)buildSurveySummary();
-  if(surveyStep===6)showSurveyCompletion();
+  if(surveyStep===2)buildSurveySummary();
+  if(surveyStep===3)showSurveyCompletion();
   applySurveyDeptPreset();
 }
 function nextSurveyStep(){
-  if(surveyStep===5){submitSurvey();return;}
+  if(surveyStep===2){submitSurvey();return;}
   goSurveyStep(surveyStep+1);
 }
 function prevSurveyStep(){
-  if(surveyStep===6){goSurveyStep(5);return;}
+  if(surveyStep===3){goSurveyStep(2);return;}
   goSurveyStep(surveyStep-1);
 }
 function surveyVal(id){
@@ -2335,7 +2266,7 @@ function submitSurvey(){
     save(KEY_SURVEY_REQUESTS,rows);
     surveySubmitted=true;
     setSurveySubmitStatus('접수되었습니다. 담당자 검토 후 콘텐츠 기획에 반영됩니다.','ok');
-    goSurveyStep(6);
+    goSurveyStep(3);
   });
   setTimeout(function(){
     if(!surveySubmitted){
@@ -2345,7 +2276,7 @@ function submitSurvey(){
         save(KEY_SURVEY_REQUESTS,fallback);
         surveySubmitted=true;
         setSurveySubmitStatus('접수되었습니다. 네트워크 상태에 따라 관리자 검토함 반영이 지연될 수 있습니다.','ok');
-        goSurveyStep(6);
+        goSurveyStep(3);
       }catch(e){
         setSurveySubmitStatus('자동 접수에 실패했습니다. 요약 복사 후 담당자에게 전달해 주세요.','error');
       }
