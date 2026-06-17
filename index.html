@@ -269,6 +269,12 @@
   .survey-progress span{display:block;height:100%;width:16.6%;background:linear-gradient(90deg,var(--accent),#16bd9c);transition:width .18s;}
   .survey-question-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
   .survey-question-grid .wide{grid-column:1 / -1;}
+  .survey-dept-preview{grid-column:1 / -1;border:1px solid var(--accent-border);background:linear-gradient(180deg,#fff,#f6faff);border-radius:var(--radius);padding:13px 15px;}
+  .survey-dept-preview-title{font-size:11px;font-weight:800;color:var(--accent);letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px;}
+  .survey-dept-preview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+  .survey-dept-preview-item{border:1px solid var(--border);background:#fff;border-radius:var(--radius-sm);padding:9px 10px;min-height:72px;}
+  .survey-dept-preview-k{font-size:10px;font-weight:800;color:var(--text3);letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px;}
+  .survey-dept-preview-v{font-size:12px;color:var(--text);line-height:1.65;}
   .survey-help{font-size:12px;color:var(--text3);line-height:1.7;margin-top:6px;}
   .survey-result{white-space:pre-wrap;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;font-size:13px;line-height:1.8;color:var(--text2);max-height:360px;overflow:auto;}
   .survey-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(7,19,33,.42);backdrop-filter:blur(8px);z-index:300;}
@@ -278,7 +284,7 @@
   .survey-modal-title{font-size:24px;line-height:1.35;font-weight:800;color:var(--text);margin-bottom:10px;}
   .survey-modal-text{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:16px;}
   .survey-modal-note{border-left:3px solid var(--accent);background:var(--accent-bg);padding:11px 13px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:18px;}
-  @media(max-width:820px){.survey-shell{grid-template-columns:1fr}.survey-steps{position:relative;top:auto;display:grid;grid-template-columns:1fr 1fr;gap:4px}.survey-question-grid{grid-template-columns:1fr}.survey-step-pill{padding:8px}.survey-step-no{width:22px;height:22px}}
+  @media(max-width:820px){.survey-shell{grid-template-columns:1fr}.survey-steps{position:relative;top:auto;display:grid;grid-template-columns:1fr 1fr;gap:4px}.survey-question-grid{grid-template-columns:1fr}.survey-dept-preview-grid{grid-template-columns:1fr}.survey-step-pill{padding:8px}.survey-step-no{width:22px;height:22px}}
 
   .db-card-meta{font-size:11px;color:var(--text3);margin-top:3px;line-height:1.7;}
   .db-card-actions{display:flex;gap:5px;flex-shrink:0;}
@@ -557,7 +563,7 @@
 
   <div class="survey-shell">
     <div class="survey-steps" id="survey-steps">
-      <button class="survey-step-pill active" onclick="goSurveyStep(0)"><span class="survey-step-no">01</span><span>병원 정보</span></button>
+      <button class="survey-step-pill active" onclick="goSurveyStep(0)"><span class="survey-step-no">01</span><span>과목 선택</span></button>
       <button class="survey-step-pill" onclick="goSurveyStep(1)"><span class="survey-step-no">02</span><span>환자 흐름</span></button>
       <button class="survey-step-pill" onclick="goSurveyStep(2)"><span class="survey-step-no">03</span><span>진료 구성</span></button>
       <button class="survey-step-pill" onclick="goSurveyStep(3)"><span class="survey-step-no">04</span><span>콘텐츠 현황</span></button>
@@ -570,11 +576,12 @@
       <div class="survey-progress"><span id="survey-progress-bar"></span></div>
 
       <div class="card survey-panel active" id="survey-step-0">
-        <div class="card-title">01 병원 기본 정보</div>
-        <p class="survey-help">콘텐츠와 키워드의 기준이 되는 기본 정보입니다.</p>
+        <div class="card-title">01 과목 선택 및 병원 기본 정보</div>
+        <p class="survey-help">먼저 과목을 선택해 주세요. 선택한 과목에 맞춰 이후 질문의 예시와 표현이 달라집니다.</p>
         <div class="survey-question-grid">
+          <div class="fg wide"><label>과목 / 병원 유형</label><select id="sv-type" onchange="applySurveyDeptPreset()"><option value="">선택해 주세요</option><option>한의원</option><option>신경외과</option><option>정형외과</option><option>재활의학과</option><option>통증의학과</option><option>피부과/미용의원</option><option>성형외과</option><option>치과</option><option>내과/가정의학과</option><option>산부인과/여성의원</option><option>비뇨기과/남성의원</option><option>기타</option></select></div>
+          <div class="survey-dept-preview" id="survey-dept-preview"></div>
           <div class="fg"><label>병원명</label><input type="text" id="sv-clinic" placeholder="예: 오늘의브랜딩의원"/></div>
-          <div class="fg"><label>진료과 / 병원 유형</label><select id="sv-type"><option value="">선택해 주세요</option><option>한의원</option><option>신경외과</option><option>정형외과</option><option>재활의학과</option><option>통증의학과</option><option>피부과/미용의원</option><option>성형외과</option><option>치과</option><option>내과/가정의학과</option><option>산부인과/여성의원</option><option>비뇨기과/남성의원</option><option>기타</option></select></div>
           <div class="fg"><label>지역</label><input type="text" id="sv-region" placeholder="예: 동탄, 평택, 양천구"/></div>
           <div class="fg"><label>대표 진료/상품 3개</label><input type="text" id="sv-main-care" placeholder="예: 도수치료, 신경차단술, 체외충격파"/></div>
           <div class="fg wide"><label>병원의 강점</label><textarea id="sv-strength" placeholder="장비, 원장님 경력, 설명 방식, 치료 철학, 환자들이 자주 칭찬하는 점을 적어주세요."></textarea></div>
@@ -2086,7 +2093,7 @@ function setActivePage(id,el){
   if(el)el.classList.add('active');
   if(id==='gen')renderClientList();
   if(id==='staff')renderStaffBoard();
-  if(id==='survey')showSurveyIntroOnce();
+  if(id==='survey'){showSurveyIntroOnce();applySurveyDeptPreset();}
 }
 function showStaffLogin(targetId,el){
   pendingStaffPage=targetId||'gen';
@@ -2116,6 +2123,105 @@ var surveyFieldMap=[
   ['현재 운영 채널','sv-channels'],['현재 블로그에서 가장 아쉬운 점','sv-blog-problem'],['반응이 좋았던 키워드','sv-good-kw'],['반응이 약했던 키워드','sv-weak-kw'],['블로그에서 꼭 전달되었으면 하는 인상','sv-tone'],
   ['3개월 내 늘리고 싶은 환자군','sv-target'],['가장 시급한 문제','sv-urgent'],['피하고 싶은 마케팅/표현','sv-avoid'],['선호하는 콘텐츠 톤','sv-content-style'],['마지막으로 꼭 전하고 싶은 말','sv-final-note']
 ];
+var SURVEY_DEPT_DEFAULT={
+  preview:[
+    ['대표 진료','도수치료, 리프팅, 임플란트처럼 실제로 늘리고 싶은 진료를 적습니다.'],
+    ['강점','장비, 원장님 설명 방식, 치료 철학, 환자 반응을 적습니다.'],
+    ['주의사항','과장되면 안 되는 표현, 피하고 싶은 주제, 광고법상 조심할 부분을 적습니다.']
+  ],
+  labels:{},
+  placeholders:{}
+};
+var SURVEY_DEPT_PRESETS={
+  '한의원':{
+    preview:[['대표 진료','추나, 약침, 다이어트 한약, 성장한약, 교통사고 치료'],['매출/재진','탕약·환약·추나·교통사고처럼 재진으로 이어지는 항목'],['주의사항','침/약침/한약 효능을 단정하지 않고 체질·상태별 접근으로 표현']],
+    labels:{'sv-main-care':'대표 진료/한방 상품 3개','sv-top-sales':'매출 상위 진료/한방 상품','sv-grow-care':'앞으로 더 키우고 싶은 한방 진료','sv-caution':'한방 진료 설명 시 조심할 점'},
+    placeholders:{'sv-main-care':'예: 추나, 약침, 다이어트 한약','sv-revenue-note':'예: 한약 처방, 교통사고 재진, 체형교정 프로그램','sv-grow-care':'예: 성장한약, 산후보약, 다이어트 한약','sv-target':'예: 30대 산후보약 환자, 교통사고 후유증 환자'}
+  },
+  '신경외과':{
+    preview:[['대표 진료','허리디스크, 목디스크, 신경차단술, 도수치료'],['환자 흐름','통증 초진, MRI/검사, 주사치료, 재활 연결 구조'],['주의사항','수술/비수술, 완치·즉효 표현을 피하고 감별 진단 중심']],
+    labels:{'sv-main-care':'대표 질환/치료 3개','sv-top-sales':'매출 상위 검사/치료','sv-grow-care':'앞으로 더 키우고 싶은 비수술 치료','sv-caution':'통증·신경 치료 설명 시 조심할 점'},
+    placeholders:{'sv-main-care':'예: 허리디스크, 목디스크, 신경차단술','sv-revenue-note':'예: 신경차단술, 도수치료, MRI 연계 진료','sv-grow-care':'예: 프롤로주사, 신경차단술, 재활치료','sv-good-kw':'예: 동탄 허리디스크, 목디스크 신경외과'}
+  },
+  '정형외과':{
+    preview:[['대표 진료','어깨·무릎·손목 통증, 체외충격파, 도수치료'],['환자 흐름','통증 부위별 초진, 영상검사, 주사/재활/운동치료'],['주의사항','수술 필요 여부를 단정하지 않고 원인 감별 중심']],
+    labels:{'sv-main-care':'대표 부위/치료 3개','sv-top-sales':'매출 상위 부위/치료','sv-grow-care':'앞으로 더 키우고 싶은 치료','sv-caution':'정형외과 진료 설명 시 조심할 점'},
+    placeholders:{'sv-main-care':'예: 무릎통증, 어깨통증, 체외충격파','sv-revenue-note':'예: 도수치료, 체외충격파, 관절 주사','sv-target':'예: 50대 무릎통증 환자, 운동 손상 환자'}
+  },
+  '재활의학과':{
+    preview:[['대표 진료','도수치료, 운동치료, 자세교정, 수술 후 재활'],['차별점','평가·운동처방·재활 프로토콜의 구체성'],['주의사항','통증 완화보다 기능 회복과 단계적 재활 중심']],
+    labels:{'sv-main-care':'대표 재활 프로그램 3개','sv-top-sales':'매출 상위 재활/치료 프로그램','sv-grow-care':'앞으로 더 키우고 싶은 재활 프로그램','sv-caution':'재활 치료 설명 시 조심할 점'},
+    placeholders:{'sv-main-care':'예: 도수치료, 운동치료, 수술 후 재활','sv-revenue-note':'예: 도수+운동치료 패키지, 체형교정 프로그램','sv-target':'예: 수술 후 재활 환자, 만성 목허리 통증 환자'}
+  },
+  '통증의학과':{
+    preview:[['대표 진료','신경차단술, 프롤로, 대상포진 후 신경통, 허리통증'],['환자 흐름','급성 통증 초진, 주사치료, 재발 관리'],['주의사항','통증 원인 감별과 치료 선택 기준 중심']],
+    labels:{'sv-main-care':'대표 통증 질환/시술 3개','sv-top-sales':'매출 상위 통증 시술','sv-grow-care':'앞으로 더 키우고 싶은 통증 시술','sv-caution':'통증 시술 설명 시 조심할 점'},
+    placeholders:{'sv-main-care':'예: 신경차단술, 프롤로주사, 대상포진통증','sv-revenue-note':'예: 신경차단술, 초음파 유도 주사, 만성통증 관리','sv-good-kw':'예: 동탄 통증의학과, 허리통증 주사'}
+  },
+  '피부과/미용의원':{
+    preview:[['대표 시술','여드름, 리프팅, 색소, 보톡스, 제모'],['전환 포인트','장비명, 시술 경험, 피부 타입별 상담'],['주의사항','전후사진·효과 보장·가격 중심 과장 표현 주의']],
+    labels:{'sv-main-care':'대표 피부/미용 시술 3개','sv-top-sales':'매출 상위 피부/미용 시술','sv-grow-care':'앞으로 더 키우고 싶은 시술','sv-caution':'피부·미용 시술 설명 시 조심할 점'},
+    placeholders:{'sv-main-care':'예: 여드름, 인모드, 색소레이저','sv-revenue-note':'예: 리프팅, 색소 패키지, 여드름 관리','sv-target':'예: 20대 여드름 환자, 40대 리프팅 상담 고객','sv-avoid':'예: 전후사진 과장, 최저가 이벤트 중심'}
+  },
+  '성형외과':{
+    preview:[['대표 수술/시술','눈성형, 코성형, 리프팅, 지방이식'],['상담 포인트','원장님 미감, 안전, 재수술/자연스러움 니즈'],['주의사항','결과 보장·비교 과장·전후사진 의존 주의']],
+    labels:{'sv-main-care':'대표 성형 수술/시술 3개','sv-top-sales':'매출 상위 수술/시술','sv-grow-care':'앞으로 더 키우고 싶은 수술/시술','sv-caution':'성형 콘텐츠 설명 시 조심할 점'},
+    placeholders:{'sv-main-care':'예: 눈성형, 코성형, 리프팅','sv-revenue-note':'예: 눈 재수술, 코성형, 안면거상','sv-target':'예: 첫 눈성형 상담, 재수술 고민 환자'}
+  },
+  '치과':{
+    preview:[['대표 진료','임플란트, 교정, 충치치료, 심미보철'],['전환 포인트','검진-진단-치료계획, 비용 불안 해소'],['주의사항','통증 없음·평생 보장 같은 단정 표현 주의']],
+    labels:{'sv-main-care':'대표 치과 진료 3개','sv-top-sales':'매출 상위 치과 진료','sv-grow-care':'앞으로 더 키우고 싶은 치과 진료','sv-caution':'치과 진료 설명 시 조심할 점'},
+    placeholders:{'sv-main-care':'예: 임플란트, 치아교정, 심미보철','sv-revenue-note':'예: 임플란트, 교정 상담, 라미네이트','sv-target':'예: 50대 임플란트 환자, 투명교정 상담 고객'}
+  }
+};
+['내과/가정의학과','산부인과/여성의원','비뇨기과/남성의원','기타'].forEach(function(k){SURVEY_DEPT_PRESETS[k]=SURVEY_DEPT_DEFAULT;});
+var SURVEY_BASE_UI=null;
+function rememberSurveyBaseUi(){
+  if(SURVEY_BASE_UI)return;
+  SURVEY_BASE_UI={labels:{},placeholders:{}};
+  surveyFieldMap.forEach(function(item){
+    var el=document.getElementById(item[1]);
+    var fg=el&&el.closest?el.closest('.fg'):null;
+    var label=fg?fg.querySelector('label'):null;
+    if(label)SURVEY_BASE_UI.labels[item[1]]=label.textContent;
+    if(el)SURVEY_BASE_UI.placeholders[item[1]]=el.getAttribute('placeholder')||'';
+  });
+}
+function resetSurveyBaseUi(){
+  rememberSurveyBaseUi();
+  Object.keys(SURVEY_BASE_UI.labels).forEach(function(id){setSurveyLabel(id,SURVEY_BASE_UI.labels[id]);});
+  Object.keys(SURVEY_BASE_UI.placeholders).forEach(function(id){setSurveyPlaceholder(id,SURVEY_BASE_UI.placeholders[id]);});
+}
+function surveyPreset(){
+  var type=surveyVal('sv-type');
+  return SURVEY_DEPT_PRESETS[type]||SURVEY_DEPT_DEFAULT;
+}
+function setSurveyLabel(id,text){
+  var el=document.getElementById(id);
+  if(!el)return;
+  var fg=el.closest?el.closest('.fg'):null;
+  var label=fg?fg.querySelector('label'):null;
+  if(label&&text)label.textContent=text;
+}
+function setSurveyPlaceholder(id,text){
+  var el=document.getElementById(id);
+  if(el&&text)el.setAttribute('placeholder',text);
+}
+function renderSurveyDeptPreview(preset){
+  var box=document.getElementById('survey-dept-preview');
+  if(!box)return;
+  var items=(preset.preview||SURVEY_DEPT_DEFAULT.preview).map(function(item){
+    return '<div class="survey-dept-preview-item"><div class="survey-dept-preview-k">'+esc(item[0])+'</div><div class="survey-dept-preview-v">'+esc(item[1])+'</div></div>';
+  }).join('');
+  box.innerHTML='<div class="survey-dept-preview-title">예시 미리보기</div><div class="survey-dept-preview-grid">'+items+'</div>';
+}
+function applySurveyDeptPreset(){
+  resetSurveyBaseUi();
+  var preset=surveyPreset();
+  Object.keys(preset.labels||{}).forEach(function(id){setSurveyLabel(id,preset.labels[id]);});
+  Object.keys(preset.placeholders||{}).forEach(function(id){setSurveyPlaceholder(id,preset.placeholders[id]);});
+  renderSurveyDeptPreview(preset);
+}
 function showSurveyIntroOnce(){
   if(surveyIntroSeen)return;
   var modal=document.getElementById('survey-intro-modal');
@@ -2143,6 +2249,7 @@ function goSurveyStep(n){
   }
   if(surveyStep===5)buildSurveySummary();
   if(surveyStep===6)showSurveyCompletion();
+  applySurveyDeptPreset();
 }
 function nextSurveyStep(){
   if(surveyStep===5){submitSurvey();return;}
@@ -2165,9 +2272,15 @@ function collectSurveyAnswer(){
   answer.summary=buildSurveySummary(false);
   return answer;
 }
+function currentSurveyLabel(item){
+  var el=document.getElementById(item[1]);
+  var fg=el&&el.closest?el.closest('.fg'):null;
+  var label=fg?fg.querySelector('label'):null;
+  return label&&label.textContent?label.textContent:item[0];
+}
 function buildSurveySummary(showStatus){
   var lines=['[콘텐츠 진단 설문 결과]',''];
-  surveyFieldMap.forEach(function(item){lines.push('- '+item[0]+': '+surveyVal(item[1]));});
+  surveyFieldMap.forEach(function(item){lines.push('- '+currentSurveyLabel(item)+': '+surveyVal(item[1]));});
   var summary=lines.join('\n');
   var el=document.getElementById('survey-summary');
   if(el)el.textContent=summary;
@@ -2230,6 +2343,7 @@ function showSurveyCompletion(){
 }
 function restartSurvey(){
   surveyFieldMap.forEach(function(item){var el=document.getElementById(item[1]);if(el)el.value='';});
+  applySurveyDeptPreset();
   buildSurveySummary(false);
   surveySubmitted=false;
   goSurveyStep(0);
