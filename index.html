@@ -315,7 +315,7 @@
   .staff-toolbar{display:grid;grid-template-columns:1.2fr .7fr auto;gap:10px;align-items:end;margin-bottom:14px;}
   .staff-board{display:block;}
   .staff-client-panel{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}
-  .staff-client-card{display:grid;grid-template-columns:68px 1fr;gap:13px;align-items:center;background:linear-gradient(180deg,#fff,#f8fbff);border:1px solid var(--border);border-radius:var(--radius);padding:13px;cursor:grab;transition:transform .14s,border .14s,box-shadow .14s;}
+  .staff-client-card{position:relative;display:grid;grid-template-columns:68px 1fr;gap:13px;align-items:center;background:linear-gradient(180deg,#fff,#f8fbff);border:1px solid var(--border);border-radius:var(--radius);padding:13px;cursor:grab;transition:transform .14s,border .14s,box-shadow .14s;}
   .staff-client-card:active{cursor:grabbing;}
   .staff-client-card:hover{transform:translateY(-1px);border-color:var(--accent-border);box-shadow:0 14px 30px rgba(28,45,70,.08);}
   .staff-client-card.active{border-color:var(--accent);background:var(--accent-bg);}
@@ -328,6 +328,7 @@
   .staff-card-meta{font-size:11px;color:var(--text3);line-height:1.5;}
   .staff-card-count{font-size:12px;color:var(--text2);font-weight:650;margin-top:6px;}
   .staff-card-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px;}
+  .staff-dday{position:absolute;right:12px;top:10px;font-size:11px;font-weight:900;color:#d93025;letter-spacing:.01em;}
   .staff-detail-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px;}
   .staff-detail-title{font-size:22px;font-weight:800;color:var(--text);line-height:1.35;}
   .staff-detail-sub{font-size:12px;color:var(--text3);margin-top:4px;}
@@ -2975,6 +2976,7 @@ function normalizeStaffData(){
     if(!Array.isArray(c.customCols))c.customCols=[];
     if(!c.assignee&&c.customCols.length)c.assignee=c.customCols[0];
     if(!Array.isArray(c.monthlyArchives))c.monthlyArchives=[];
+    if(!c.monthlyDeadlines||Array.isArray(c.monthlyDeadlines))c.monthlyDeadlines={};
     if(!c.targetCount)c.targetCount=0;
     c.items.forEach(function(row){
       if(!row.id)row.id='r'+Date.now()+Math.floor(Math.random()*10000);
@@ -3006,6 +3008,10 @@ function staffCurrentSavedAt(){
   var p=staffKoreaNowParts();
   return p.year+'-'+p.month+'-'+p.day+' '+p.hour+':'+p.minute+' KST';
 }
+function staffTodayKey(){
+  var p=staffKoreaNowParts();
+  return Number(p.year)*10000+Number(p.month)*100+Number(p.day);
+}
 function staffCurrentYear(){
   return Number(staffKoreaNowParts().year)||new Date().getFullYear();
 }
@@ -3036,6 +3042,21 @@ function parseStaffPublishDate(value){
   if(date.getFullYear()!==y||date.getMonth()!==m-1||date.getDate()!==d)return null;
   return y*10000+m*100+d;
 }
+function staffKeyToUtcTime(key){
+  key=Number(key);
+  var y=Math.floor(key/10000);
+  var m=Math.floor((key%10000)/100);
+  var d=key%100;
+  return Date.UTC(y,m-1,d);
+}
+function staffDdayLabel(deadlineValue){
+  var deadlineKey=parseStaffPublishDate(deadlineValue);
+  if(deadlineKey==null)return '';
+  var todayKey=staffTodayKey();
+  var diff=Math.round((staffKeyToUtcTime(deadlineKey)-staffKeyToUtcTime(todayKey))/86400000);
+  if(diff===0)return 'D-Day';
+  return diff>0?'D-'+diff:'D+'+Math.abs(diff);
+}
 function sortStaffItemsByPublishDate(items){
   return (items||[]).map(function(row,idx){return {row:row,idx:idx,key:parseStaffPublishDate(row.publishDate)};})
     .sort(function(a,b){
@@ -3065,7 +3086,10 @@ function renderStaffBoard(){
   if(!staffSelectedClientId||!data.some(function(c){return c.id===staffSelectedClientId;}))staffSelectedClientId=data[0].id;
   document.getElementById('staff-client-panel').innerHTML=data.map(function(c){
     var p=staffProgress(c);
+    var currentMonth=staffCurrentMonthKey();
+    var dday=staffDdayLabel(c.monthlyDeadlines&&c.monthlyDeadlines[currentMonth]);
     return '<div class="staff-client-card '+(c.id===staffSelectedClientId?'active':'')+'" draggable="true" data-staff-client-id="'+escHtml(c.id)+'" onclick="openStaffWork(&quot;'+c.id+'&quot;)" ondragstart="startStaffClientDrag(event,&quot;'+c.id+'&quot;)" ondragover="overStaffClientDrag(event,&quot;'+c.id+'&quot;)" ondragleave="leaveStaffClientDrag(event)" ondrop="dropStaffClientDrag(event,&quot;'+c.id+'&quot;)" ondragend="endStaffClientDrag(event)">'+
+      (dday?'<div class="staff-dday">'+esc(dday)+'</div>':'')+
       '<div class="staff-donut" style="--pct:'+p.pct+'"><span>'+p.pct+'%</span></div>'+
       '<div><div class="staff-card-name">'+esc(c.name||'이름 없음')+'</div>'+
       '<div class="staff-card-meta">'+(c.assignee?'담당자 '+esc(c.assignee)+' · ':'')+'목표 '+p.target+'개</div>'+
@@ -3147,7 +3171,7 @@ function addStaffClient(){
   var target=parseInt(document.getElementById('staff-new-target').value,10)||0;
   if(!name){alert('클라이언트명을 입력해 주세요.');return;}
   var data=normalizeStaffData();
-  var obj={id:'sc'+Date.now(),name:name,targetCount:target,assignee:'',memo:'',customCols:[],monthlyArchives:[],items:[]};
+  var obj={id:'sc'+Date.now(),name:name,targetCount:target,assignee:'',memo:'',customCols:[],monthlyDeadlines:{},monthlyArchives:[],items:[]};
   for(var i=0;i<Math.max(target,1);i++)obj.items.push(staffBlankItem());
   data.push(obj);
   staffSelectedClientId=obj.id;
@@ -3162,6 +3186,8 @@ function renderStaffDetail(){
   var el=document.getElementById('staff-detail');
   if(!c){el.innerHTML='<div class="staff-empty">클라이언트를 선택하세요.</div>';return;}
   var p=staffProgress(c);
+  var currentMonth=staffCurrentMonthKey();
+  var currentDeadline=(c.monthlyDeadlines&&c.monthlyDeadlines[currentMonth])||'';
   var cols=[];
   var colHeads='';
   var rows=(c.items||[]).map(function(row,idx){
@@ -3181,6 +3207,7 @@ function renderStaffDetail(){
     '<div class="staff-detail-head"><div><div class="staff-detail-title">'+esc(c.name)+'</div><div class="staff-detail-sub">URL 입력률 기준으로 진행률이 계산됩니다.</div></div><button class="btn btn-sm" onclick="closeStaffModal()">닫기</button></div>'+
     '<div class="staff-stat-grid"><div class="staff-stat"><div class="staff-stat-k">Progress</div><div class="staff-stat-v">'+p.pct+'%</div></div><div class="staff-stat"><div class="staff-stat-k">URL</div><div class="staff-stat-v">'+p.filled+' / '+p.target+'</div></div></div>'+
     '<div class="row3"><div class="fg"><label>클라이언트명</label><input type="text" value="'+escHtml(c.name||'')+'" oninput="updateStaffClient(&quot;'+c.id+'&quot;,&quot;name&quot;,this.value)" onblur="renderStaffBoard();renderStaffDetail()"/></div><div class="fg"><label>목표 블로그 수</label><input type="text" value="'+escHtml(c.targetCount||'')+'" oninput="updateStaffClient(&quot;'+c.id+'&quot;,&quot;targetCount&quot;,this.value)" onblur="renderStaffBoard();renderStaffDetail()"/></div><div class="fg"><label>담당자</label><input type="text" value="'+escHtml(c.assignee||'')+'" placeholder="예: 한시원" oninput="updateStaffClient(&quot;'+c.id+'&quot;,&quot;assignee&quot;,this.value)" onblur="renderStaffBoard();renderStaffDetail()"/></div></div>'+
+    '<div class="fg" style="margin-bottom:12px"><label>'+staffMonthLabel(currentMonth)+' 마감일</label><input type="text" value="'+escHtml(currentDeadline)+'" placeholder="예: 06월 25일" oninput="updateStaffDeadline(&quot;'+c.id+'&quot;,this.value)" onblur="renderStaffBoard();renderStaffDetail()"/></div>'+
     archiveHtml+
     '<div class="btn-row"><button class="btn btn-accent" onclick="addStaffRows(&quot;'+c.id+'&quot;,1)">행 추가</button><button class="btn" onclick="addStaffRows(&quot;'+c.id+'&quot;,5)">5행 추가</button><button class="btn" onclick="sortStaffClientByDate(&quot;'+c.id+'&quot;)">날짜순 정렬</button><button class="btn" onclick="exportStaffCsv(&quot;'+c.id+'&quot;)">CSV 내보내기</button></div>'+
     '<div class="staff-table-wrap"><table class="staff-table"><thead><tr><th>No</th><th>발행일자</th><th>주제/키워드</th><th>URL</th><th>실제 검색량</th><th>노출 순위</th>'+colHeads+'</tr></thead><tbody>'+(rows||'<tr><td colspan="'+(6+cols.length)+'"><div class="empty">행이 없습니다.</div></td></tr>')+'</tbody></table></div>';
@@ -3189,6 +3216,13 @@ function updateStaffClient(clientId,key,value){
   var data=normalizeStaffData();
   var c=data.find(function(x){return x.id===clientId;});if(!c)return;
   c[key]=key==='targetCount'?(parseInt(value,10)||0):value;
+  saveStaffData(data);
+}
+function updateStaffDeadline(clientId,value){
+  var data=normalizeStaffData();
+  var c=data.find(function(x){return x.id===clientId;});if(!c)return;
+  if(!c.monthlyDeadlines||Array.isArray(c.monthlyDeadlines))c.monthlyDeadlines={};
+  c.monthlyDeadlines[staffCurrentMonthKey()]=value;
   saveStaffData(data);
 }
 function renderStaffArchivePanel(c){
@@ -3208,12 +3242,15 @@ function saveStaffCurrentMonth(clientId){
   var c=data.find(function(x){return x.id===clientId;});if(!c)return;
   if(!Array.isArray(c.monthlyArchives))c.monthlyArchives=[];
   var monthKey=staffCurrentMonthKey();
+  var deadline=(c.monthlyDeadlines&&c.monthlyDeadlines[monthKey])||'';
   var snapshot={
     monthKey:monthKey,
     monthLabel:staffMonthLabel(monthKey),
     savedAt:staffCurrentSavedAt(),
     targetCount:Number(c.targetCount)||0,
     assignee:c.assignee||'',
+    deadline:deadline,
+    ddayLabel:staffDdayLabel(deadline),
     customCols:[],
     items:cloneStaffRows(sortStaffItemsByPublishDate(c.items||[]))
   };
@@ -3245,7 +3282,7 @@ function renderStaffArchiveTable(archive){
   var filled=(archive.items||[]).filter(function(row){return String(row.url||'').trim();}).length;
   var target=Number(archive.targetCount)||0;
   var pct=target?Math.min(100,Math.round(filled/target*100)):0;
-  return '<div class="staff-archive-meta"><b>'+esc(archive.monthLabel||staffMonthLabel(archive.monthKey))+'</b> · '+(archive.assignee?'담당자 '+esc(archive.assignee)+' · ':'')+'저장 시각 '+esc(archive.savedAt||'')+' · URL '+filled+' / '+target+' · '+pct+'%</div>'+
+  return '<div class="staff-archive-meta"><b>'+esc(archive.monthLabel||staffMonthLabel(archive.monthKey))+'</b> · '+(archive.assignee?'담당자 '+esc(archive.assignee)+' · ':'')+(archive.ddayLabel?'마감 '+esc(archive.ddayLabel)+' · ':'')+'저장 시각 '+esc(archive.savedAt||'')+' · URL '+filled+' / '+target+' · '+pct+'%</div>'+
     '<div class="staff-table-wrap"><table class="staff-table staff-readonly-table"><thead><tr><th>No</th><th>발행일자</th><th>주제/키워드</th><th>URL</th><th>실제 검색량</th><th>노출 순위</th>'+colHeads+'</tr></thead><tbody>'+(rows||'<tr><td colspan="'+(6+cols.length)+'"><div class="empty">저장된 행이 없습니다.</div></td></tr>')+'</tbody></table></div>';
 }
 function updateStaffRow(clientId,rowId,key,value){
