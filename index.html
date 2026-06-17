@@ -582,11 +582,11 @@
         <div class="card-title">02 환자/매출 흐름</div>
         <p class="survey-help">정확한 키워드 우선순위를 잡기 위한 주관식 문항입니다. 대략적인 수치여도 괜찮습니다.</p>
         <div class="survey-question-grid">
-          <div class="fg"><label>월 초진 환자 수</label><input type="text" id="sv-new-patients" placeholder="예: 월 80명"/></div>
-          <div class="fg"><label>초진 대비 재진율</label><input type="text" id="sv-revisit" placeholder="예: 약 60%"/></div>
-          <div class="fg"><label>비급여 비중</label><input type="text" id="sv-noncovered" placeholder="예: 약 40%"/></div>
-          <div class="fg"><label>매출 상위 3개 진료</label><input type="text" id="sv-top-sales" placeholder="예: 도수치료, 주사치료, 다이어트"/></div>
-          <div class="fg wide"><label>수익 구조상 특히 중요한 상품/시술</label><textarea id="sv-revenue-note" placeholder="객단가가 높거나, 재진/패키지로 이어지거나, 앞으로 더 중요해질 상품/시술을 적어주세요."></textarea></div>
+          <div class="fg"><label>최근 한 달 신규 문의/초진 흐름</label><input type="text" id="sv-new-patients" placeholder="예: 정확한 수치보다 많음/보통/적음, 평일·주말 차이 등"/></div>
+          <div class="fg"><label>재방문·관리로 이어지는 흐름</label><input type="text" id="sv-revisit" placeholder="예: 검사 후 치료 연결, 패키지/관리 재방문, 단회성 내원 등"/></div>
+          <div class="fg"><label>비급여·상담 비중 체감</label><input type="text" id="sv-noncovered" placeholder="예: 상담은 많지만 전환이 낮음, 비급여 문의를 늘리고 싶음"/></div>
+          <div class="fg"><label>현재 문의가 많은 진료/시술</label><input type="text" id="sv-top-sales" placeholder="예: 통증 진료, 피부 상담, 임플란트 등"/></div>
+          <div class="fg wide"><label>앞으로 더 중요해질 진료/시술</label><textarea id="sv-revenue-note" placeholder="매출, 재방문, 병원 방향성상 더 키우고 싶은 항목을 적어주세요."></textarea></div>
         </div>
       </div>
 
@@ -906,7 +906,7 @@
               <option value="통증의학과">통증의학과/마취통증</option><option value="재활의학과">재활의학과</option>
               <option value="요양병원">요양병원</option>
               <option value="치과">치과</option>
-              <option value="피부과">피부과/미용의원</option>
+              <option value="피부과">피부과</option>
               <option value="성형외과">성형외과</option>
               <option value="내과">내과/가정의학과</option>
               <option value="이비인후과">이비인후과</option>
@@ -2109,65 +2109,95 @@ var surveySubmitted=false;
 var surveyIntroSeen=false;
 var surveyFieldMap=[
   ['병원명 / 상호','sv-clinic'],['과목 / 병원 유형','sv-type'],['주소지 / 주요 진료 지역','sv-region'],
-  ['월 초진 환자 수','sv-new-patients'],['초진 대비 재진율','sv-revisit'],['비급여 비중','sv-noncovered'],['매출 상위 3개 진료','sv-top-sales'],['수익 구조상 중요한 상품/시술','sv-revenue-note'],
+  ['최근 한 달 신규 문의/초진 흐름','sv-new-patients'],['재방문·관리로 이어지는 흐름','sv-revisit'],['비급여·상담 비중 체감','sv-noncovered'],['현재 문의가 많은 진료/시술','sv-top-sales'],['앞으로 더 중요해질 진료/시술','sv-revenue-note'],
   ['앞으로 더 키우고 싶은 상품/시술','sv-grow-care'],['강조하지 않았으면 하는 상품/시술','sv-reduce-care'],['참고하거나 의식하고 있는 인근 병원','sv-competitor'],['현재 가장 늘리고 싶은 문의 유형','sv-inquiry-goal'],['시술/진료 설명 시 조심할 점','sv-caution'],
   ['현재 운영 채널','sv-channels'],['현재 블로그에서 가장 아쉬운 점','sv-blog-problem'],['반응이 좋았던 키워드','sv-good-kw'],['반응이 약했던 키워드','sv-weak-kw'],['블로그에서 꼭 전달되었으면 하는 인상','sv-tone'],
   ['3개월 내 늘리고 싶은 환자군','sv-target'],['가장 시급한 문제','sv-urgent'],['피하고 싶은 마케팅/표현','sv-avoid'],['선호하는 콘텐츠 톤','sv-content-style'],['마지막으로 꼭 전하고 싶은 말','sv-final-note']
 ];
 var SURVEY_DEPT_DEFAULT={
-  preview:[
-    ['대표 진료','도수치료, 리프팅, 임플란트처럼 실제로 늘리고 싶은 진료를 적습니다.'],
-    ['강점','장비, 원장님 설명 방식, 치료 철학, 환자 반응을 적습니다.'],
-    ['주의사항','과장되면 안 되는 표현, 피하고 싶은 주제, 광고법상 조심할 부분을 적습니다.']
-  ],
-  labels:{},
-  placeholders:{}
+  labels:{
+    'sv-new-patients':'최근 한 달 신규 문의/초진 흐름',
+    'sv-revisit':'재방문·관리로 이어지는 흐름',
+    'sv-noncovered':'비급여·상담 비중 체감',
+    'sv-top-sales':'현재 문의가 많은 진료/시술',
+    'sv-revenue-note':'앞으로 더 중요해질 진료/시술',
+    'sv-grow-care':'앞으로 더 키우고 싶은 진료/시술',
+    'sv-reduce-care':'강조하지 않았으면 하는 진료/시술',
+    'sv-caution':'진료/시술 설명 시 조심할 점',
+    'sv-target':'3개월 내 늘리고 싶은 환자군'
+  },
+  placeholders:{
+    'sv-new-patients':'예: 정확한 수치보다 많음/보통/적음, 평일·주말 차이 등',
+    'sv-revisit':'예: 검사 후 치료 연결, 패키지/관리 재방문, 단회성 내원 등',
+    'sv-noncovered':'예: 상담은 많지만 전환이 낮음, 비급여 문의를 늘리고 싶음',
+    'sv-top-sales':'예: 통증 진료, 피부 상담, 임플란트 등',
+    'sv-revenue-note':'매출, 재방문, 병원 방향성상 더 키우고 싶은 항목을 적어주세요.',
+    'sv-grow-care':'예: 더 알리고 싶은 대표 진료/시술',
+    'sv-reduce-care':'예: 가격 이벤트, 단순 물리치료, 과도한 패키지 강조',
+    'sv-good-kw':'예: 지역명 + 대표 진료명',
+    'sv-weak-kw':'예: 문의는 적거나 전환이 낮았던 키워드',
+    'sv-tone':'예: 전문적이지만 어렵지 않은 병원, 설명을 잘해주는 병원',
+    'sv-target':'예: 앞으로 더 만나고 싶은 환자군',
+    'sv-avoid':'예: 과장 표현, 가격 중심 광고, 전후 비교 과장'
+  }
 };
 var SURVEY_DEPT_PRESETS={
   '한의원':{
-    preview:[['대표 진료','추나, 약침, 다이어트 한약, 성장한약, 교통사고 치료'],['매출/재진','탕약·환약·추나·교통사고처럼 재진으로 이어지는 항목'],['주의사항','침/약침/한약 효능을 단정하지 않고 체질·상태별 접근으로 표현']],
-    labels:{'sv-main-care':'대표 진료/한방 상품 3개','sv-top-sales':'매출 상위 진료/한방 상품','sv-grow-care':'앞으로 더 키우고 싶은 한방 진료','sv-caution':'한방 진료 설명 시 조심할 점'},
-    placeholders:{'sv-main-care':'예: 추나, 약침, 다이어트 한약','sv-revenue-note':'예: 한약 처방, 교통사고 재진, 체형교정 프로그램','sv-grow-care':'예: 성장한약, 산후보약, 다이어트 한약','sv-target':'예: 30대 산후보약 환자, 교통사고 후유증 환자'}
+    labels:{'sv-new-patients':'최근 한 달 신규 상담/초진 흐름','sv-revisit':'한약·추나·약침 재방문 흐름','sv-noncovered':'한방 비급여 상담 비중 체감','sv-top-sales':'현재 문의가 많은 한방 진료','sv-revenue-note':'앞으로 더 중요해질 한방 진료/상품','sv-grow-care':'앞으로 더 키우고 싶은 한방 진료','sv-caution':'한방 진료 설명 시 조심할 점','sv-target':'3개월 내 늘리고 싶은 환자군'},
+    placeholders:{'sv-new-patients':'예: 교통사고 초진이 많음, 다이어트 한약 상담이 줄었음','sv-revisit':'예: 탕약 재처방, 추나 반복 내원, 교통사고 치료 지속 여부','sv-noncovered':'예: 한약 상담은 많지만 결제 전환이 낮음','sv-top-sales':'예: 추나, 약침, 다이어트 한약, 교통사고 치료','sv-revenue-note':'예: 성장한약, 산후보약, 다이어트 한약, 체형교정','sv-grow-care':'예: 성장한약, 산후보약, 다이어트 한약','sv-good-kw':'예: 동탄 추나요법, 교통사고 한의원','sv-target':'예: 30대 산후보약 환자, 교통사고 후유증 환자','sv-tone':'예: 체질과 생활습관까지 함께 보는 한의원'}
   },
   '신경외과':{
-    preview:[['대표 진료','허리디스크, 목디스크, 신경차단술, 도수치료'],['환자 흐름','통증 초진, MRI/검사, 주사치료, 재활 연결 구조'],['주의사항','수술/비수술, 완치·즉효 표현을 피하고 감별 진단 중심']],
-    labels:{'sv-main-care':'대표 질환/치료 3개','sv-top-sales':'매출 상위 검사/치료','sv-grow-care':'앞으로 더 키우고 싶은 비수술 치료','sv-caution':'통증·신경 치료 설명 시 조심할 점'},
-    placeholders:{'sv-main-care':'예: 허리디스크, 목디스크, 신경차단술','sv-revenue-note':'예: 신경차단술, 도수치료, MRI 연계 진료','sv-grow-care':'예: 프롤로주사, 신경차단술, 재활치료','sv-good-kw':'예: 동탄 허리디스크, 목디스크 신경외과'}
+    labels:{'sv-new-patients':'최근 한 달 통증 초진/검사 문의 흐름','sv-revisit':'검사 후 주사·재활 연결 흐름','sv-noncovered':'비급여 주사·도수 상담 비중 체감','sv-top-sales':'현재 문의가 많은 통증 질환/치료','sv-revenue-note':'앞으로 더 중요해질 비수술 치료','sv-grow-care':'앞으로 더 키우고 싶은 비수술 치료','sv-caution':'통증·신경 치료 설명 시 조심할 점','sv-target':'3개월 내 늘리고 싶은 통증 환자군'},
+    placeholders:{'sv-new-patients':'예: 허리/목 통증 초진 문의가 많음, MRI 문의가 늘었음','sv-revisit':'예: 검사 후 신경차단술, 도수치료, 재활치료로 연결','sv-noncovered':'예: 주사치료 상담은 많지만 도수 전환이 약함','sv-top-sales':'예: 허리디스크, 목디스크, 신경차단술','sv-revenue-note':'예: 신경차단술, 도수치료, MRI 연계 진료','sv-grow-care':'예: 프롤로주사, 신경차단술, 재활치료','sv-good-kw':'예: 동탄 허리디스크, 목디스크 신경외과','sv-target':'예: 40대 허리통증 환자, 목디스크 의심 환자','sv-tone':'예: 수술부터 권하지 않고 원인을 차분히 확인하는 병원'}
   },
   '정형외과':{
-    preview:[['대표 진료','어깨·무릎·손목 통증, 체외충격파, 도수치료'],['환자 흐름','통증 부위별 초진, 영상검사, 주사/재활/운동치료'],['주의사항','수술 필요 여부를 단정하지 않고 원인 감별 중심']],
-    labels:{'sv-main-care':'대표 부위/치료 3개','sv-top-sales':'매출 상위 부위/치료','sv-grow-care':'앞으로 더 키우고 싶은 치료','sv-caution':'정형외과 진료 설명 시 조심할 점'},
-    placeholders:{'sv-main-care':'예: 무릎통증, 어깨통증, 체외충격파','sv-revenue-note':'예: 도수치료, 체외충격파, 관절 주사','sv-target':'예: 50대 무릎통증 환자, 운동 손상 환자'}
+    labels:{'sv-new-patients':'최근 한 달 부위별 통증 초진 흐름','sv-revisit':'검사 후 주사·재활·운동치료 연결 흐름','sv-noncovered':'도수·체외충격파 상담 비중 체감','sv-top-sales':'현재 문의가 많은 부위/치료','sv-revenue-note':'앞으로 더 중요해질 정형외과 치료','sv-grow-care':'앞으로 더 키우고 싶은 치료','sv-caution':'정형외과 진료 설명 시 조심할 점','sv-target':'3개월 내 늘리고 싶은 통증 환자군'},
+    placeholders:{'sv-new-patients':'예: 무릎·어깨 통증 문의가 많음, 스포츠 손상 문의가 늘었음','sv-revisit':'예: X-ray 후 주사치료, 체외충격파, 도수치료로 연결','sv-noncovered':'예: 도수치료 문의는 많지만 가격 비교가 많음','sv-top-sales':'예: 무릎통증, 어깨통증, 체외충격파','sv-revenue-note':'예: 도수치료, 체외충격파, 관절 주사','sv-grow-care':'예: 체외충격파, 초음파 유도 주사, 도수치료','sv-good-kw':'예: 동탄 어깨통증 정형외과','sv-target':'예: 50대 무릎통증 환자, 운동 손상 환자'}
   },
   '재활의학과':{
-    preview:[['대표 진료','도수치료, 운동치료, 자세교정, 수술 후 재활'],['차별점','평가·운동처방·재활 프로토콜의 구체성'],['주의사항','통증 완화보다 기능 회복과 단계적 재활 중심']],
-    labels:{'sv-main-care':'대표 재활 프로그램 3개','sv-top-sales':'매출 상위 재활/치료 프로그램','sv-grow-care':'앞으로 더 키우고 싶은 재활 프로그램','sv-caution':'재활 치료 설명 시 조심할 점'},
-    placeholders:{'sv-main-care':'예: 도수치료, 운동치료, 수술 후 재활','sv-revenue-note':'예: 도수+운동치료 패키지, 체형교정 프로그램','sv-target':'예: 수술 후 재활 환자, 만성 목허리 통증 환자'}
+    labels:{'sv-new-patients':'최근 한 달 재활 상담/초진 흐름','sv-revisit':'운동치료·도수치료 지속 내원 흐름','sv-noncovered':'재활 프로그램 상담 비중 체감','sv-top-sales':'현재 문의가 많은 재활 프로그램','sv-revenue-note':'앞으로 더 중요해질 재활 프로그램','sv-grow-care':'앞으로 더 키우고 싶은 재활 프로그램','sv-caution':'재활 치료 설명 시 조심할 점','sv-target':'3개월 내 늘리고 싶은 재활 환자군'},
+    placeholders:{'sv-new-patients':'예: 수술 후 재활, 자세교정, 만성 통증 상담이 많음','sv-revisit':'예: 평가 후 도수+운동치료를 반복 진행','sv-noncovered':'예: 프로그램 설명은 필요하지만 가격 문의가 많음','sv-top-sales':'예: 도수치료, 운동치료, 수술 후 재활','sv-revenue-note':'예: 도수+운동치료 패키지, 체형교정 프로그램','sv-grow-care':'예: 수술 후 재활, 자세교정, 운동치료','sv-target':'예: 수술 후 재활 환자, 만성 목허리 통증 환자'}
   },
   '통증의학과':{
-    preview:[['대표 진료','신경차단술, 프롤로, 대상포진 후 신경통, 허리통증'],['환자 흐름','급성 통증 초진, 주사치료, 재발 관리'],['주의사항','통증 원인 감별과 치료 선택 기준 중심']],
-    labels:{'sv-main-care':'대표 통증 질환/시술 3개','sv-top-sales':'매출 상위 통증 시술','sv-grow-care':'앞으로 더 키우고 싶은 통증 시술','sv-caution':'통증 시술 설명 시 조심할 점'},
-    placeholders:{'sv-main-care':'예: 신경차단술, 프롤로주사, 대상포진통증','sv-revenue-note':'예: 신경차단술, 초음파 유도 주사, 만성통증 관리','sv-good-kw':'예: 동탄 통증의학과, 허리통증 주사'}
+    labels:{'sv-new-patients':'최근 한 달 급성/만성 통증 초진 흐름','sv-revisit':'주사치료 후 재내원·관리 흐름','sv-noncovered':'비급여 통증 시술 상담 비중 체감','sv-top-sales':'현재 문의가 많은 통증 시술','sv-revenue-note':'앞으로 더 중요해질 통증 시술','sv-grow-care':'앞으로 더 키우고 싶은 통증 시술','sv-caution':'통증 시술 설명 시 조심할 점','sv-target':'3개월 내 늘리고 싶은 통증 환자군'},
+    placeholders:{'sv-new-patients':'예: 허리통증, 어깨통증, 대상포진 후 통증 문의가 많음','sv-revisit':'예: 신경차단술 후 경과 확인, 프롤로 반복 치료','sv-noncovered':'예: 초음파 유도 주사 상담을 늘리고 싶음','sv-top-sales':'예: 신경차단술, 프롤로주사, 대상포진통증','sv-revenue-note':'예: 신경차단술, 초음파 유도 주사, 만성통증 관리','sv-grow-care':'예: 프롤로주사, 신경차단술, 만성통증 관리','sv-good-kw':'예: 동탄 통증의학과, 허리통증 주사'}
   },
-  '피부과/미용의원':{
-    preview:[['대표 시술','여드름, 리프팅, 색소, 보톡스, 제모'],['전환 포인트','장비명, 시술 경험, 피부 타입별 상담'],['주의사항','전후사진·효과 보장·가격 중심 과장 표현 주의']],
-    labels:{'sv-main-care':'대표 피부/미용 시술 3개','sv-top-sales':'매출 상위 피부/미용 시술','sv-grow-care':'앞으로 더 키우고 싶은 시술','sv-caution':'피부·미용 시술 설명 시 조심할 점'},
-    placeholders:{'sv-main-care':'예: 여드름, 인모드, 색소레이저','sv-revenue-note':'예: 리프팅, 색소 패키지, 여드름 관리','sv-target':'예: 20대 여드름 환자, 40대 리프팅 상담 고객','sv-avoid':'예: 전후사진 과장, 최저가 이벤트 중심'}
+  '피부과':{
+    labels:{'sv-new-patients':'최근 한 달 피부/미용 상담 흐름','sv-revisit':'관리·패키지 재방문 흐름','sv-noncovered':'시술 상담 전환 체감','sv-top-sales':'현재 문의가 많은 피부/미용 시술','sv-revenue-note':'앞으로 더 중요해질 피부/미용 시술','sv-grow-care':'앞으로 더 키우고 싶은 시술','sv-caution':'피부·미용 시술 설명 시 조심할 점','sv-target':'3개월 내 늘리고 싶은 상담 고객군'},
+    placeholders:{'sv-new-patients':'예: 여드름 상담이 많음, 리프팅 문의가 늘었음','sv-revisit':'예: 색소 패키지, 여드름 관리, 리프팅 후 관리','sv-noncovered':'예: 문의는 많지만 가격 비교가 많음','sv-top-sales':'예: 여드름, 리프팅, 색소, 보톡스, 제모','sv-revenue-note':'예: 리프팅, 색소 패키지, 여드름 관리','sv-grow-care':'예: 인모드, 색소레이저, 여드름 흉터','sv-target':'예: 20대 여드름 환자, 40대 리프팅 상담 고객','sv-avoid':'예: 전후사진 과장, 최저가 이벤트 중심'}
   },
   '성형외과':{
-    preview:[['대표 수술/시술','눈성형, 코성형, 리프팅, 지방이식'],['상담 포인트','원장님 미감, 안전, 재수술/자연스러움 니즈'],['주의사항','결과 보장·비교 과장·전후사진 의존 주의']],
-    labels:{'sv-main-care':'대표 성형 수술/시술 3개','sv-top-sales':'매출 상위 수술/시술','sv-grow-care':'앞으로 더 키우고 싶은 수술/시술','sv-caution':'성형 콘텐츠 설명 시 조심할 점'},
-    placeholders:{'sv-main-care':'예: 눈성형, 코성형, 리프팅','sv-revenue-note':'예: 눈 재수술, 코성형, 안면거상','sv-target':'예: 첫 눈성형 상담, 재수술 고민 환자'}
+    labels:{'sv-new-patients':'최근 한 달 성형 상담 흐름','sv-revisit':'상담 후 수술 결정/재상담 흐름','sv-noncovered':'수술·시술 상담 전환 체감','sv-top-sales':'현재 문의가 많은 수술/시술','sv-revenue-note':'앞으로 더 중요해질 수술/시술','sv-grow-care':'앞으로 더 키우고 싶은 수술/시술','sv-caution':'성형 콘텐츠 설명 시 조심할 점','sv-target':'3개월 내 늘리고 싶은 상담 고객군'},
+    placeholders:{'sv-new-patients':'예: 눈성형 상담이 많음, 코성형 재상담이 늘었음','sv-revisit':'예: 첫 상담 후 재상담, 수술 일정 확정, 사후관리','sv-noncovered':'예: 상담은 많지만 결정까지 시간이 김','sv-top-sales':'예: 눈성형, 코성형, 리프팅','sv-revenue-note':'예: 눈 재수술, 코성형, 안면거상','sv-grow-care':'예: 눈 재수술, 자연스러운 코성형, 리프팅','sv-target':'예: 첫 눈성형 상담, 재수술 고민 환자','sv-avoid':'예: 결과 보장, 전후사진 과장, 외모 콤플렉스 자극'}
   },
   '치과':{
-    preview:[['대표 진료','임플란트, 교정, 충치치료, 심미보철'],['전환 포인트','검진-진단-치료계획, 비용 불안 해소'],['주의사항','통증 없음·평생 보장 같은 단정 표현 주의']],
-    labels:{'sv-main-care':'대표 치과 진료 3개','sv-top-sales':'매출 상위 치과 진료','sv-grow-care':'앞으로 더 키우고 싶은 치과 진료','sv-caution':'치과 진료 설명 시 조심할 점'},
-    placeholders:{'sv-main-care':'예: 임플란트, 치아교정, 심미보철','sv-revenue-note':'예: 임플란트, 교정 상담, 라미네이트','sv-target':'예: 50대 임플란트 환자, 투명교정 상담 고객'}
+    labels:{'sv-new-patients':'최근 한 달 치과 초진/상담 흐름','sv-revisit':'검진 후 치료계획·재내원 흐름','sv-noncovered':'임플란트·교정·심미 상담 비중 체감','sv-top-sales':'현재 문의가 많은 치과 진료','sv-revenue-note':'앞으로 더 중요해질 치과 진료','sv-grow-care':'앞으로 더 키우고 싶은 치과 진료','sv-caution':'치과 진료 설명 시 조심할 점','sv-target':'3개월 내 늘리고 싶은 치과 환자군'},
+    placeholders:{'sv-new-patients':'예: 임플란트 상담, 충치 치료, 교정 문의가 많음','sv-revisit':'예: 검진 후 치료계획 수립, 임플란트 상담 재방문','sv-noncovered':'예: 임플란트 상담은 많지만 비용 비교가 많음','sv-top-sales':'예: 임플란트, 교정, 충치치료, 심미보철','sv-revenue-note':'예: 임플란트, 교정 상담, 라미네이트','sv-grow-care':'예: 임플란트, 투명교정, 심미보철','sv-target':'예: 50대 임플란트 환자, 투명교정 상담 고객'}
+  },
+  '안과':{
+    labels:{'sv-new-patients':'최근 한 달 안과 초진/검사 문의 흐름','sv-revisit':'검사 후 치료·수술 상담 연결 흐름','sv-noncovered':'시력교정·렌즈·수술 상담 비중 체감','sv-top-sales':'현재 문의가 많은 안과 진료','sv-revenue-note':'앞으로 더 중요해질 안과 진료/검사','sv-grow-care':'앞으로 더 키우고 싶은 안과 진료','sv-caution':'안과 콘텐츠 설명 시 조심할 점','sv-target':'3개월 내 늘리고 싶은 안과 환자군'},
+    placeholders:{'sv-new-patients':'예: 안구건조증, 백내장 검사, 시력교정 상담이 많음','sv-revisit':'예: 검사 후 렌즈 처방, 백내장 수술 상담, 정기 검진','sv-noncovered':'예: 시력교정 상담은 많지만 결정까지 고민이 김','sv-top-sales':'예: 안구건조증, 백내장, 드림렌즈, 시력교정','sv-revenue-note':'예: 백내장 검사, 드림렌즈, 시력교정 상담','sv-grow-care':'예: 안구건조증 클리닉, 드림렌즈, 백내장 검사','sv-good-kw':'예: 강남 안구건조증, 동탄 드림렌즈','sv-target':'예: 어린이 근시 관리, 50대 백내장 검사'}
+  },
+  '산부인과':{
+    labels:{'sv-new-patients':'최근 한 달 여성 진료 초진/상담 흐름','sv-revisit':'검사 후 치료·관리 재방문 흐름','sv-noncovered':'검진·시술·관리 상담 비중 체감','sv-top-sales':'현재 문의가 많은 여성 진료','sv-revenue-note':'앞으로 더 중요해질 여성 진료/검진','sv-grow-care':'앞으로 더 키우고 싶은 여성 진료','sv-caution':'여성 진료 콘텐츠 설명 시 조심할 점','sv-target':'3개월 내 늘리고 싶은 여성 환자군'},
+    placeholders:{'sv-new-patients':'예: 질염, 생리불순, 피임 상담, 여성검진 문의가 많음','sv-revisit':'예: 검사 후 치료, 정기 검진, 시술 상담으로 연결','sv-noncovered':'예: 여성검진 상담을 늘리고 싶음','sv-top-sales':'예: 여성검진, 질염, 피임 상담, 갱년기 상담','sv-revenue-note':'예: 여성검진, HPV 검사, 피임 상담, 갱년기 관리','sv-grow-care':'예: 여성검진, 갱년기 클리닉, 웨딩검진','sv-good-kw':'예: 양천구 산부인과 여성검진','sv-target':'예: 20대 여성검진, 40대 갱년기 상담'}
+  },
+  '정신건강의학과':{
+    labels:{'sv-new-patients':'최근 한 달 상담/초진 문의 흐름','sv-revisit':'초진 후 치료 지속·재방문 흐름','sv-noncovered':'상담·검사 문의 비중 체감','sv-top-sales':'현재 문의가 많은 증상/진료','sv-revenue-note':'앞으로 더 중요해질 상담/검사 영역','sv-grow-care':'앞으로 더 키우고 싶은 진료 영역','sv-caution':'정신건강 콘텐츠 설명 시 조심할 점','sv-target':'3개월 내 늘리고 싶은 상담 환자군'},
+    placeholders:{'sv-new-patients':'예: 불안, 우울, 불면, ADHD 문의가 많음','sv-revisit':'예: 초진 후 약물 조절, 상담 지속, 검사 후 재방문','sv-noncovered':'예: 심리검사 문의가 있으나 비용 설명이 어려움','sv-top-sales':'예: 불안장애, 우울증, 불면증, ADHD 검사','sv-revenue-note':'예: ADHD 검사, 불면 클리닉, 직장인 스트레스 상담','sv-grow-care':'예: 성인 ADHD, 불면, 직장인 번아웃','sv-good-kw':'예: 강남 정신건강의학과 불면증','sv-target':'예: 직장인 불안·불면 상담, 성인 ADHD 상담','sv-avoid':'예: 낙인감을 주는 표현, 완치 단정, 자극적 사례'}
+  },
+  '내과':{
+    labels:{'sv-new-patients':'최근 한 달 내과 초진/검사 문의 흐름','sv-revisit':'검사 후 관리·재방문 흐름','sv-noncovered':'검진·수액·예방접종 상담 비중 체감','sv-top-sales':'현재 문의가 많은 내과 진료/검사','sv-revenue-note':'앞으로 더 중요해질 내과 진료/검사','sv-grow-care':'앞으로 더 키우고 싶은 내과 진료','sv-caution':'내과 콘텐츠 설명 시 조심할 점','sv-target':'3개월 내 늘리고 싶은 내과 환자군'},
+    placeholders:{'sv-new-patients':'예: 감기보다 건강검진, 수액, 만성질환 문의를 늘리고 싶음','sv-revisit':'예: 검사 결과 상담, 만성질환 관리, 예방접종 재방문','sv-noncovered':'예: 수액·검진 문의는 있지만 목적 설명이 필요함','sv-top-sales':'예: 건강검진, 위내시경, 수액치료, 예방접종','sv-revenue-note':'예: 건강검진, 내시경, 만성질환 관리, 영양수액','sv-grow-care':'예: 건강검진, 수면내시경, 비만관리','sv-good-kw':'예: 동탄 건강검진 내과, 수면내시경','sv-target':'예: 40대 건강검진, 만성질환 관리 환자'}
+  },
+  '가정의학과':{
+    labels:{'sv-new-patients':'최근 한 달 생활질환/검진 문의 흐름','sv-revisit':'검진 후 관리·재방문 흐름','sv-noncovered':'비만·수액·예방 상담 비중 체감','sv-top-sales':'현재 문의가 많은 진료/관리','sv-revenue-note':'앞으로 더 중요해질 관리 프로그램','sv-grow-care':'앞으로 더 키우고 싶은 진료/관리','sv-caution':'가정의학과 콘텐츠 설명 시 조심할 점','sv-target':'3개월 내 늘리고 싶은 환자군'},
+    placeholders:{'sv-new-patients':'예: 비만관리, 수액, 예방접종, 건강상담 문의가 많음','sv-revisit':'예: 검사 후 생활습관 관리, 체중 관리, 만성질환 추적','sv-noncovered':'예: 비만관리 상담은 많지만 지속 관리 전환이 약함','sv-top-sales':'예: 비만관리, 수액치료, 예방접종, 건강검진','sv-revenue-note':'예: 비만관리, 영양수액, 만성질환 관리','sv-grow-care':'예: 비만클리닉, 영양수액, 건강검진','sv-good-kw':'예: 동탄 가정의학과 비만관리','sv-target':'예: 체중관리 희망 환자, 직장인 건강관리'}
   }
 };
 ['한방병원'].forEach(function(k){SURVEY_DEPT_PRESETS[k]=SURVEY_DEPT_PRESETS['한의원'];});
-['피부과'].forEach(function(k){SURVEY_DEPT_PRESETS[k]=SURVEY_DEPT_PRESETS['피부과/미용의원'];});
-['산부인과','여성의원','안과','정신건강의학과','내과','가정의학과','기타'].forEach(function(k){SURVEY_DEPT_PRESETS[k]=SURVEY_DEPT_DEFAULT;});
+['여성의원'].forEach(function(k){SURVEY_DEPT_PRESETS[k]=SURVEY_DEPT_PRESETS['산부인과'];});
+['기타'].forEach(function(k){SURVEY_DEPT_PRESETS[k]=SURVEY_DEPT_DEFAULT;});
 var SURVEY_BASE_UI=null;
 function rememberSurveyBaseUi(){
   if(SURVEY_BASE_UI)return;
