@@ -3336,7 +3336,7 @@ function renderRgEditor(){
     return '<div class="rg-editor"><div class="rg-editor-head"><input type="text" placeholder="지명 목록 (쉼표 구분, 예: 평택,비전동,고덕)" value="'+escHtml(g.places)+'" oninput="rgGroups['+i+'].places=this.value"/><button class="btn btn-sm btn-danger" onclick="removeRgGroup('+i+')">삭제</button></div><div style="font-size:11px;color:var(--text3);margin-bottom:6px">이 지역에서 뽑을 카테고리</div><div class="cat-checks">'+cats+'</div></div>';
   }).join('');
 }
-function escHtml(s){return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;');}
+function escHtml(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;');}
 function addRgGroup(){rgGroups.push({places:'',cats:['통증']});renderRgEditor();}
 function removeRgGroup(i){rgGroups.splice(i,1);renderRgEditor();}
 function toggleCat(i,cat){var idx=rgGroups[i].cats.indexOf(cat);if(idx>=0)rgGroups[i].cats.splice(idx,1);else rgGroups[i].cats.push(cat);}
