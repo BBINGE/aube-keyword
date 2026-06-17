@@ -310,6 +310,46 @@
   .brief-example-tabs{display:flex;gap:5px;flex-wrap:wrap;}
   .brief-example-tab{border:1px solid var(--border);background:#fff;color:var(--text2);border-radius:999px;padding:4px 9px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;}
   .brief-example-tab.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+  /* ===== 직원용 작업 보드 ===== */
+  #page-staff{max-width:1180px;}
+  .staff-toolbar{display:grid;grid-template-columns:1.2fr .7fr auto auto;gap:10px;align-items:end;margin-bottom:14px;}
+  .staff-board{display:grid;grid-template-columns:320px minmax(0,1fr);gap:16px;align-items:start;}
+  .staff-client-panel{position:sticky;top:74px;display:flex;flex-direction:column;gap:10px;}
+  .staff-client-card{display:grid;grid-template-columns:68px 1fr;gap:13px;align-items:center;background:linear-gradient(180deg,#fff,#f8fbff);border:1px solid var(--border);border-radius:var(--radius);padding:13px;cursor:pointer;transition:transform .14s,border .14s,box-shadow .14s;}
+  .staff-client-card:hover{transform:translateY(-1px);border-color:var(--accent-border);box-shadow:0 14px 30px rgba(28,45,70,.08);}
+  .staff-client-card.active{border-color:var(--accent);background:var(--accent-bg);}
+  .staff-donut{--pct:0;position:relative;width:64px;height:64px;border-radius:50%;background:conic-gradient(var(--accent) calc(var(--pct)*1%),#e8eef7 0);display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(49,130,246,.08);}
+  .staff-donut::after{content:"";position:absolute;width:44px;height:44px;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px var(--border);}
+  .staff-donut span{position:relative;z-index:1;font-size:12px;font-weight:800;color:var(--accent);}
+  .staff-card-name{font-size:14px;font-weight:750;color:var(--text);line-height:1.35;margin-bottom:4px;}
+  .staff-card-meta{font-size:11px;color:var(--text3);line-height:1.5;}
+  .staff-card-count{font-size:12px;color:var(--text2);font-weight:650;margin-top:6px;}
+  .staff-detail-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px;}
+  .staff-detail-title{font-size:22px;font-weight:800;color:var(--text);line-height:1.35;}
+  .staff-detail-sub{font-size:12px;color:var(--text3);margin-top:4px;}
+  .staff-stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+  .staff-stat{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;}
+  .staff-stat-k{font-size:10px;color:var(--text3);font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+  .staff-stat-v{font-size:18px;font-weight:800;color:var(--text);margin-top:2px;}
+  .staff-table-wrap{overflow:auto;border:1px solid var(--border);border-radius:var(--radius);background:#fff;}
+  .staff-table{width:100%;border-collapse:separate;border-spacing:0;min-width:860px;}
+  .staff-table th{position:sticky;top:0;background:#f8fbff;border-bottom:1px solid var(--border);font-size:11px;color:var(--text2);font-weight:750;text-align:left;padding:9px 8px;z-index:1;}
+  .staff-table td{border-bottom:1px solid var(--border);padding:7px 8px;vertical-align:top;background:#fff;}
+  .staff-table tr:last-child td{border-bottom:none;}
+  .staff-table input,.staff-table select,.staff-table textarea{font-size:12px;padding:7px 8px;background:#fff;}
+  .staff-table textarea{min-height:38px;}
+  .staff-url-cell{min-width:260px;}
+  .staff-num-cell{width:92px;}
+  .staff-status-cell{width:128px;}
+  .staff-action-cell{width:156px;white-space:nowrap;}
+  .staff-row-open td{background:#fbfffd;}
+  .staff-row-private td{background:#fff8f8;}
+  .staff-row-pending td{background:#fffdf4;}
+  .staff-note{font-size:11px;color:var(--text3);line-height:1.7;margin-top:8px;}
+  .staff-custom-cols{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+  .staff-col-chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--border);background:var(--surface2);border-radius:999px;padding:4px 8px;font-size:11px;color:var(--text2);}
+  .staff-col-chip button{border:none;background:none;color:var(--red);cursor:pointer;font-size:12px;line-height:1;}
+  .staff-empty{border:1px dashed var(--border2);border-radius:var(--radius);padding:34px;text-align:center;color:var(--text3);background:rgba(255,255,255,.72);}
   .brief-example{display:none;}
   .brief-example.active{display:block;}
   .brief-example-section{margin-bottom:12px;}
@@ -406,6 +446,10 @@
     .brief-standard{max-height:none;}
     .brief-panel-head{align-items:flex-start;flex-direction:column;}
     .brief-idea-drawer{top:88px;width:calc(100vw - 18px);}
+    .staff-toolbar{grid-template-columns:1fr 1fr;}
+    .staff-board{grid-template-columns:1fr;}
+    .staff-client-panel{position:static;}
+    .staff-stat-grid{grid-template-columns:1fr 1fr;}
   }
   /* v9: 디자인은 정적 토스톤 그라데이션 + 우측 하단 AUBE 로고만 유지 */
   body{background:
@@ -454,6 +498,7 @@
     <button class="nav-tab" onclick="goPage('survey',this)">🩺 콘텐츠 진단 설문</button>
     <button class="nav-tab" onclick="goPage('gen',this)">⛏️ 키워드 마이닝</button>
     <button class="nav-tab" onclick="goPage('brief',this)">📖 정론지</button>
+    <button class="nav-tab" onclick="goPage('staff',this)">📋 직원용</button>
     <button class="nav-tab" onclick="goPage('admin',this)">🔒 관리자</button>
   </div>
   <div class="nav-right">오늘의브랜딩 기획부 제작 및 문의<br><strong>박성호 기획팀장</strong></div>
@@ -611,7 +656,7 @@
 <div class="page active" id="page-staff-login">
   <div class="login-wrap">
     <div class="login-title">직원 로그인</div>
-    <div class="login-sub">키워드 마이닝과 정론지는 오늘의브랜딩 내부 직원 전용입니다.</div>
+    <div class="login-sub">키워드 마이닝, 정론지, 직원용 작업 보드는 오늘의브랜딩 내부 직원 전용입니다.</div>
     <div class="fg" style="margin-bottom:12px">
       <label>직원용 비밀번호</label>
       <input type="password" id="staff-pw" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter')checkStaffLogin()"/>
@@ -731,6 +776,49 @@
     </div>
     <div class="brief-idea-body" id="brief-idea-body"></div>
   </aside>
+</div>
+
+<!-- 직원용 작업 보드 -->
+<div class="page" id="page-staff">
+  <div class="page-header">
+    <div class="hero-shield" aria-hidden="true"></div>
+    <div class="hero-visual" aria-hidden="true">
+      <svg class="ecg-svg" viewBox="0 0 720 160" preserveAspectRatio="none">
+        <defs>
+          <filter id="ecgGlowStaff"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="ecgDotGlowStaff"><feGaussianBlur stdDeviation="3.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <path class="ecg-gridline" d="M46 34H180M548 35H682M72 124H210M538 124H660"/>
+        <path class="ecg-shadow" d="M0 82H196L220 82L238 28L258 136L282 62L306 82H424L446 82L466 30L488 132L512 70L540 82H720"/>
+        <path id="heroEcgStaff" class="ecg-path" d="M0 82H196L220 82L238 28L258 136L282 62L306 82H424L446 82L466 30L488 132L512 70L540 82H720"/>
+        <circle class="ecg-dot" r="7"><animateMotion dur="4.8s" repeatCount="indefinite" rotate="0"><mpath href="#heroEcgStaff"/></animateMotion></circle>
+      </svg>
+      <div class="ecg-chip"><span>URL Check</span><span>Search Volume</span><span>Rank Log</span></div>
+    </div>
+    <div class="hero-eyebrow">AUBE Staff Workboard</div>
+    <h1>직원용 작업 보드</h1>
+    <p>클라이언트별 블로그 URL, 실제 검색량, 노출 순위, 링크 열림 여부를 한 화면에서 관리합니다.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">클라이언트 추가 / 동기화</div>
+    <div class="staff-toolbar">
+      <div class="fg"><label>클라이언트명</label><input type="text" id="staff-new-client" placeholder="예: 동탄신경외과의원"/></div>
+      <div class="fg"><label>목표 블로그 수</label><input type="text" id="staff-new-target" placeholder="예: 8"/></div>
+      <button class="btn btn-accent" onclick="addStaffClient()">추가</button>
+      <button class="btn" onclick="syncStaffClientsFromAdmin()">관리자 클라이언트 불러오기</button>
+    </div>
+    <div class="staff-note">진행률은 URL 개수가 아니라 상태가 <b>정상 열림</b>으로 체크된 행만 계산합니다. 네이버 블로그 비공개 팝업 여부는 보안상 자동 판독이 어려워, 링크 확인 후 직원이 정상/비공개를 선택하는 방식으로 설계했습니다.</div>
+  </div>
+
+  <div class="staff-board">
+    <div class="staff-client-panel" id="staff-client-panel">
+      <div class="staff-empty">등록된 클라이언트가 없습니다.</div>
+    </div>
+    <div id="staff-detail">
+      <div class="staff-empty">왼쪽에서 클라이언트를 선택하거나 새 클라이언트를 추가하세요.</div>
+    </div>
+  </div>
 </div>
 
 <!-- 관리자 -->
@@ -1015,6 +1103,7 @@ var KEY_CUSTOM_DEPTS='custom_depts';
 var KEY_ISSUES='issues';
 var KEY_SURVEY_REQUESTS='survey_requests';
 var KEY_SURVEY_ANSWERS='survey_answers';
+var KEY_STAFF_WORK='staff_work';
 
 // 로컬 캐시 (빠른 렌더링용)
 var _cache={};
@@ -1072,7 +1161,7 @@ function syncFromSheet(k,callback){
 // 앱 시작 시 구글 시트 동기화
 function initSync(){
   showSyncStatus('구글 시트 동기화 중...');
-  var keys=[KEY_CLIENTS,KEY_CUSTOM_DISEASES,KEY_CUSTOM_PRODUCTS,KEY_CUSTOM_DEPTS,KEY_ISSUES,KEY_SURVEY_REQUESTS,KEY_SURVEY_ANSWERS];
+  var keys=[KEY_CLIENTS,KEY_CUSTOM_DISEASES,KEY_CUSTOM_PRODUCTS,KEY_CUSTOM_DEPTS,KEY_ISSUES,KEY_SURVEY_REQUESTS,KEY_SURVEY_ANSWERS,KEY_STAFF_WORK];
   var done=0;
   keys.forEach(function(k){
     syncFromSheet(k,function(){
@@ -1963,14 +2052,14 @@ function findNavTab(id){
 }
 function currentRoute(){
   var h=(location.hash||'').replace('#','');
-  return ['survey','gen','brief','admin'].indexOf(h)>=0?h:'gen';
+  return ['survey','gen','brief','staff','admin'].indexOf(h)>=0?h:'gen';
 }
 function initRoute(){
   var id=currentRoute();
   var tab=findNavTab(id);
   if(id==='survey'){setActivePage('survey',tab);return;}
   if(id==='admin'){setActivePage('admin',tab);return;}
-  if((id==='gen'||id==='brief')&&!isStaff){showStaffLogin(id,tab);return;}
+  if((id==='gen'||id==='brief'||id==='staff')&&!isStaff){showStaffLogin(id,tab);return;}
   setActivePage(id,tab);
 }
 if(document.readyState!=='loading')initRoute();
@@ -1983,6 +2072,7 @@ function setActivePage(id,el){
   document.getElementById('page-'+id).classList.add('active');
   if(el)el.classList.add('active');
   if(id==='gen')renderClientList();
+  if(id==='staff')renderStaffBoard();
   if(id==='survey')showSurveyIntroOnce();
 }
 function showStaffLogin(targetId,el){
@@ -1997,7 +2087,7 @@ function showStaffLogin(targetId,el){
 }
 function goPage(id,el){
   if(location.hash!=='#'+id){location.hash=id;return;}
-  if((id==='gen'||id==='brief')&&!isStaff){showStaffLogin(id,el);return;}
+  if((id==='gen'||id==='brief'||id==='staff')&&!isStaff){showStaffLogin(id,el);return;}
   setActivePage(id,el);
 }
 
@@ -2857,6 +2947,216 @@ function renderSources(item){
 }
 
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+// ===== 직원용 작업 보드 =====
+var staffSelectedClientId=null;
+function staffBlankItem(){
+  return {id:'r'+Date.now()+Math.floor(Math.random()*10000),title:'',url:'',volume:'',rank:'',status:'unchecked',note:'',extra:{}};
+}
+function normalizeStaffData(){
+  var data=load(KEY_STAFF_WORK,[]);
+  if(!Array.isArray(data))data=[];
+  data.forEach(function(c){
+    if(!c.id)c.id='sc'+Date.now()+Math.floor(Math.random()*10000);
+    if(!Array.isArray(c.items))c.items=[];
+    if(!Array.isArray(c.customCols))c.customCols=[];
+    if(!c.targetCount)c.targetCount=0;
+    c.items.forEach(function(row){
+      if(!row.id)row.id='r'+Date.now()+Math.floor(Math.random()*10000);
+      if(!row.extra)row.extra={};
+      if(!row.status)row.status='unchecked';
+    });
+  });
+  return data;
+}
+function saveStaffData(data){
+  save(KEY_STAFF_WORK,data);
+}
+function staffProgress(c){
+  var target=Number(c.targetCount)||0;
+  var open=(c.items||[]).filter(function(x){return x.status==='open'&&String(x.url||'').trim();}).length;
+  var pct=target?Math.min(100,Math.round(open/target*100)):0;
+  return {open:open,target:target,pct:pct,total:(c.items||[]).length};
+}
+function renderStaffBoard(){
+  var data=normalizeStaffData();
+  if(!data.length){
+    staffSelectedClientId=null;
+    document.getElementById('staff-client-panel').innerHTML='<div class="staff-empty">등록된 클라이언트가 없습니다.</div>';
+    document.getElementById('staff-detail').innerHTML='<div class="staff-empty">왼쪽에서 클라이언트를 선택하거나 새 클라이언트를 추가하세요.</div>';
+    return;
+  }
+  if(!staffSelectedClientId||!data.some(function(c){return c.id===staffSelectedClientId;}))staffSelectedClientId=data[0].id;
+  document.getElementById('staff-client-panel').innerHTML=data.map(function(c){
+    var p=staffProgress(c);
+    return '<div class="staff-client-card '+(c.id===staffSelectedClientId?'active':'')+'" onclick="selectStaffClient(&quot;'+c.id+'&quot;)">'+
+      '<div class="staff-donut" style="--pct:'+p.pct+'"><span>'+p.pct+'%</span></div>'+
+      '<div><div class="staff-card-name">'+esc(c.name||'이름 없음')+'</div>'+
+      '<div class="staff-card-meta">목표 '+p.target+'개 · 입력 '+p.total+'행</div>'+
+      '<div class="staff-card-count">정상 열림 '+p.open+' / '+p.target+'</div></div></div>';
+  }).join('');
+  renderStaffDetail();
+}
+function selectStaffClient(id){
+  staffSelectedClientId=id;
+  renderStaffBoard();
+}
+function currentStaffClient(){
+  return normalizeStaffData().find(function(c){return c.id===staffSelectedClientId;})||null;
+}
+function addStaffClient(){
+  var name=document.getElementById('staff-new-client').value.trim();
+  var target=parseInt(document.getElementById('staff-new-target').value,10)||0;
+  if(!name){alert('클라이언트명을 입력해 주세요.');return;}
+  var data=normalizeStaffData();
+  var obj={id:'sc'+Date.now(),name:name,targetCount:target,memo:'',customCols:[],items:[]};
+  for(var i=0;i<Math.max(target,1);i++)obj.items.push(staffBlankItem());
+  data.push(obj);
+  staffSelectedClientId=obj.id;
+  saveStaffData(data);
+  document.getElementById('staff-new-client').value='';
+  document.getElementById('staff-new-target').value='';
+  renderStaffBoard();
+}
+function syncStaffClientsFromAdmin(){
+  var data=normalizeStaffData();
+  var clients=load(KEY_CLIENTS,[]).filter(function(c){return c.active!==false;});
+  var added=0;
+  clients.forEach(function(c){
+    var name=c.name||'';
+    if(!name)return;
+    if(data.some(function(x){return x.name===name;}))return;
+    data.push({id:'sc'+Date.now()+added,name:name,targetCount:0,memo:'',customCols:[],items:[staffBlankItem()]});
+    added++;
+  });
+  saveStaffData(data);
+  if(!staffSelectedClientId&&data[0])staffSelectedClientId=data[0].id;
+  renderStaffBoard();
+  alert(added?added+'개 클라이언트를 불러왔습니다.':'새로 불러올 클라이언트가 없습니다.');
+}
+function renderStaffDetail(){
+  var c=currentStaffClient();
+  var el=document.getElementById('staff-detail');
+  if(!c){el.innerHTML='<div class="staff-empty">클라이언트를 선택하세요.</div>';return;}
+  var p=staffProgress(c);
+  var cols=(c.customCols||[]);
+  var colHeads=cols.map(function(col){return '<th>'+esc(col)+'</th>';}).join('');
+  var rows=(c.items||[]).map(function(row,idx){
+    var customCells=cols.map(function(col){
+      var v=row.extra&&row.extra[col]?row.extra[col]:'';
+      return '<td><input type="text" value="'+escHtml(v)+'" oninput="updateStaffExtra(&quot;'+c.id+'&quot;,&quot;'+row.id+'&quot;,&quot;'+escHtml(col)+'&quot;,this.value)"/></td>';
+    }).join('');
+    return '<tr class="staff-row-'+row.status+'">'+
+      '<td class="staff-num-cell">'+(idx+1)+'</td>'+
+      '<td><input type="text" value="'+escHtml(row.title||'')+'" placeholder="주제/키워드" oninput="updateStaffRow(&quot;'+c.id+'&quot;,&quot;'+row.id+'&quot;,&quot;title&quot;,this.value)"/></td>'+
+      '<td class="staff-url-cell"><input type="text" value="'+escHtml(row.url||'')+'" placeholder="https://blog.naver.com/..." oninput="updateStaffRow(&quot;'+c.id+'&quot;,&quot;'+row.id+'&quot;,&quot;url&quot;,this.value)"/></td>'+
+      '<td class="staff-num-cell"><input type="text" value="'+escHtml(row.volume||'')+'" placeholder="검색량" oninput="updateStaffRow(&quot;'+c.id+'&quot;,&quot;'+row.id+'&quot;,&quot;volume&quot;,this.value)"/></td>'+
+      '<td class="staff-num-cell"><input type="text" value="'+escHtml(row.rank||'')+'" placeholder="순위" oninput="updateStaffRow(&quot;'+c.id+'&quot;,&quot;'+row.id+'&quot;,&quot;rank&quot;,this.value)"/></td>'+
+      '<td class="staff-status-cell"><select onchange="updateStaffRow(&quot;'+c.id+'&quot;,&quot;'+row.id+'&quot;,&quot;status&quot;,this.value)">'+staffStatusOptions(row.status)+'</select></td>'+
+      customCells+
+      '<td><textarea placeholder="메모" oninput="updateStaffRow(&quot;'+c.id+'&quot;,&quot;'+row.id+'&quot;,&quot;note&quot;,this.value)">'+esc(row.note||'')+'</textarea></td>'+
+      '<td class="staff-action-cell"><button class="btn btn-sm" onclick="openStaffUrl(&quot;'+c.id+'&quot;,&quot;'+row.id+'&quot;)">열기</button> <button class="btn btn-sm btn-danger" onclick="deleteStaffRow(&quot;'+c.id+'&quot;,&quot;'+row.id+'&quot;)">삭제</button></td>'+
+    '</tr>';
+  }).join('');
+  el.innerHTML=
+    '<div class="card"><div class="staff-detail-head"><div><div class="staff-detail-title">'+esc(c.name)+'</div><div class="staff-detail-sub">목표 개수와 표 열은 자유롭게 바꿀 수 있습니다.</div></div><button class="btn btn-sm btn-danger" onclick="deleteStaffClient(&quot;'+c.id+'&quot;)">클라이언트 삭제</button></div>'+
+    '<div class="staff-stat-grid"><div class="staff-stat"><div class="staff-stat-k">Progress</div><div class="staff-stat-v">'+p.pct+'%</div></div><div class="staff-stat"><div class="staff-stat-k">Open URL</div><div class="staff-stat-v">'+p.open+' / '+p.target+'</div></div><div class="staff-stat"><div class="staff-stat-k">Rows</div><div class="staff-stat-v">'+p.total+'</div></div><div class="staff-stat"><div class="staff-stat-k">Private</div><div class="staff-stat-v">'+(c.items||[]).filter(function(x){return x.status==='private';}).length+'</div></div></div>'+
+    '<div class="row3"><div class="fg"><label>클라이언트명</label><input type="text" value="'+escHtml(c.name||'')+'" oninput="updateStaffClient(&quot;'+c.id+'&quot;,&quot;name&quot;,this.value)" onblur="renderStaffBoard()"/></div><div class="fg"><label>목표 블로그 수</label><input type="text" value="'+escHtml(c.targetCount||'')+'" oninput="updateStaffClient(&quot;'+c.id+'&quot;,&quot;targetCount&quot;,this.value)" onblur="renderStaffBoard()"/></div><div class="fg"><label>표 열 추가</label><div style="display:flex;gap:6px"><input type="text" id="staff-new-col" placeholder="예: 담당자"/><button class="btn" onclick="addStaffColumn(&quot;'+c.id+'&quot;)">추가</button></div></div></div>'+
+    '<div class="fg" style="margin-bottom:10px"><label>클라이언트 메모</label><textarea oninput="updateStaffClient(&quot;'+c.id+'&quot;,&quot;memo&quot;,this.value)">'+esc(c.memo||'')+'</textarea></div>'+
+    '<div class="staff-custom-cols">'+cols.map(function(col){return '<span class="staff-col-chip">'+esc(col)+' <button onclick="removeStaffColumn(&quot;'+c.id+'&quot;,&quot;'+escHtml(col)+'&quot;)">×</button></span>';}).join('')+'</div>'+
+    '<div class="btn-row"><button class="btn btn-accent" onclick="addStaffRows(&quot;'+c.id+'&quot;,1)">행 추가</button><button class="btn" onclick="addStaffRows(&quot;'+c.id+'&quot;,5)">5행 추가</button><button class="btn" onclick="exportStaffCsv(&quot;'+c.id+'&quot;)">CSV 내보내기</button></div>'+
+    '<div class="staff-table-wrap"><table class="staff-table"><thead><tr><th>No</th><th>주제/키워드</th><th>URL</th><th>실제 검색량</th><th>노출 순위</th><th>열림 상태</th>'+colHeads+'<th>메모</th><th>동작</th></tr></thead><tbody>'+(rows||'<tr><td colspan="'+(8+cols.length)+'"><div class="empty">행이 없습니다.</div></td></tr>')+'</tbody></table></div>'+
+    '<div class="staff-note">열기 버튼은 URL을 새 창으로 열고 상태를 확인 중으로 바꿉니다. 네이버 비공개 URL이면 돌아와서 상태를 비공개/오류로 바꿔 주세요.</div></div>';
+}
+function staffStatusOptions(status){
+  var opts=[['unchecked','미확인'],['checking','확인 중'],['open','정상 열림'],['private','비공개/오류']];
+  return opts.map(function(o){return '<option value="'+o[0]+'" '+(status===o[0]?'selected':'')+'>'+o[1]+'</option>';}).join('');
+}
+function updateStaffClient(clientId,key,value){
+  var data=normalizeStaffData();
+  var c=data.find(function(x){return x.id===clientId;});if(!c)return;
+  c[key]=key==='targetCount'?(parseInt(value,10)||0):value;
+  saveStaffData(data);
+}
+function updateStaffRow(clientId,rowId,key,value){
+  var data=normalizeStaffData();
+  var c=data.find(function(x){return x.id===clientId;});if(!c)return;
+  var row=c.items.find(function(x){return x.id===rowId;});if(!row)return;
+  row[key]=value;
+  if(key==='status')row.checkedAt=new Date().toISOString();
+  saveStaffData(data);
+  if(key==='status')renderStaffBoard();
+}
+function updateStaffExtra(clientId,rowId,col,value){
+  var data=normalizeStaffData();
+  var c=data.find(function(x){return x.id===clientId;});if(!c)return;
+  var row=c.items.find(function(x){return x.id===rowId;});if(!row)return;
+  if(!row.extra)row.extra={};
+  row.extra[col]=value;
+  saveStaffData(data);
+}
+function addStaffRows(clientId,count){
+  var data=normalizeStaffData();
+  var c=data.find(function(x){return x.id===clientId;});if(!c)return;
+  for(var i=0;i<count;i++)c.items.push(staffBlankItem());
+  saveStaffData(data);renderStaffBoard();
+}
+function deleteStaffRow(clientId,rowId){
+  if(!confirm('이 행을 삭제할까요?'))return;
+  var data=normalizeStaffData();
+  var c=data.find(function(x){return x.id===clientId;});if(!c)return;
+  c.items=c.items.filter(function(x){return x.id!==rowId;});
+  saveStaffData(data);renderStaffBoard();
+}
+function deleteStaffClient(clientId){
+  if(!confirm('이 클라이언트 작업표를 삭제할까요?'))return;
+  var data=normalizeStaffData().filter(function(c){return c.id!==clientId;});
+  staffSelectedClientId=data[0]?data[0].id:null;
+  saveStaffData(data);renderStaffBoard();
+}
+function addStaffColumn(clientId){
+  var input=document.getElementById('staff-new-col');
+  var name=input?input.value.trim():'';
+  if(!name)return;
+  var data=normalizeStaffData();
+  var c=data.find(function(x){return x.id===clientId;});if(!c)return;
+  if(c.customCols.indexOf(name)<0)c.customCols.push(name);
+  saveStaffData(data);renderStaffBoard();
+}
+function removeStaffColumn(clientId,col){
+  if(!confirm('이 열을 삭제할까요?'))return;
+  var data=normalizeStaffData();
+  var c=data.find(function(x){return x.id===clientId;});if(!c)return;
+  c.customCols=c.customCols.filter(function(x){return x!==col;});
+  c.items.forEach(function(row){if(row.extra)delete row.extra[col];});
+  saveStaffData(data);renderStaffBoard();
+}
+function openStaffUrl(clientId,rowId){
+  var c=currentStaffClient();
+  if(!c||c.id!==clientId)c=normalizeStaffData().find(function(x){return x.id===clientId;});
+  var row=c&&c.items.find(function(x){return x.id===rowId;});
+  if(!row||!row.url){alert('URL을 먼저 입력해 주세요.');return;}
+  updateStaffRow(clientId,rowId,'status','checking');
+  window.open(row.url,'_blank','noopener');
+}
+function exportStaffCsv(clientId){
+  var c=normalizeStaffData().find(function(x){return x.id===clientId;});if(!c)return;
+  var cols=['No','주제/키워드','URL','실제 검색량','노출 순위','열림 상태'].concat(c.customCols||[]).concat(['메모']);
+  var lines=[cols];
+  (c.items||[]).forEach(function(row,idx){
+    var line=[idx+1,row.title||'',row.url||'',row.volume||'',row.rank||'',row.status||''];
+    (c.customCols||[]).forEach(function(col){line.push(row.extra&&row.extra[col]?row.extra[col]:'');});
+    line.push(row.note||'');
+    lines.push(line);
+  });
+  var csv=lines.map(function(line){return line.map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=(c.name||'staff-work')+'.csv';
+  a.click();
+  setTimeout(function(){URL.revokeObjectURL(a.href);},1000);
+}
 
 // ===== LOGIN =====
 function checkStaffLogin(){
