@@ -2560,11 +2560,6 @@ function parseBrief(){
       });
     });
     html+='</div>';
-    foundDis.forEach(function(d){
-      foundProd.forEach(function(p){
-        html+=renderBriefComboCard(d,p);
-      });
-    });
   }
   foundDis.forEach(function(d){html+=renderBriefCard('질환',d);});
   foundProd.forEach(function(p){html+=renderBriefCard('시술 / 상품',p);});
