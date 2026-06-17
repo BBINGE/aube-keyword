@@ -336,13 +336,15 @@
   .staff-stat-k{font-size:10px;color:var(--text3);font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
   .staff-stat-v{font-size:18px;font-weight:800;color:var(--text);margin-top:2px;}
   .staff-table-wrap{overflow:auto;border:1px solid var(--border);border-radius:var(--radius);background:#fff;}
-  .staff-table{width:100%;border-collapse:separate;border-spacing:0;min-width:760px;}
+  .staff-table{width:100%;border-collapse:separate;border-spacing:0;min-width:800px;}
   .staff-table th{position:sticky;top:0;background:#f8fbff;border-bottom:1px solid var(--border);font-size:11px;color:var(--text2);font-weight:750;text-align:left;padding:9px 8px;z-index:1;}
   .staff-table td{border-bottom:1px solid var(--border);padding:7px 8px;vertical-align:top;background:#fff;}
   .staff-table tr:last-child td{border-bottom:none;}
   .staff-table input,.staff-table select,.staff-table textarea{font-size:12px;padding:7px 8px;background:#fff;}
   .staff-table textarea{min-height:38px;}
   .staff-url-cell{min-width:260px;}
+  .staff-title-cell{width:220px;}
+  .staff-date-cell{width:112px;}
   .staff-num-cell{width:92px;}
   .staff-note{font-size:11px;color:var(--text3);line-height:1.7;margin-top:8px;}
   .staff-empty{border:1px dashed var(--border2);border-radius:var(--radius);padding:34px;text-align:center;color:var(--text3);background:rgba(255,255,255,.72);}
@@ -2962,7 +2964,7 @@ function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'
 var staffSelectedClientId=null;
 var staffDraggingClientId=null;
 function staffBlankItem(){
-  return {id:'r'+Date.now()+Math.floor(Math.random()*10000),title:'',url:'',volume:'',rank:'',extra:{}};
+  return {id:'r'+Date.now()+Math.floor(Math.random()*10000),publishDate:'',title:'',url:'',volume:'',rank:'',extra:{}};
 }
 function normalizeStaffData(){
   var data=load(KEY_STAFF_WORK,[]);
@@ -3004,6 +3006,9 @@ function staffCurrentSavedAt(){
   var p=staffKoreaNowParts();
   return p.year+'-'+p.month+'-'+p.day+' '+p.hour+':'+p.minute+' KST';
 }
+function staffCurrentYear(){
+  return Number(staffKoreaNowParts().year)||new Date().getFullYear();
+}
 function staffMonthLabel(key){
   var parts=String(key||'').split('-');
   if(parts.length===2)return parts[0]+'년 '+Number(parts[1])+'월';
@@ -3011,6 +3016,43 @@ function staffMonthLabel(key){
 }
 function cloneStaffRows(rows){
   return JSON.parse(JSON.stringify(rows||[]));
+}
+function parseStaffPublishDate(value){
+  var raw=String(value||'').trim();
+  if(!raw)return null;
+  var y=staffCurrentYear(),m=null,d=null,match;
+  match=raw.match(/(\d{4})\s*[-./년]\s*(\d{1,2})\s*[-./월]\s*(\d{1,2})/);
+  if(match){y=Number(match[1]);m=Number(match[2]);d=Number(match[3]);}
+  else{
+    match=raw.match(/(\d{1,2})\s*월\s*(\d{1,2})\s*일?/);
+    if(match){m=Number(match[1]);d=Number(match[2]);}
+    else{
+      match=raw.match(/(\d{1,2})\s*[-./]\s*(\d{1,2})/);
+      if(match){m=Number(match[1]);d=Number(match[2]);}
+    }
+  }
+  if(!m||!d||m<1||m>12||d<1||d>31)return null;
+  var date=new Date(y,m-1,d);
+  if(date.getFullYear()!==y||date.getMonth()!==m-1||date.getDate()!==d)return null;
+  return y*10000+m*100+d;
+}
+function sortStaffItemsByPublishDate(items){
+  return (items||[]).map(function(row,idx){return {row:row,idx:idx,key:parseStaffPublishDate(row.publishDate)};})
+    .sort(function(a,b){
+      if(a.key==null&&b.key==null)return a.idx-b.idx;
+      if(a.key==null)return 1;
+      if(b.key==null)return -1;
+      if(a.key!==b.key)return a.key-b.key;
+      return a.idx-b.idx;
+    }).map(function(x){return x.row;});
+}
+function sortStaffClientByDate(clientId){
+  var data=normalizeStaffData();
+  var c=data.find(function(x){return x.id===clientId;});if(!c)return;
+  c.items=sortStaffItemsByPublishDate(c.items||[]);
+  saveStaffData(data);
+  renderStaffBoard();
+  renderStaffDetail();
 }
 function renderStaffBoard(){
   var data=normalizeStaffData();
@@ -3126,7 +3168,8 @@ function renderStaffDetail(){
     var customCells='';
     return '<tr>'+
       '<td class="staff-num-cell">'+(idx+1)+'</td>'+
-      '<td><input type="text" value="'+escHtml(row.title||'')+'" placeholder="주제/키워드" oninput="updateStaffRow(&quot;'+c.id+'&quot;,&quot;'+row.id+'&quot;,&quot;title&quot;,this.value)"/></td>'+
+      '<td class="staff-date-cell"><input type="text" value="'+escHtml(row.publishDate||'')+'" placeholder="06월 01일" oninput="updateStaffRow(&quot;'+c.id+'&quot;,&quot;'+row.id+'&quot;,&quot;publishDate&quot;,this.value)" onblur="sortStaffClientByDate(&quot;'+c.id+'&quot;)"/></td>'+
+      '<td class="staff-title-cell"><input type="text" value="'+escHtml(row.title||'')+'" placeholder="주제/키워드" oninput="updateStaffRow(&quot;'+c.id+'&quot;,&quot;'+row.id+'&quot;,&quot;title&quot;,this.value)"/></td>'+
       '<td class="staff-url-cell"><input type="text" value="'+escHtml(row.url||'')+'" placeholder="https://blog.naver.com/..." oninput="updateStaffRow(&quot;'+c.id+'&quot;,&quot;'+row.id+'&quot;,&quot;url&quot;,this.value)" onblur="renderStaffBoard();renderStaffDetail()"/></td>'+
       '<td class="staff-num-cell"><input type="text" value="'+escHtml(row.volume||'')+'" placeholder="검색량" oninput="updateStaffRow(&quot;'+c.id+'&quot;,&quot;'+row.id+'&quot;,&quot;volume&quot;,this.value)"/></td>'+
       '<td class="staff-num-cell"><input type="text" value="'+escHtml(row.rank||'')+'" placeholder="순위" oninput="updateStaffRow(&quot;'+c.id+'&quot;,&quot;'+row.id+'&quot;,&quot;rank&quot;,this.value)"/></td>'+
@@ -3139,8 +3182,8 @@ function renderStaffDetail(){
     '<div class="staff-stat-grid"><div class="staff-stat"><div class="staff-stat-k">Progress</div><div class="staff-stat-v">'+p.pct+'%</div></div><div class="staff-stat"><div class="staff-stat-k">URL</div><div class="staff-stat-v">'+p.filled+' / '+p.target+'</div></div></div>'+
     '<div class="row3"><div class="fg"><label>클라이언트명</label><input type="text" value="'+escHtml(c.name||'')+'" oninput="updateStaffClient(&quot;'+c.id+'&quot;,&quot;name&quot;,this.value)" onblur="renderStaffBoard();renderStaffDetail()"/></div><div class="fg"><label>목표 블로그 수</label><input type="text" value="'+escHtml(c.targetCount||'')+'" oninput="updateStaffClient(&quot;'+c.id+'&quot;,&quot;targetCount&quot;,this.value)" onblur="renderStaffBoard();renderStaffDetail()"/></div><div class="fg"><label>담당자</label><input type="text" value="'+escHtml(c.assignee||'')+'" placeholder="예: 한시원" oninput="updateStaffClient(&quot;'+c.id+'&quot;,&quot;assignee&quot;,this.value)" onblur="renderStaffBoard();renderStaffDetail()"/></div></div>'+
     archiveHtml+
-    '<div class="btn-row"><button class="btn btn-accent" onclick="addStaffRows(&quot;'+c.id+'&quot;,1)">행 추가</button><button class="btn" onclick="addStaffRows(&quot;'+c.id+'&quot;,5)">5행 추가</button><button class="btn" onclick="exportStaffCsv(&quot;'+c.id+'&quot;)">CSV 내보내기</button></div>'+
-    '<div class="staff-table-wrap"><table class="staff-table"><thead><tr><th>No</th><th>주제/키워드</th><th>URL</th><th>실제 검색량</th><th>노출 순위</th>'+colHeads+'</tr></thead><tbody>'+(rows||'<tr><td colspan="'+(5+cols.length)+'"><div class="empty">행이 없습니다.</div></td></tr>')+'</tbody></table></div>';
+    '<div class="btn-row"><button class="btn btn-accent" onclick="addStaffRows(&quot;'+c.id+'&quot;,1)">행 추가</button><button class="btn" onclick="addStaffRows(&quot;'+c.id+'&quot;,5)">5행 추가</button><button class="btn" onclick="sortStaffClientByDate(&quot;'+c.id+'&quot;)">날짜순 정렬</button><button class="btn" onclick="exportStaffCsv(&quot;'+c.id+'&quot;)">CSV 내보내기</button></div>'+
+    '<div class="staff-table-wrap"><table class="staff-table"><thead><tr><th>No</th><th>발행일자</th><th>주제/키워드</th><th>URL</th><th>실제 검색량</th><th>노출 순위</th>'+colHeads+'</tr></thead><tbody>'+(rows||'<tr><td colspan="'+(6+cols.length)+'"><div class="empty">행이 없습니다.</div></td></tr>')+'</tbody></table></div>';
 }
 function updateStaffClient(clientId,key,value){
   var data=normalizeStaffData();
@@ -3172,7 +3215,7 @@ function saveStaffCurrentMonth(clientId){
     targetCount:Number(c.targetCount)||0,
     assignee:c.assignee||'',
     customCols:[],
-    items:cloneStaffRows(c.items||[])
+    items:cloneStaffRows(sortStaffItemsByPublishDate(c.items||[]))
   };
   var idx=c.monthlyArchives.findIndex(function(a){return a.monthKey===monthKey;});
   if(idx>=0)c.monthlyArchives[idx]=snapshot;
@@ -3197,13 +3240,13 @@ function renderStaffArchiveTable(archive){
   var colHeads='';
   var rows=(archive.items||[]).map(function(row,idx){
     var customCells='';
-    return '<tr><td class="staff-num-cell">'+(idx+1)+'</td><td>'+esc(row.title||'')+'</td><td class="staff-url-cell">'+esc(row.url||'')+'</td><td class="staff-num-cell">'+esc(row.volume||'')+'</td><td class="staff-num-cell">'+esc(row.rank||'')+'</td>'+customCells+'</tr>';
+    return '<tr><td class="staff-num-cell">'+(idx+1)+'</td><td class="staff-date-cell">'+esc(row.publishDate||'')+'</td><td class="staff-title-cell">'+esc(row.title||'')+'</td><td class="staff-url-cell">'+esc(row.url||'')+'</td><td class="staff-num-cell">'+esc(row.volume||'')+'</td><td class="staff-num-cell">'+esc(row.rank||'')+'</td>'+customCells+'</tr>';
   }).join('');
   var filled=(archive.items||[]).filter(function(row){return String(row.url||'').trim();}).length;
   var target=Number(archive.targetCount)||0;
   var pct=target?Math.min(100,Math.round(filled/target*100)):0;
   return '<div class="staff-archive-meta"><b>'+esc(archive.monthLabel||staffMonthLabel(archive.monthKey))+'</b> · '+(archive.assignee?'담당자 '+esc(archive.assignee)+' · ':'')+'저장 시각 '+esc(archive.savedAt||'')+' · URL '+filled+' / '+target+' · '+pct+'%</div>'+
-    '<div class="staff-table-wrap"><table class="staff-table staff-readonly-table"><thead><tr><th>No</th><th>주제/키워드</th><th>URL</th><th>실제 검색량</th><th>노출 순위</th>'+colHeads+'</tr></thead><tbody>'+(rows||'<tr><td colspan="'+(5+cols.length)+'"><div class="empty">저장된 행이 없습니다.</div></td></tr>')+'</tbody></table></div>';
+    '<div class="staff-table-wrap"><table class="staff-table staff-readonly-table"><thead><tr><th>No</th><th>발행일자</th><th>주제/키워드</th><th>URL</th><th>실제 검색량</th><th>노출 순위</th>'+colHeads+'</tr></thead><tbody>'+(rows||'<tr><td colspan="'+(6+cols.length)+'"><div class="empty">저장된 행이 없습니다.</div></td></tr>')+'</tbody></table></div>';
 }
 function updateStaffRow(clientId,rowId,key,value){
   var data=normalizeStaffData();
@@ -3241,10 +3284,10 @@ function deleteStaffClient(clientId){
 }
 function exportStaffCsv(clientId){
   var c=normalizeStaffData().find(function(x){return x.id===clientId;});if(!c)return;
-  var cols=['No','담당자','주제/키워드','URL','실제 검색량','노출 순위'];
+  var cols=['No','담당자','발행일자','주제/키워드','URL','실제 검색량','노출 순위'];
   var lines=[cols];
   (c.items||[]).forEach(function(row,idx){
-    var line=[idx+1,c.assignee||'',row.title||'',row.url||'',row.volume||'',row.rank||''];
+    var line=[idx+1,c.assignee||'',row.publishDate||'',row.title||'',row.url||'',row.volume||'',row.rank||''];
     lines.push(line);
   });
   var csv=lines.map(function(line){return line.map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
