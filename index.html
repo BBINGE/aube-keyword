@@ -590,9 +590,10 @@
           <div class="fg"><label>현재 운영 중이신 SNS 채널이 어떻게 되시나요?</label><select id="sv-channels" onchange="updateSurveyConditionalFields()"><option value="">선택해 주세요</option><option>홈페이지</option><option>블로그</option><option>홈페이지+블로그</option><option>홈페이지+블로그+SNS</option><option>홈페이지+블로그+SNS+YouTube</option><option>홈페이지+블로그+SNS+YouTube+유료광고</option><option>홈페이지+블로그+SNS+YouTube+유료광고+인플루언서 협업</option><option>홈페이지+블로그+SNS+YouTube+유료광고+인플루언서 협업+언론 광고</option><option>기타</option></select></div>
           <div class="fg" id="sv-good-kw-wrap" style="display:none"><label>기타 운영 채널</label><input type="text" id="sv-good-kw" placeholder="예: 카카오채널, 인스타그램, 지역 커뮤니티"/></div>
           <div class="fg wide"><label>경쟁 의원 또는 레퍼런스 의원이 있으신가요?</label><input type="text" id="sv-competitor" placeholder="예: 병원 상호, 블로그 주소, 홈페이지 URL"/></div>
-          <div class="fg wide"><label>그동안 마케팅은 어떻게 진행하셨고, 어떤 점이 어려우셨나요?</label><textarea id="sv-tone" placeholder="예: 원장님이 직접 블로그를 썼지만 시간이 부족했음, 대행사를 썼지만 병원 색이 잘 안 담겼음"></textarea></div>
-          <div class="fg"><label>블로그 마케팅이 안정화되면 향후 하고 싶은 마케팅은 무엇인가요?</label><select id="sv-urgent" onchange="updateSurveyConditionalFields()"><option value="">선택해 주세요</option><option>신환 유입 마케팅</option><option>브랜드 이미지 제고형 광고</option><option>브랜딩을 위한 참여형 기획</option><option>개인 PR에 초점을 맞춰진 마케팅</option><option>기타</option></select></div>
-          <div class="fg" id="sv-final-note-wrap" style="display:none"><label>기타 향후 마케팅 방향</label><input type="text" id="sv-final-note" placeholder="예: 유튜브, 원장님 인터뷰, 지역 캠페인"/></div>
+          <div class="fg"><label>그동안 블로그 마케팅은 어떻게 진행하셨나요?</label><select id="sv-tone"><option value="">선택해 주세요</option><option>대표원장(의료진)이 직접 운영하였음</option><option>직원이 인하우스 형식으로 운영하였음</option><option>홍보 대행사가 운영하였음</option><option>기타</option></select></div>
+          <div class="fg"><label>어려우셨거나 아쉬웠던 점이 있으셨나요?</label><textarea id="sv-final-note" placeholder="예: 직접 쓰기엔 시간이 부족했음, 대행 원고가 병원 색을 잘 담지 못했음"></textarea></div>
+          <div class="fg"><label>블로그마케팅이 안정화되면<br>향후 하고 싶은 마케팅은 무엇인가요?</label><select id="sv-urgent" onchange="updateSurveyConditionalFields()"><option value="">선택해 주세요</option><option>신환 유입 마케팅</option><option>브랜드 이미지 제고형 광고</option><option>브랜딩을 위한 참여형 기획</option><option>개인 PR에 초점을 맞춰진 마케팅</option><option>기타</option></select></div>
+          <div class="fg" id="sv-future-other-wrap" style="display:none"><label>기타 향후 마케팅 방향</label><input type="text" id="sv-future-other" placeholder="예: 100만 유튜브 채널 운영, 블로그 누적 100만뷰 만들기"/></div>
         </div>
       </div>
 
@@ -2082,7 +2083,7 @@ var surveyFieldMap=[
   ['병원명 / 상호','sv-clinic'],['과목 / 병원 유형','sv-type'],['기타 과목 / 병원 유형','sv-type-other'],['주소지 / 주요 진료 지역','sv-region'],
   ['월 평균 초진 환자 규모','sv-new-patients'],['초진 대비 재진율','sv-revisit'],['비급여 비중','sv-noncovered'],['매출 상위 3개 진료','sv-top-sales'],
   ['기획 중인 진료 핵심 상품','sv-revenue-note'],['홍보 소구 포인트','sv-caution'],['현재 운영 중인 SNS 채널','sv-channels'],['기타 운영 채널','sv-good-kw'],
-  ['경쟁 의원 또는 레퍼런스 의원','sv-competitor'],['기존 마케팅 경험과 어려웠던 점','sv-tone'],['향후 하고 싶은 마케팅','sv-urgent'],['기타 향후 마케팅 방향','sv-final-note']
+  ['경쟁 의원 또는 레퍼런스 의원','sv-competitor'],['기존 블로그 마케팅 운영 방식','sv-tone'],['어려웠거나 아쉬웠던 점','sv-final-note'],['향후 하고 싶은 마케팅','sv-urgent'],['기타 향후 마케팅 방향','sv-future-other']
 ];
 var SURVEY_DEPT_DEFAULT={
   labels:{},
@@ -2095,26 +2096,26 @@ var SURVEY_DEPT_DEFAULT={
     'sv-caution':'예: 병원만의 설명 방식, 장비, 원장님 철학, 환자 응대 강점',
     'sv-good-kw':'예: 카카오채널, 인스타그램, 지역 커뮤니티',
     'sv-competitor':'예: 병원 상호, 블로그 주소, 홈페이지 URL',
-    'sv-tone':'예: 직접 블로그를 썼지만 시간이 부족했음, 대행사를 썼지만 병원 색이 잘 안 담겼음',
-    'sv-final-note':'예: 유튜브, 원장님 인터뷰, 지역 캠페인'
+    'sv-final-note':'예: 직접 쓰기엔 시간이 부족했음, 내부에서 꾸준히 운영하기 어려웠음',
+    'sv-future-other':'예: 100만 유튜브 채널 운영, 블로그 누적 100만뷰 만들기'
   }
 };
 var SURVEY_DEPT_PRESETS={
-  '가정의학과':{labels:{},placeholders:{'sv-new-patients':'예: 월 250~450명 사이','sv-revisit':'예: 만성질환/검진 후 재방문 약 50%','sv-noncovered':'예: 비만관리·수액 포함 약 35%','sv-top-sales':'예: 건강검진, 비만관리, 수액치료','sv-revenue-note':'예: 비만클리닉, 영양수액, 만성질환 관리','sv-caution':'예: 생활습관까지 함께 관리하는 주치의 느낌, 과잉검사 없는 상담','sv-good-kw':'예: 카카오채널, 블로그, 지역 맘카페','sv-competitor':'예: 인근 가정의학과 상호 또는 건강검진 블로그 URL','sv-tone':'예: 직접 관리 콘텐츠를 올렸지만 전문성이 잘 전달되지 않았음','sv-final-note':'예: 건강검진 캠페인, 직장인 건강관리 콘텐츠'}},
-  '내과':{labels:{},placeholders:{'sv-new-patients':'예: 월 300~600명 사이','sv-revisit':'예: 검사 결과 상담 포함 약 60%','sv-noncovered':'예: 검진·수액·내시경 포함 약 35%','sv-top-sales':'예: 건강검진, 위내시경, 수액치료','sv-revenue-note':'예: 수면내시경, 건강검진, 만성질환 관리','sv-caution':'예: 검사 필요성을 쉽게 설명하는 점, 결과 상담을 꼼꼼히 하는 점','sv-good-kw':'예: 블로그, 홈페이지, 카카오채널','sv-competitor':'예: 인근 내과 상호, 검진센터 블로그 URL','sv-tone':'예: 대행사를 썼지만 감기 콘텐츠만 많아 검진 강점이 안 보였음','sv-final-note':'예: 건강검진 랜딩페이지, 지역 검진 캠페인'}},
-  '산부인과':{labels:{},placeholders:{'sv-new-patients':'예: 월 250~450명 사이','sv-revisit':'예: 검사 후 관리 포함 약 50%','sv-noncovered':'예: 여성검진·시술 포함 약 45%','sv-top-sales':'예: 여성검진, 질염, 피임 상담','sv-revenue-note':'예: 여성검진, HPV 검사, 갱년기 관리','sv-caution':'예: 편안하게 상담할 수 있는 분위기, 민감한 고민을 배려하는 진료','sv-good-kw':'예: 블로그, 홈페이지, 인스타그램','sv-competitor':'예: 참고하는 여성의원 상호 또는 블로그 주소','sv-tone':'예: 직접 SNS를 했지만 민감한 주제를 어떻게 풀지 어려웠음','sv-final-note':'예: 여성검진 캠페인, 원장님 Q&A 콘텐츠'}},
-  '성형외과':{labels:{},placeholders:{'sv-new-patients':'예: 월 250~450명 사이','sv-revisit':'예: 상담 후 재상담 약 40%','sv-noncovered':'예: 수술·시술 상담 대부분','sv-top-sales':'예: 눈성형, 코성형, 리프팅','sv-revenue-note':'예: 눈 재수술, 자연스러운 코성형, 안면거상','sv-caution':'예: 자연스러움, 안전한 상담, 원장님 미감과 진단 기준','sv-good-kw':'예: 인스타그램, 블로그, 유튜브 쇼츠','sv-competitor':'예: 레퍼런스 성형외과 인스타그램 또는 블로그 URL','sv-tone':'예: SNS는 했지만 전후사진 중심이라 병원 철학이 잘 안 담겼음','sv-final-note':'예: 원장님 개인 PR, 케이스 스토리 콘텐츠'}},
-  '신경외과':{labels:{},placeholders:{'sv-new-patients':'예: 월 300~600명 사이','sv-revisit':'예: 검사 후 치료 연결 약 60%','sv-noncovered':'예: 도수·주사치료 포함 약 40%','sv-top-sales':'예: 허리디스크, 목디스크, 신경차단술','sv-revenue-note':'예: 신경차단술, 도수치료, 재활치료','sv-caution':'예: 수술부터 권하지 않고 원인을 먼저 확인하는 점','sv-good-kw':'예: 홈페이지, 블로그, 카카오채널','sv-competitor':'예: 인근 신경외과 블로그 주소 또는 상호','sv-tone':'예: 대행사가 질환 설명을 너무 일반적으로 써서 차별점이 부족했음','sv-final-note':'예: 비수술 치료 브랜딩, 원장님 인터뷰'}},
-  '안과':{labels:{},placeholders:{'sv-new-patients':'예: 월 250~500명 사이','sv-revisit':'예: 검사 후 처방/수술 상담 약 50%','sv-noncovered':'예: 드림렌즈·시력교정 포함 약 35%','sv-top-sales':'예: 안구건조증, 백내장, 드림렌즈','sv-revenue-note':'예: 드림렌즈, 백내장 검사, 시력교정 상담','sv-caution':'예: 검사 장비, 정확한 설명, 아이 눈 관리 경험','sv-good-kw':'예: 블로그, 홈페이지, 네이버 플레이스','sv-competitor':'예: 참고하는 안과 상호 또는 드림렌즈 블로그 URL','sv-tone':'예: 검사/장비 강점이 콘텐츠에 잘 반영되지 않았음','sv-final-note':'예: 드림렌즈 캠페인, 백내장 검진 콘텐츠'}},
-  '여성의원':{labels:{},placeholders:{'sv-new-patients':'예: 월 250~450명 사이','sv-revisit':'예: 검사 후 관리 포함 약 50%','sv-noncovered':'예: 여성검진·시술 포함 약 45%','sv-top-sales':'예: 여성검진, 질염, 피임 상담','sv-revenue-note':'예: 여성검진, HPV 검사, 갱년기 관리','sv-caution':'예: 민감한 고민을 편하게 말할 수 있는 분위기','sv-good-kw':'예: 블로그, 홈페이지, 인스타그램','sv-competitor':'예: 참고하는 여성의원 상호 또는 블로그 주소','sv-tone':'예: 민감한 주제를 광고법에 맞게 표현하는 것이 어려웠음','sv-final-note':'예: 여성검진 캠페인, 원장님 Q&A 콘텐츠'}},
-  '재활의학과':{labels:{},placeholders:{'sv-new-patients':'예: 월 300~600명 사이','sv-revisit':'예: 도수·운동치료 지속 내원 약 65%','sv-noncovered':'예: 재활 프로그램 포함 약 45%','sv-top-sales':'예: 도수치료, 운동치료, 수술 후 재활','sv-revenue-note':'예: 도수+운동치료 패키지, 체형교정 프로그램','sv-caution':'예: 평가 후 맞춤 운동처방, 기능 회복 중심 재활','sv-good-kw':'예: 블로그, 홈페이지, 카카오채널','sv-competitor':'예: 참고하는 재활의학과 상호 또는 블로그 URL','sv-tone':'예: 치료 과정은 좋은데 콘텐츠가 단순 도수치료 홍보처럼 보였음','sv-final-note':'예: 재활 프로그램 브랜딩, 환자 교육 콘텐츠'}},
-  '정신건강의학과':{labels:{},placeholders:{'sv-new-patients':'예: 월 250~400명 사이','sv-revisit':'예: 치료 지속 약 70%','sv-noncovered':'예: 검사·상담 포함 약 30%','sv-top-sales':'예: 불안, 우울, 불면, ADHD 검사','sv-revenue-note':'예: 성인 ADHD, 불면 클리닉, 직장인 번아웃 상담','sv-caution':'예: 낙인감 없이 편안하게 방문할 수 있는 분위기','sv-good-kw':'예: 블로그, 홈페이지, 카카오채널','sv-competitor':'예: 참고하는 정신건강의학과 상호 또는 블로그 주소','sv-tone':'예: 자극적이지 않게 증상 정보를 전달하는 방식이 어려웠음','sv-final-note':'예: 원장님 칼럼, 직장인 정신건강 캠페인'}},
-  '정형외과':{labels:{},placeholders:{'sv-new-patients':'예: 월 350~700명 사이','sv-revisit':'예: 검사 후 주사·재활 연결 약 55%','sv-noncovered':'예: 도수·체외충격파 포함 약 40%','sv-top-sales':'예: 무릎통증, 어깨통증, 체외충격파','sv-revenue-note':'예: 도수치료, 체외충격파, 관절 주사','sv-caution':'예: 부위별 원인 감별, 수술 필요 여부를 신중히 판단하는 점','sv-good-kw':'예: 홈페이지, 블로그, 카카오채널','sv-competitor':'예: 인근 정형외과 상호 또는 블로그 주소','sv-tone':'예: 통증 부위별 콘텐츠는 많지만 병원 강점이 잘 안 드러났음','sv-final-note':'예: 스포츠 손상 콘텐츠, 지역 통증 캠페인'}},
-  '치과':{labels:{},placeholders:{'sv-new-patients':'예: 월 250~450명 사이','sv-revisit':'예: 검진 후 치료계획 연결 약 55%','sv-noncovered':'예: 임플란트·교정 포함 약 50%','sv-top-sales':'예: 임플란트, 치아교정, 심미보철','sv-revenue-note':'예: 임플란트, 투명교정, 라미네이트','sv-caution':'예: 통증 부담을 줄이는 설명, 치료계획을 자세히 안내하는 점','sv-good-kw':'예: 블로그, 홈페이지, 네이버 플레이스','sv-competitor':'예: 참고하는 치과 상호 또는 블로그 주소','sv-tone':'예: 가격 비교 문의가 많아 진료 철학을 전달하기 어려웠음','sv-final-note':'예: 임플란트 브랜딩, 교정 상담 콘텐츠'}},
-  '통증의학과':{labels:{},placeholders:{'sv-new-patients':'예: 월 300~600명 사이','sv-revisit':'예: 주사 후 경과 확인 약 55%','sv-noncovered':'예: 비급여 통증 시술 약 45%','sv-top-sales':'예: 신경차단술, 프롤로주사, 대상포진통증','sv-revenue-note':'예: 신경차단술, 초음파 유도 주사, 만성통증 관리','sv-caution':'예: 통증 원인을 확인한 뒤 치료를 선택하는 점','sv-good-kw':'예: 블로그, 홈페이지, 카카오채널','sv-competitor':'예: 인근 통증의학과 블로그 주소 또는 상호','sv-tone':'예: 시술 효과를 과장하지 않으면서 필요성을 설명하기 어려웠음','sv-final-note':'예: 만성통증 클리닉 브랜딩, 원장님 설명 콘텐츠'}},
-  '피부과':{labels:{},placeholders:{'sv-new-patients':'예: 월 250~500명 사이','sv-revisit':'예: 관리/패키지 재방문 약 50%','sv-noncovered':'예: 미용 시술 포함 약 70%','sv-top-sales':'예: 여드름, 리프팅, 색소레이저','sv-revenue-note':'예: 리프팅, 색소 패키지, 여드름 흉터 치료','sv-caution':'예: 피부 타입별 상담, 장비명, 자연스러운 개선 방향','sv-good-kw':'예: 인스타그램, 블로그, 카카오채널','sv-competitor':'예: 참고하는 피부과 인스타그램 또는 블로그 URL','sv-tone':'예: 가격 이벤트 위주로 보여서 전문성이 약해 보였음','sv-final-note':'예: 리프팅 캠페인, 원장님 피부 칼럼'}},
-  '한방병원':{labels:{},placeholders:{'sv-new-patients':'예: 월 300~600명 사이','sv-revisit':'예: 입원/외래 재방문 약 60%','sv-noncovered':'예: 한약·추나·재활 포함 약 45%','sv-top-sales':'예: 교통사고 치료, 추나, 입원 재활','sv-revenue-note':'예: 교통사고 후유증, 재활치료, 한약 프로그램','sv-caution':'예: 한방·재활 협진, 입원 치료 환경, 체질별 상담','sv-good-kw':'예: 블로그, 홈페이지, 카카오채널','sv-competitor':'예: 참고하는 한방병원 상호 또는 블로그 주소','sv-tone':'예: 치료 범위가 넓어 핵심 진료가 흐려지는 점이 어려웠음','sv-final-note':'예: 교통사고 치료 캠페인, 입원 재활 콘텐츠'}},
-  '한의원':{labels:{},placeholders:{'sv-new-patients':'예: 월 250~450명 사이','sv-revisit':'예: 한약 재처방·추나 반복 내원 약 55%','sv-noncovered':'예: 한약·약침 포함 약 50%','sv-top-sales':'예: 추나, 약침, 다이어트 한약','sv-revenue-note':'예: 성장한약, 산후보약, 다이어트 한약','sv-caution':'예: 체질별 상담, 생활습관까지 함께 보는 점','sv-good-kw':'예: 블로그, 카카오채널, 지역 커뮤니티','sv-competitor':'예: 참고하는 한의원 상호 또는 블로그 주소','sv-tone':'예: 직접 블로그를 썼지만 한방 설명을 쉽게 풀기 어려웠음','sv-final-note':'예: 성장한약 캠페인, 원장님 건강 칼럼'}}
+  '가정의학과':{labels:{},placeholders:{'sv-new-patients':'예: 월 250~450명 사이','sv-revisit':'예: 만성질환/검진 후 재방문 약 50%','sv-noncovered':'예: 비만관리·수액 포함 약 35%','sv-top-sales':'예: 건강검진, 비만관리, 수액치료','sv-revenue-note':'예: 비만클리닉, 영양수액, 만성질환 관리','sv-caution':'예: 생활습관까지 함께 관리하는 주치의 느낌, 과잉검사 없는 상담','sv-good-kw':'예: 카카오채널, 블로그, 지역 맘카페','sv-competitor':'예: 인근 가정의학과 상호 또는 건강검진 블로그 URL','sv-tone':'예: 대행 원고가 병원 색을 잘 담지 못했음','sv-final-note':'예: 직접 쓰기엔 시간이 부족했음, 내부에서 꾸준히 운영하기 어려웠음'}},
+  '내과':{labels:{},placeholders:{'sv-new-patients':'예: 월 300~600명 사이','sv-revisit':'예: 검사 결과 상담 포함 약 60%','sv-noncovered':'예: 검진·수액·내시경 포함 약 35%','sv-top-sales':'예: 건강검진, 위내시경, 수액치료','sv-revenue-note':'예: 수면내시경, 건강검진, 만성질환 관리','sv-caution':'예: 검사 필요성을 쉽게 설명하는 점, 결과 상담을 꼼꼼히 하는 점','sv-good-kw':'예: 블로그, 홈페이지, 카카오채널','sv-competitor':'예: 인근 내과 상호, 검진센터 블로그 URL','sv-tone':'예: 대행 원고가 병원 색을 잘 담지 못했음','sv-final-note':'예: 직접 쓰기엔 시간이 부족했음, 내부에서 꾸준히 운영하기 어려웠음'}},
+  '산부인과':{labels:{},placeholders:{'sv-new-patients':'예: 월 250~450명 사이','sv-revisit':'예: 검사 후 관리 포함 약 50%','sv-noncovered':'예: 여성검진·시술 포함 약 45%','sv-top-sales':'예: 여성검진, 질염, 피임 상담','sv-revenue-note':'예: 여성검진, HPV 검사, 갱년기 관리','sv-caution':'예: 편안하게 상담할 수 있는 분위기, 민감한 고민을 배려하는 진료','sv-good-kw':'예: 블로그, 홈페이지, 인스타그램','sv-competitor':'예: 참고하는 여성의원 상호 또는 블로그 주소','sv-tone':'예: 대행 원고가 병원 색을 잘 담지 못했음','sv-final-note':'예: 직접 쓰기엔 시간이 부족했음, 내부에서 꾸준히 운영하기 어려웠음'}},
+  '성형외과':{labels:{},placeholders:{'sv-new-patients':'예: 월 250~450명 사이','sv-revisit':'예: 상담 후 재상담 약 40%','sv-noncovered':'예: 수술·시술 상담 대부분','sv-top-sales':'예: 눈성형, 코성형, 리프팅','sv-revenue-note':'예: 눈 재수술, 자연스러운 코성형, 안면거상','sv-caution':'예: 자연스러움, 안전한 상담, 원장님 미감과 진단 기준','sv-good-kw':'예: 인스타그램, 블로그, 유튜브 쇼츠','sv-competitor':'예: 레퍼런스 성형외과 인스타그램 또는 블로그 URL','sv-tone':'예: 대행 원고가 병원 색을 잘 담지 못했음','sv-final-note':'예: 직접 쓰기엔 시간이 부족했음, 내부에서 꾸준히 운영하기 어려웠음'}},
+  '신경외과':{labels:{},placeholders:{'sv-new-patients':'예: 월 300~600명 사이','sv-revisit':'예: 검사 후 치료 연결 약 60%','sv-noncovered':'예: 도수·주사치료 포함 약 40%','sv-top-sales':'예: 허리디스크, 목디스크, 신경차단술','sv-revenue-note':'예: 신경차단술, 도수치료, 재활치료','sv-caution':'예: 수술부터 권하지 않고 원인을 먼저 확인하는 점','sv-good-kw':'예: 홈페이지, 블로그, 카카오채널','sv-competitor':'예: 인근 신경외과 블로그 주소 또는 상호','sv-tone':'예: 대행 원고가 병원 색을 잘 담지 못했음','sv-final-note':'예: 직접 쓰기엔 시간이 부족했음, 내부에서 꾸준히 운영하기 어려웠음'}},
+  '안과':{labels:{},placeholders:{'sv-new-patients':'예: 월 250~500명 사이','sv-revisit':'예: 검사 후 처방/수술 상담 약 50%','sv-noncovered':'예: 드림렌즈·시력교정 포함 약 35%','sv-top-sales':'예: 안구건조증, 백내장, 드림렌즈','sv-revenue-note':'예: 드림렌즈, 백내장 검사, 시력교정 상담','sv-caution':'예: 검사 장비, 정확한 설명, 아이 눈 관리 경험','sv-good-kw':'예: 블로그, 홈페이지, 네이버 플레이스','sv-competitor':'예: 참고하는 안과 상호 또는 드림렌즈 블로그 URL','sv-tone':'예: 대행 원고가 병원 색을 잘 담지 못했음','sv-final-note':'예: 직접 쓰기엔 시간이 부족했음, 내부에서 꾸준히 운영하기 어려웠음'}},
+  '여성의원':{labels:{},placeholders:{'sv-new-patients':'예: 월 250~450명 사이','sv-revisit':'예: 검사 후 관리 포함 약 50%','sv-noncovered':'예: 여성검진·시술 포함 약 45%','sv-top-sales':'예: 여성검진, 질염, 피임 상담','sv-revenue-note':'예: 여성검진, HPV 검사, 갱년기 관리','sv-caution':'예: 민감한 고민을 편하게 말할 수 있는 분위기','sv-good-kw':'예: 블로그, 홈페이지, 인스타그램','sv-competitor':'예: 참고하는 여성의원 상호 또는 블로그 주소','sv-tone':'예: 대행 원고가 병원 색을 잘 담지 못했음','sv-final-note':'예: 직접 쓰기엔 시간이 부족했음, 내부에서 꾸준히 운영하기 어려웠음'}},
+  '재활의학과':{labels:{},placeholders:{'sv-new-patients':'예: 월 300~600명 사이','sv-revisit':'예: 도수·운동치료 지속 내원 약 65%','sv-noncovered':'예: 재활 프로그램 포함 약 45%','sv-top-sales':'예: 도수치료, 운동치료, 수술 후 재활','sv-revenue-note':'예: 도수+운동치료 패키지, 체형교정 프로그램','sv-caution':'예: 평가 후 맞춤 운동처방, 기능 회복 중심 재활','sv-good-kw':'예: 블로그, 홈페이지, 카카오채널','sv-competitor':'예: 참고하는 재활의학과 상호 또는 블로그 URL','sv-tone':'예: 대행 원고가 병원 색을 잘 담지 못했음','sv-final-note':'예: 직접 쓰기엔 시간이 부족했음, 내부에서 꾸준히 운영하기 어려웠음'}},
+  '정신건강의학과':{labels:{},placeholders:{'sv-new-patients':'예: 월 250~400명 사이','sv-revisit':'예: 치료 지속 약 70%','sv-noncovered':'예: 검사·상담 포함 약 30%','sv-top-sales':'예: 불안, 우울, 불면, ADHD 검사','sv-revenue-note':'예: 성인 ADHD, 불면 클리닉, 직장인 번아웃 상담','sv-caution':'예: 낙인감 없이 편안하게 방문할 수 있는 분위기','sv-good-kw':'예: 블로그, 홈페이지, 카카오채널','sv-competitor':'예: 참고하는 정신건강의학과 상호 또는 블로그 주소','sv-tone':'예: 대행 원고가 병원 색을 잘 담지 못했음','sv-final-note':'예: 직접 쓰기엔 시간이 부족했음, 내부에서 꾸준히 운영하기 어려웠음'}},
+  '정형외과':{labels:{},placeholders:{'sv-new-patients':'예: 월 350~700명 사이','sv-revisit':'예: 검사 후 주사·재활 연결 약 55%','sv-noncovered':'예: 도수·체외충격파 포함 약 40%','sv-top-sales':'예: 무릎통증, 어깨통증, 체외충격파','sv-revenue-note':'예: 도수치료, 체외충격파, 관절 주사','sv-caution':'예: 부위별 원인 감별, 수술 필요 여부를 신중히 판단하는 점','sv-good-kw':'예: 홈페이지, 블로그, 카카오채널','sv-competitor':'예: 인근 정형외과 상호 또는 블로그 주소','sv-tone':'예: 대행 원고가 병원 색을 잘 담지 못했음','sv-final-note':'예: 직접 쓰기엔 시간이 부족했음, 내부에서 꾸준히 운영하기 어려웠음'}},
+  '치과':{labels:{},placeholders:{'sv-new-patients':'예: 월 250~450명 사이','sv-revisit':'예: 검진 후 치료계획 연결 약 55%','sv-noncovered':'예: 임플란트·교정 포함 약 50%','sv-top-sales':'예: 임플란트, 치아교정, 심미보철','sv-revenue-note':'예: 임플란트, 투명교정, 라미네이트','sv-caution':'예: 통증 부담을 줄이는 설명, 치료계획을 자세히 안내하는 점','sv-good-kw':'예: 블로그, 홈페이지, 네이버 플레이스','sv-competitor':'예: 참고하는 치과 상호 또는 블로그 주소','sv-tone':'예: 대행 원고가 병원 색을 잘 담지 못했음','sv-final-note':'예: 직접 쓰기엔 시간이 부족했음, 내부에서 꾸준히 운영하기 어려웠음'}},
+  '통증의학과':{labels:{},placeholders:{'sv-new-patients':'예: 월 300~600명 사이','sv-revisit':'예: 주사 후 경과 확인 약 55%','sv-noncovered':'예: 비급여 통증 시술 약 45%','sv-top-sales':'예: 신경차단술, 프롤로주사, 대상포진통증','sv-revenue-note':'예: 신경차단술, 초음파 유도 주사, 만성통증 관리','sv-caution':'예: 통증 원인을 확인한 뒤 치료를 선택하는 점','sv-good-kw':'예: 블로그, 홈페이지, 카카오채널','sv-competitor':'예: 인근 통증의학과 블로그 주소 또는 상호','sv-tone':'예: 대행 원고가 병원 색을 잘 담지 못했음','sv-final-note':'예: 직접 쓰기엔 시간이 부족했음, 내부에서 꾸준히 운영하기 어려웠음'}},
+  '피부과':{labels:{},placeholders:{'sv-new-patients':'예: 월 250~500명 사이','sv-revisit':'예: 관리/패키지 재방문 약 50%','sv-noncovered':'예: 미용 시술 포함 약 70%','sv-top-sales':'예: 여드름, 리프팅, 색소레이저','sv-revenue-note':'예: 리프팅, 색소 패키지, 여드름 흉터 치료','sv-caution':'예: 피부 타입별 상담, 장비명, 자연스러운 개선 방향','sv-good-kw':'예: 인스타그램, 블로그, 카카오채널','sv-competitor':'예: 참고하는 피부과 인스타그램 또는 블로그 URL','sv-tone':'예: 대행 원고가 병원 색을 잘 담지 못했음','sv-final-note':'예: 직접 쓰기엔 시간이 부족했음, 내부에서 꾸준히 운영하기 어려웠음'}},
+  '한방병원':{labels:{},placeholders:{'sv-new-patients':'예: 월 300~600명 사이','sv-revisit':'예: 입원/외래 재방문 약 60%','sv-noncovered':'예: 한약·추나·재활 포함 약 45%','sv-top-sales':'예: 교통사고 치료, 추나, 입원 재활','sv-revenue-note':'예: 교통사고 후유증, 재활치료, 한약 프로그램','sv-caution':'예: 한방·재활 협진, 입원 치료 환경, 체질별 상담','sv-good-kw':'예: 블로그, 홈페이지, 카카오채널','sv-competitor':'예: 참고하는 한방병원 상호 또는 블로그 주소','sv-tone':'예: 대행 원고가 병원 색을 잘 담지 못했음','sv-final-note':'예: 직접 쓰기엔 시간이 부족했음, 내부에서 꾸준히 운영하기 어려웠음'}},
+  '한의원':{labels:{},placeholders:{'sv-new-patients':'예: 월 250~450명 사이','sv-revisit':'예: 한약 재처방·추나 반복 내원 약 55%','sv-noncovered':'예: 한약·약침 포함 약 50%','sv-top-sales':'예: 추나, 약침, 다이어트 한약','sv-revenue-note':'예: 성장한약, 산후보약, 다이어트 한약','sv-caution':'예: 체질별 상담, 생활습관까지 함께 보는 점','sv-good-kw':'예: 블로그, 카카오채널, 지역 커뮤니티','sv-competitor':'예: 참고하는 한의원 상호 또는 블로그 주소','sv-tone':'예: 대행 원고가 병원 색을 잘 담지 못했음','sv-final-note':'예: 직접 쓰기엔 시간이 부족했음, 내부에서 꾸준히 운영하기 어려웠음'}}
 };
 ['기타'].forEach(function(k){SURVEY_DEPT_PRESETS[k]=SURVEY_DEPT_DEFAULT;});
 var SURVEY_BASE_UI=null;
@@ -2162,7 +2163,7 @@ function updateSurveyConditionalFields(){
   var channel=document.getElementById('sv-channels');
   var channelEtc=document.getElementById('sv-good-kw-wrap');
   var future=document.getElementById('sv-urgent');
-  var futureEtc=document.getElementById('sv-final-note-wrap');
+  var futureEtc=document.getElementById('sv-future-other-wrap');
   var showTypeEtc=type&&type.value==='기타';
   var showChannelEtc=channel&&channel.value==='기타';
   var showFutureEtc=future&&future.value==='기타';
@@ -2171,7 +2172,7 @@ function updateSurveyConditionalFields(){
   if(futureEtc)futureEtc.style.display=showFutureEtc?'block':'none';
   if(!showTypeEtc){var typeInput=document.getElementById('sv-type-other');if(typeInput)typeInput.value='';}
   if(!showChannelEtc){var channelInput=document.getElementById('sv-good-kw');if(channelInput)channelInput.value='';}
-  if(!showFutureEtc){var futureInput=document.getElementById('sv-final-note');if(futureInput)futureInput.value='';}
+  if(!showFutureEtc){var futureInput=document.getElementById('sv-future-other');if(futureInput)futureInput.value='';}
 }
 function showSurveyIntroOnce(){
   if(surveyIntroSeen)return;
@@ -2221,6 +2222,7 @@ function collectSurveyAnswer(){
   };
   surveyFieldMap.forEach(function(item){answer[item[1].replace('sv-','')]=surveyVal(item[1]);});
   if(surveyVal('sv-type')!=='기타')answer['type-other']='';
+  if(surveyVal('sv-urgent')!=='기타')answer['future-other']='';
   answer.summary=buildSurveySummary(false);
   return answer;
 }
@@ -2235,6 +2237,8 @@ function buildSurveySummary(showStatus){
   surveyFieldMap.forEach(function(item){
     if(item[1]==='sv-type-other'&&surveyVal('sv-type')!=='기타')return;
     if(item[1]==='sv-type-other'&&surveyVal(item[1])==='-')return;
+    if(item[1]==='sv-future-other'&&surveyVal('sv-urgent')!=='기타')return;
+    if(item[1]==='sv-future-other'&&surveyVal(item[1])==='-')return;
     lines.push('- '+currentSurveyLabel(item)+': '+surveyVal(item[1]));
   });
   var summary=lines.join('\n');
@@ -4330,5 +4334,6 @@ initSync();
 </script>
 </body>
 </html>
+
 
 
