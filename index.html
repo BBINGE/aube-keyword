@@ -312,9 +312,9 @@
   .brief-example-tab.active{background:var(--accent);border-color:var(--accent);color:#fff;}
   /* ===== 직원용 작업 보드 ===== */
   #page-staff{max-width:1180px;}
-  .staff-toolbar{display:grid;grid-template-columns:1.2fr .7fr auto auto;gap:10px;align-items:end;margin-bottom:14px;}
-  .staff-board{display:grid;grid-template-columns:320px minmax(0,1fr);gap:16px;align-items:start;}
-  .staff-client-panel{position:sticky;top:74px;display:flex;flex-direction:column;gap:10px;}
+  .staff-toolbar{display:grid;grid-template-columns:1.2fr .7fr auto;gap:10px;align-items:end;margin-bottom:14px;}
+  .staff-board{display:block;}
+  .staff-client-panel{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}
   .staff-client-card{display:grid;grid-template-columns:68px 1fr;gap:13px;align-items:center;background:linear-gradient(180deg,#fff,#f8fbff);border:1px solid var(--border);border-radius:var(--radius);padding:13px;cursor:pointer;transition:transform .14s,border .14s,box-shadow .14s;}
   .staff-client-card:hover{transform:translateY(-1px);border-color:var(--accent-border);box-shadow:0 14px 30px rgba(28,45,70,.08);}
   .staff-client-card.active{border-color:var(--accent);background:var(--accent-bg);}
@@ -324,6 +324,7 @@
   .staff-card-name{font-size:14px;font-weight:750;color:var(--text);line-height:1.35;margin-bottom:4px;}
   .staff-card-meta{font-size:11px;color:var(--text3);line-height:1.5;}
   .staff-card-count{font-size:12px;color:var(--text2);font-weight:650;margin-top:6px;}
+  .staff-card-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px;}
   .staff-detail-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px;}
   .staff-detail-title{font-size:22px;font-weight:800;color:var(--text);line-height:1.35;}
   .staff-detail-sub{font-size:12px;color:var(--text3);margin-top:4px;}
@@ -332,7 +333,7 @@
   .staff-stat-k{font-size:10px;color:var(--text3);font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
   .staff-stat-v{font-size:18px;font-weight:800;color:var(--text);margin-top:2px;}
   .staff-table-wrap{overflow:auto;border:1px solid var(--border);border-radius:var(--radius);background:#fff;}
-  .staff-table{width:100%;border-collapse:separate;border-spacing:0;min-width:860px;}
+  .staff-table{width:100%;border-collapse:separate;border-spacing:0;min-width:760px;}
   .staff-table th{position:sticky;top:0;background:#f8fbff;border-bottom:1px solid var(--border);font-size:11px;color:var(--text2);font-weight:750;text-align:left;padding:9px 8px;z-index:1;}
   .staff-table td{border-bottom:1px solid var(--border);padding:7px 8px;vertical-align:top;background:#fff;}
   .staff-table tr:last-child td{border-bottom:none;}
@@ -340,16 +341,14 @@
   .staff-table textarea{min-height:38px;}
   .staff-url-cell{min-width:260px;}
   .staff-num-cell{width:92px;}
-  .staff-status-cell{width:128px;}
-  .staff-action-cell{width:156px;white-space:nowrap;}
-  .staff-row-open td{background:#fbfffd;}
-  .staff-row-private td{background:#fff8f8;}
-  .staff-row-pending td{background:#fffdf4;}
   .staff-note{font-size:11px;color:var(--text3);line-height:1.7;margin-top:8px;}
   .staff-custom-cols{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
   .staff-col-chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--border);background:var(--surface2);border-radius:999px;padding:4px 8px;font-size:11px;color:var(--text2);}
   .staff-col-chip button{border:none;background:none;color:var(--red);cursor:pointer;font-size:12px;line-height:1;}
   .staff-empty{border:1px dashed var(--border2);border-radius:var(--radius);padding:34px;text-align:center;color:var(--text3);background:rgba(255,255,255,.72);}
+  .staff-modal{position:fixed;inset:0;z-index:260;display:none;align-items:flex-start;justify-content:center;padding:74px 18px 30px;background:rgba(15,23,42,.38);backdrop-filter:blur(8px);}
+  .staff-modal.open{display:flex;}
+  .staff-modal-box{width:min(1080px,100%);max-height:calc(100vh - 104px);overflow:auto;background:rgba(255,255,255,.98);border:1px solid var(--border);border-radius:14px;box-shadow:0 30px 90px rgba(7,19,33,.24);padding:20px;}
   .brief-example{display:none;}
   .brief-example.active{display:block;}
   .brief-example-section{margin-bottom:12px;}
@@ -447,8 +446,7 @@
     .brief-panel-head{align-items:flex-start;flex-direction:column;}
     .brief-idea-drawer{top:88px;width:calc(100vw - 18px);}
     .staff-toolbar{grid-template-columns:1fr 1fr;}
-    .staff-board{grid-template-columns:1fr;}
-    .staff-client-panel{position:static;}
+    .staff-toolbar .btn-accent{grid-column:1 / -1;}
     .staff-stat-grid{grid-template-columns:1fr 1fr;}
   }
   /* v9: 디자인은 정적 토스톤 그라데이션 + 우측 하단 AUBE 로고만 유지 */
@@ -801,22 +799,23 @@
   </div>
 
   <div class="card">
-    <div class="card-title">클라이언트 추가 / 동기화</div>
+    <div class="card-title">클라이언트 작업지 생성</div>
     <div class="staff-toolbar">
       <div class="fg"><label>클라이언트명</label><input type="text" id="staff-new-client" placeholder="예: 동탄신경외과의원"/></div>
       <div class="fg"><label>목표 블로그 수</label><input type="text" id="staff-new-target" placeholder="예: 8"/></div>
       <button class="btn btn-accent" onclick="addStaffClient()">추가</button>
-      <button class="btn" onclick="syncStaffClientsFromAdmin()">관리자 클라이언트 불러오기</button>
     </div>
-    <div class="staff-note">진행률은 URL 개수가 아니라 상태가 <b>정상 열림</b>으로 체크된 행만 계산합니다. 네이버 블로그 비공개 팝업 여부는 보안상 자동 판독이 어려워, 링크 확인 후 직원이 정상/비공개를 선택하는 방식으로 설계했습니다.</div>
+    <div class="staff-note">클라이언트명과 목표 블로그 수만 입력하면 작업지가 생성됩니다. 진행률은 URL이 입력된 행 수를 기준으로 자동 계산됩니다.</div>
   </div>
 
   <div class="staff-board">
     <div class="staff-client-panel" id="staff-client-panel">
       <div class="staff-empty">등록된 클라이언트가 없습니다.</div>
     </div>
-    <div id="staff-detail">
-      <div class="staff-empty">왼쪽에서 클라이언트를 선택하거나 새 클라이언트를 추가하세요.</div>
+  </div>
+  <div class="staff-modal" id="staff-work-modal" onclick="closeStaffModal(event)">
+    <div class="staff-modal-box" id="staff-detail" onclick="event.stopPropagation()">
+      <div class="staff-empty">작업지를 불러오는 중입니다.</div>
     </div>
   </div>
 </div>
@@ -2951,7 +2950,7 @@ function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'
 // ===== 직원용 작업 보드 =====
 var staffSelectedClientId=null;
 function staffBlankItem(){
-  return {id:'r'+Date.now()+Math.floor(Math.random()*10000),title:'',url:'',volume:'',rank:'',status:'unchecked',note:'',extra:{}};
+  return {id:'r'+Date.now()+Math.floor(Math.random()*10000),title:'',url:'',volume:'',rank:'',extra:{}};
 }
 function normalizeStaffData(){
   var data=load(KEY_STAFF_WORK,[]);
@@ -2964,7 +2963,6 @@ function normalizeStaffData(){
     c.items.forEach(function(row){
       if(!row.id)row.id='r'+Date.now()+Math.floor(Math.random()*10000);
       if(!row.extra)row.extra={};
-      if(!row.status)row.status='unchecked';
     });
   });
   return data;
@@ -2974,32 +2972,44 @@ function saveStaffData(data){
 }
 function staffProgress(c){
   var target=Number(c.targetCount)||0;
-  var open=(c.items||[]).filter(function(x){return x.status==='open'&&String(x.url||'').trim();}).length;
-  var pct=target?Math.min(100,Math.round(open/target*100)):0;
-  return {open:open,target:target,pct:pct,total:(c.items||[]).length};
+  var filled=(c.items||[]).filter(function(x){return String(x.url||'').trim();}).length;
+  var pct=target?Math.min(100,Math.round(filled/target*100)):0;
+  return {filled:filled,target:target,pct:pct,total:(c.items||[]).length};
 }
 function renderStaffBoard(){
   var data=normalizeStaffData();
   if(!data.length){
     staffSelectedClientId=null;
     document.getElementById('staff-client-panel').innerHTML='<div class="staff-empty">등록된 클라이언트가 없습니다.</div>';
-    document.getElementById('staff-detail').innerHTML='<div class="staff-empty">왼쪽에서 클라이언트를 선택하거나 새 클라이언트를 추가하세요.</div>';
+    document.getElementById('staff-detail').innerHTML='<div class="staff-empty">작업지를 불러오는 중입니다.</div>';
     return;
   }
   if(!staffSelectedClientId||!data.some(function(c){return c.id===staffSelectedClientId;}))staffSelectedClientId=data[0].id;
   document.getElementById('staff-client-panel').innerHTML=data.map(function(c){
     var p=staffProgress(c);
-    return '<div class="staff-client-card '+(c.id===staffSelectedClientId?'active':'')+'" onclick="selectStaffClient(&quot;'+c.id+'&quot;)">'+
+    return '<div class="staff-client-card '+(c.id===staffSelectedClientId?'active':'')+'" onclick="openStaffWork(&quot;'+c.id+'&quot;)">'+
       '<div class="staff-donut" style="--pct:'+p.pct+'"><span>'+p.pct+'%</span></div>'+
       '<div><div class="staff-card-name">'+esc(c.name||'이름 없음')+'</div>'+
       '<div class="staff-card-meta">목표 '+p.target+'개 · 입력 '+p.total+'행</div>'+
-      '<div class="staff-card-count">정상 열림 '+p.open+' / '+p.target+'</div></div></div>';
+      '<div class="staff-card-count">URL 입력 '+p.filled+' / '+p.target+'</div>'+
+      '<div class="staff-card-actions"><button class="btn btn-sm btn-accent" onclick="event.stopPropagation();openStaffWork(&quot;'+c.id+'&quot;)">작업지 열기</button><button class="btn btn-sm btn-danger" onclick="event.stopPropagation();deleteStaffClient(&quot;'+c.id+'&quot;)">삭제</button></div></div></div>';
   }).join('');
-  renderStaffDetail();
 }
 function selectStaffClient(id){
   staffSelectedClientId=id;
   renderStaffBoard();
+}
+function openStaffWork(id){
+  staffSelectedClientId=id;
+  renderStaffBoard();
+  renderStaffDetail();
+  var modal=document.getElementById('staff-work-modal');
+  if(modal)modal.classList.add('open');
+}
+function closeStaffModal(event){
+  if(event&&event.target&&event.target.id!=='staff-work-modal')return;
+  var modal=document.getElementById('staff-work-modal');
+  if(modal)modal.classList.remove('open');
 }
 function currentStaffClient(){
   return normalizeStaffData().find(function(c){return c.id===staffSelectedClientId;})||null;
@@ -3017,22 +3027,7 @@ function addStaffClient(){
   document.getElementById('staff-new-client').value='';
   document.getElementById('staff-new-target').value='';
   renderStaffBoard();
-}
-function syncStaffClientsFromAdmin(){
-  var data=normalizeStaffData();
-  var clients=load(KEY_CLIENTS,[]).filter(function(c){return c.active!==false;});
-  var added=0;
-  clients.forEach(function(c){
-    var name=c.name||'';
-    if(!name)return;
-    if(data.some(function(x){return x.name===name;}))return;
-    data.push({id:'sc'+Date.now()+added,name:name,targetCount:0,memo:'',customCols:[],items:[staffBlankItem()]});
-    added++;
-  });
-  saveStaffData(data);
-  if(!staffSelectedClientId&&data[0])staffSelectedClientId=data[0].id;
-  renderStaffBoard();
-  alert(added?added+'개 클라이언트를 불러왔습니다.':'새로 불러올 클라이언트가 없습니다.');
+  openStaffWork(obj.id);
 }
 function renderStaffDetail(){
   var c=currentStaffClient();
@@ -3046,31 +3041,22 @@ function renderStaffDetail(){
       var v=row.extra&&row.extra[col]?row.extra[col]:'';
       return '<td><input type="text" value="'+escHtml(v)+'" oninput="updateStaffExtra(&quot;'+c.id+'&quot;,&quot;'+row.id+'&quot;,&quot;'+escHtml(col)+'&quot;,this.value)"/></td>';
     }).join('');
-    return '<tr class="staff-row-'+row.status+'">'+
+    return '<tr>'+
       '<td class="staff-num-cell">'+(idx+1)+'</td>'+
       '<td><input type="text" value="'+escHtml(row.title||'')+'" placeholder="주제/키워드" oninput="updateStaffRow(&quot;'+c.id+'&quot;,&quot;'+row.id+'&quot;,&quot;title&quot;,this.value)"/></td>'+
-      '<td class="staff-url-cell"><input type="text" value="'+escHtml(row.url||'')+'" placeholder="https://blog.naver.com/..." oninput="updateStaffRow(&quot;'+c.id+'&quot;,&quot;'+row.id+'&quot;,&quot;url&quot;,this.value)"/></td>'+
+      '<td class="staff-url-cell"><input type="text" value="'+escHtml(row.url||'')+'" placeholder="https://blog.naver.com/..." oninput="updateStaffRow(&quot;'+c.id+'&quot;,&quot;'+row.id+'&quot;,&quot;url&quot;,this.value)" onblur="renderStaffBoard();renderStaffDetail()"/></td>'+
       '<td class="staff-num-cell"><input type="text" value="'+escHtml(row.volume||'')+'" placeholder="검색량" oninput="updateStaffRow(&quot;'+c.id+'&quot;,&quot;'+row.id+'&quot;,&quot;volume&quot;,this.value)"/></td>'+
       '<td class="staff-num-cell"><input type="text" value="'+escHtml(row.rank||'')+'" placeholder="순위" oninput="updateStaffRow(&quot;'+c.id+'&quot;,&quot;'+row.id+'&quot;,&quot;rank&quot;,this.value)"/></td>'+
-      '<td class="staff-status-cell"><select onchange="updateStaffRow(&quot;'+c.id+'&quot;,&quot;'+row.id+'&quot;,&quot;status&quot;,this.value)">'+staffStatusOptions(row.status)+'</select></td>'+
       customCells+
-      '<td><textarea placeholder="메모" oninput="updateStaffRow(&quot;'+c.id+'&quot;,&quot;'+row.id+'&quot;,&quot;note&quot;,this.value)">'+esc(row.note||'')+'</textarea></td>'+
-      '<td class="staff-action-cell"><button class="btn btn-sm" onclick="openStaffUrl(&quot;'+c.id+'&quot;,&quot;'+row.id+'&quot;)">열기</button> <button class="btn btn-sm btn-danger" onclick="deleteStaffRow(&quot;'+c.id+'&quot;,&quot;'+row.id+'&quot;)">삭제</button></td>'+
     '</tr>';
   }).join('');
   el.innerHTML=
-    '<div class="card"><div class="staff-detail-head"><div><div class="staff-detail-title">'+esc(c.name)+'</div><div class="staff-detail-sub">목표 개수와 표 열은 자유롭게 바꿀 수 있습니다.</div></div><button class="btn btn-sm btn-danger" onclick="deleteStaffClient(&quot;'+c.id+'&quot;)">클라이언트 삭제</button></div>'+
-    '<div class="staff-stat-grid"><div class="staff-stat"><div class="staff-stat-k">Progress</div><div class="staff-stat-v">'+p.pct+'%</div></div><div class="staff-stat"><div class="staff-stat-k">Open URL</div><div class="staff-stat-v">'+p.open+' / '+p.target+'</div></div><div class="staff-stat"><div class="staff-stat-k">Rows</div><div class="staff-stat-v">'+p.total+'</div></div><div class="staff-stat"><div class="staff-stat-k">Private</div><div class="staff-stat-v">'+(c.items||[]).filter(function(x){return x.status==='private';}).length+'</div></div></div>'+
-    '<div class="row3"><div class="fg"><label>클라이언트명</label><input type="text" value="'+escHtml(c.name||'')+'" oninput="updateStaffClient(&quot;'+c.id+'&quot;,&quot;name&quot;,this.value)" onblur="renderStaffBoard()"/></div><div class="fg"><label>목표 블로그 수</label><input type="text" value="'+escHtml(c.targetCount||'')+'" oninput="updateStaffClient(&quot;'+c.id+'&quot;,&quot;targetCount&quot;,this.value)" onblur="renderStaffBoard()"/></div><div class="fg"><label>표 열 추가</label><div style="display:flex;gap:6px"><input type="text" id="staff-new-col" placeholder="예: 담당자"/><button class="btn" onclick="addStaffColumn(&quot;'+c.id+'&quot;)">추가</button></div></div></div>'+
-    '<div class="fg" style="margin-bottom:10px"><label>클라이언트 메모</label><textarea oninput="updateStaffClient(&quot;'+c.id+'&quot;,&quot;memo&quot;,this.value)">'+esc(c.memo||'')+'</textarea></div>'+
+    '<div class="staff-detail-head"><div><div class="staff-detail-title">'+esc(c.name)+'</div><div class="staff-detail-sub">URL 입력률 기준으로 진행률이 계산됩니다.</div></div><button class="btn btn-sm" onclick="closeStaffModal()">닫기</button></div>'+
+    '<div class="staff-stat-grid"><div class="staff-stat"><div class="staff-stat-k">Progress</div><div class="staff-stat-v">'+p.pct+'%</div></div><div class="staff-stat"><div class="staff-stat-k">URL</div><div class="staff-stat-v">'+p.filled+' / '+p.target+'</div></div><div class="staff-stat"><div class="staff-stat-k">Rows</div><div class="staff-stat-v">'+p.total+'</div></div><div class="staff-stat"><div class="staff-stat-k">Target</div><div class="staff-stat-v">'+p.target+'</div></div></div>'+
+    '<div class="row3"><div class="fg"><label>클라이언트명</label><input type="text" value="'+escHtml(c.name||'')+'" oninput="updateStaffClient(&quot;'+c.id+'&quot;,&quot;name&quot;,this.value)" onblur="renderStaffBoard();renderStaffDetail()"/></div><div class="fg"><label>목표 블로그 수</label><input type="text" value="'+escHtml(c.targetCount||'')+'" oninput="updateStaffClient(&quot;'+c.id+'&quot;,&quot;targetCount&quot;,this.value)" onblur="renderStaffBoard();renderStaffDetail()"/></div><div class="fg"><label>표 열 추가</label><div style="display:flex;gap:6px"><input type="text" id="staff-new-col" placeholder="예: 담당자"/><button class="btn" onclick="addStaffColumn(&quot;'+c.id+'&quot;)">추가</button></div></div></div>'+
     '<div class="staff-custom-cols">'+cols.map(function(col){return '<span class="staff-col-chip">'+esc(col)+' <button onclick="removeStaffColumn(&quot;'+c.id+'&quot;,&quot;'+escHtml(col)+'&quot;)">×</button></span>';}).join('')+'</div>'+
     '<div class="btn-row"><button class="btn btn-accent" onclick="addStaffRows(&quot;'+c.id+'&quot;,1)">행 추가</button><button class="btn" onclick="addStaffRows(&quot;'+c.id+'&quot;,5)">5행 추가</button><button class="btn" onclick="exportStaffCsv(&quot;'+c.id+'&quot;)">CSV 내보내기</button></div>'+
-    '<div class="staff-table-wrap"><table class="staff-table"><thead><tr><th>No</th><th>주제/키워드</th><th>URL</th><th>실제 검색량</th><th>노출 순위</th><th>열림 상태</th>'+colHeads+'<th>메모</th><th>동작</th></tr></thead><tbody>'+(rows||'<tr><td colspan="'+(8+cols.length)+'"><div class="empty">행이 없습니다.</div></td></tr>')+'</tbody></table></div>'+
-    '<div class="staff-note">열기 버튼은 URL을 새 창으로 열고 상태를 확인 중으로 바꿉니다. 네이버 비공개 URL이면 돌아와서 상태를 비공개/오류로 바꿔 주세요.</div></div>';
-}
-function staffStatusOptions(status){
-  var opts=[['unchecked','미확인'],['checking','확인 중'],['open','정상 열림'],['private','비공개/오류']];
-  return opts.map(function(o){return '<option value="'+o[0]+'" '+(status===o[0]?'selected':'')+'>'+o[1]+'</option>';}).join('');
+    '<div class="staff-table-wrap"><table class="staff-table"><thead><tr><th>No</th><th>주제/키워드</th><th>URL</th><th>실제 검색량</th><th>노출 순위</th>'+colHeads+'</tr></thead><tbody>'+(rows||'<tr><td colspan="'+(5+cols.length)+'"><div class="empty">행이 없습니다.</div></td></tr>')+'</tbody></table></div>';
 }
 function updateStaffClient(clientId,key,value){
   var data=normalizeStaffData();
@@ -3083,9 +3069,7 @@ function updateStaffRow(clientId,rowId,key,value){
   var c=data.find(function(x){return x.id===clientId;});if(!c)return;
   var row=c.items.find(function(x){return x.id===rowId;});if(!row)return;
   row[key]=value;
-  if(key==='status')row.checkedAt=new Date().toISOString();
   saveStaffData(data);
-  if(key==='status')renderStaffBoard();
 }
 function updateStaffExtra(clientId,rowId,col,value){
   var data=normalizeStaffData();
@@ -3099,7 +3083,7 @@ function addStaffRows(clientId,count){
   var data=normalizeStaffData();
   var c=data.find(function(x){return x.id===clientId;});if(!c)return;
   for(var i=0;i<count;i++)c.items.push(staffBlankItem());
-  saveStaffData(data);renderStaffBoard();
+  saveStaffData(data);renderStaffBoard();renderStaffDetail();
 }
 function deleteStaffRow(clientId,rowId){
   if(!confirm('이 행을 삭제할까요?'))return;
@@ -3112,7 +3096,7 @@ function deleteStaffClient(clientId){
   if(!confirm('이 클라이언트 작업표를 삭제할까요?'))return;
   var data=normalizeStaffData().filter(function(c){return c.id!==clientId;});
   staffSelectedClientId=data[0]?data[0].id:null;
-  saveStaffData(data);renderStaffBoard();
+  saveStaffData(data);renderStaffBoard();closeStaffModal();
 }
 function addStaffColumn(clientId){
   var input=document.getElementById('staff-new-col');
@@ -3121,7 +3105,7 @@ function addStaffColumn(clientId){
   var data=normalizeStaffData();
   var c=data.find(function(x){return x.id===clientId;});if(!c)return;
   if(c.customCols.indexOf(name)<0)c.customCols.push(name);
-  saveStaffData(data);renderStaffBoard();
+  saveStaffData(data);renderStaffBoard();renderStaffDetail();
 }
 function removeStaffColumn(clientId,col){
   if(!confirm('이 열을 삭제할까요?'))return;
@@ -3129,24 +3113,15 @@ function removeStaffColumn(clientId,col){
   var c=data.find(function(x){return x.id===clientId;});if(!c)return;
   c.customCols=c.customCols.filter(function(x){return x!==col;});
   c.items.forEach(function(row){if(row.extra)delete row.extra[col];});
-  saveStaffData(data);renderStaffBoard();
-}
-function openStaffUrl(clientId,rowId){
-  var c=currentStaffClient();
-  if(!c||c.id!==clientId)c=normalizeStaffData().find(function(x){return x.id===clientId;});
-  var row=c&&c.items.find(function(x){return x.id===rowId;});
-  if(!row||!row.url){alert('URL을 먼저 입력해 주세요.');return;}
-  updateStaffRow(clientId,rowId,'status','checking');
-  window.open(row.url,'_blank','noopener');
+  saveStaffData(data);renderStaffBoard();renderStaffDetail();
 }
 function exportStaffCsv(clientId){
   var c=normalizeStaffData().find(function(x){return x.id===clientId;});if(!c)return;
-  var cols=['No','주제/키워드','URL','실제 검색량','노출 순위','열림 상태'].concat(c.customCols||[]).concat(['메모']);
+  var cols=['No','주제/키워드','URL','실제 검색량','노출 순위'].concat(c.customCols||[]);
   var lines=[cols];
   (c.items||[]).forEach(function(row,idx){
-    var line=[idx+1,row.title||'',row.url||'',row.volume||'',row.rank||'',row.status||''];
+    var line=[idx+1,row.title||'',row.url||'',row.volume||'',row.rank||''];
     (c.customCols||[]).forEach(function(col){line.push(row.extra&&row.extra[col]?row.extra[col]:'');});
-    line.push(row.note||'');
     lines.push(line);
   });
   var csv=lines.map(function(line){return line.map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
