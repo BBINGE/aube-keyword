@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -1788,21 +1788,21 @@ var CLAUDE_DEPTS=[
 // 환자가 실제로 검색하는 생활 언어를 질환 후보로 연결하는 증상 DB.
 // 증상은 진단명이 아니므로 상품에 직접 연결하지 않고 반드시 질환 후보를 거친다.
 var AUBE_SYMPTOMS=[
-  {id:'s1',name:'팔이 안 올라가요',vol:'high',cats:['통증','재활'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['오십견','회전근개손상','어깨통증'],note:'팔을 스스로 들기 어려운지, 다른 사람이 들어줘도 제한되는지, 외상이나 힘 빠짐이 있는지에 따라 관련 질환이 달라질 수 있습니다.'},
-  {id:'s2',name:'어깨가 밤에 더 아파요',vol:'high',cats:['통증','재활'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['회전근개손상','오십견','어깨통증'],note:'야간통은 어깨 질환에서 자주 호소되지만 통증 위치와 운동 제한 양상을 함께 확인해야 합니다.'},
-  {id:'s3',name:'목에서 팔까지 저려요',vol:'high',cats:['통증','척추','말초신경'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['목디스크','목통증','손발저림'],note:'목 움직임과 팔 저림의 관계, 감각 저하와 근력 약화 여부를 함께 확인하는 검색 의도입니다.',redFlags:'팔이나 손의 힘이 갑자기 떨어지거나 보행 이상이 동반되면 신속한 진료가 필요할 수 있습니다.'},
-  {id:'s4',name:'손이 저리고 감각이 둔해요',vol:'high',cats:['말초신경','통증'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['손목터널증후군','목디스크','손발저림'],note:'어느 손가락이 저린지, 밤에 심한지, 목 통증이 동반되는지가 질환 후보를 좁히는 단서가 됩니다.'},
+  {id:'s1',name:'팔이 안 올라가요',vol:'high',cats:['통증','재활'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['오십견','회전근개손상'],note:'팔을 스스로 들기 어려운지, 다른 사람이 들어줘도 제한되는지, 외상이나 힘 빠짐이 있는지에 따라 관련 질환이 달라질 수 있습니다.'},
+  {id:'s2',name:'어깨가 밤에 더 아파요',vol:'high',cats:['통증','재활'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['회전근개손상','오십견'],note:'야간통은 어깨 질환에서 자주 호소되지만 통증 위치와 운동 제한 양상을 함께 확인해야 합니다.'},
+  {id:'s3',name:'목에서 팔까지 저려요',vol:'high',cats:['통증','척추','말초신경'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['목디스크','경추증'],note:'목 움직임과 팔 저림의 관계, 감각 저하와 근력 약화 여부를 함께 확인하는 검색 의도입니다.',redFlags:'팔이나 손의 힘이 갑자기 떨어지거나 보행 이상이 동반되면 신속한 진료가 필요할 수 있습니다.'},
+  {id:'s4',name:'손이 저리고 감각이 둔해요',vol:'high',cats:['말초신경','통증'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['손목터널증후군','목디스크','팔꿈치터널증후군'],note:'어느 손가락이 저린지, 밤에 심한지, 목 통증이 동반되는지가 질환 후보를 좁히는 단서가 됩니다.'},
   {id:'s5',name:'허리가 찌릿하고 다리까지 당겨요',vol:'high',cats:['통증','척추','말초신경'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['허리디스크','좌골신경통','이상근증후군'],note:'허리에서 엉덩이·다리로 이어지는 통증의 경로와 자세에 따른 변화를 함께 확인해야 합니다.',redFlags:'다리 마비, 대소변 장애, 회음부 감각 저하가 있으면 즉시 진료가 필요한 위험 신호일 수 있습니다.'},
-  {id:'s6',name:'조금 걸으면 다리가 저려요',vol:'high',cats:['척추','통증','말초신경'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['척추관협착증','허리디스크','손발저림'],note:'걷다가 쉬면 나아지는지, 허리를 굽힐 때 편한지, 혈관 질환 위험이 있는지를 구분하는 콘텐츠에 적합합니다.'},
-  {id:'s7',name:'아침에 발바닥이 아파요',vol:'high',cats:['재활','통증'],types:['정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['족저근막염','발목통증'],note:'아침 첫발 통증, 오래 서 있는 생활, 최근 운동량 변화와 신발 환경을 함께 살펴보는 검색 의도입니다.'},
-  {id:'s8',name:'계단에서 무릎이 아파요',vol:'high',cats:['통증','재활'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['무릎통증','퇴행성관절염'],note:'계단을 오를 때와 내려갈 때, 붓기·잠김·외상 여부에 따라 원인 후보가 달라질 수 있습니다.'},
-  {id:'s9',name:'날개뼈 안쪽이 아파요',vol:'med',cats:['통증','척추'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['견갑통증','등통증','목디스크'],note:'오래 앉는 자세와 목 움직임, 팔 저림 동반 여부를 함께 확인하는 생활 언어형 검색어입니다.'},
-  {id:'s10',name:'교통사고 뒤 목과 허리가 뻐근해요',vol:'med',cats:['교통사고','통증'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['교통사고후유증','교통사고 목통증','교통사고 허리통증'],note:'사고 시점, 충격 방향, 두통·어지럼·저림 같은 동반 증상과 검사 필요성을 함께 설명하는 검색 의도입니다.'},
+  {id:'s6',name:'조금 걸으면 다리가 저려요',vol:'high',cats:['척추','통증','말초신경'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['척추관협착증','허리디스크'],note:'걷다가 쉬면 나아지는지, 허리를 굽힐 때 편한지, 혈관 질환 위험이 있는지를 구분하는 콘텐츠에 적합합니다.'},
+  {id:'s7',name:'아침에 발바닥이 아파요',vol:'high',cats:['재활','통증'],types:['정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['족저근막염','발목터널증후군'],note:'아침 첫발 통증, 오래 서 있는 생활, 최근 운동량 변화와 신발 환경을 함께 살펴보는 검색 의도입니다.'},
+  {id:'s8',name:'계단에서 무릎이 아파요',vol:'high',cats:['통증','재활'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['퇴행성관절염'],note:'계단을 오를 때와 내려갈 때, 붓기·잠김·외상 여부에 따라 원인 후보가 달라질 수 있습니다.'},
+  {id:'s9',name:'날개뼈 안쪽이 아파요',vol:'med',cats:['통증','척추'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['근막통증','목디스크','경추증'],note:'오래 앉는 자세와 목 움직임, 팔 저림 동반 여부를 함께 확인하는 생활 언어형 검색어입니다.'},
+  {id:'s10',name:'교통사고 뒤 목과 허리가 뻐근해요',vol:'med',cats:['교통사고','통증'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['교통사고후유증','교통사고 후유증 한방','교통사고 후유증 신경외과'],note:'사고 시점, 충격 방향, 두통·어지럼·저림 같은 동반 증상과 검사 필요성을 함께 설명하는 검색 의도입니다.'},
   {id:'s11',name:'가슴이 답답하고 두근거려요',vol:'high',cats:['공황/불면','내과'],types:['한의원','한방병원','내과'],diseases:['화병','공황장애','역류성식도염'],note:'정서적 긴장, 식사와의 관계, 지속 시간 등 여러 가능성을 열어두고 진료 방향을 안내해야 하는 증상입니다.',redFlags:'가슴 통증, 호흡곤란, 식은땀, 실신, 턱·팔로 퍼지는 통증이 있으면 한방 상품을 연결하기 전에 응급·심혈관 평가가 우선될 수 있습니다.',manualProduct:true},
   {id:'s12',name:'잠들기 어렵고 자주 깨요',vol:'high',cats:['공황/불면'],types:['한의원','한방병원'],diseases:['불면증','화병'],note:'잠드는 데 걸리는 시간, 자주 깨는지, 기상 시간과 낮 기능, 카페인·복용약을 함께 살피는 검색 의도입니다.'},
   {id:'s13',name:'소화가 안 되고 더부룩해요',vol:'high',cats:['소아성장','내과'],types:['한의원','한방병원','내과'],diseases:['만성소화불량','과민성대장증후군','위염'],note:'식후 불편감, 복통·배변 변화, 체중 감소와 출혈 같은 경고 증상을 구분해야 합니다.',redFlags:'원인 모를 체중 감소, 반복되는 구토, 검은 변이나 혈변, 삼킴곤란이 있으면 검사가 우선될 수 있습니다.'},
-  {id:'s14',name:'머리가 자주 아프고 목이 뻣뻣해요',vol:'high',cats:['두통/어지럼','통증'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['긴장성두통','경추성두통','목통증'],note:'두통 위치와 지속 시간, 목 움직임, 빛·소리 민감도, 신경학적 증상을 함께 확인해야 합니다.',redFlags:'갑자기 시작된 극심한 두통, 마비·말 어눌함·의식 변화, 발열과 목 경직이 동반되면 즉시 진료가 필요할 수 있습니다.'},
-  {id:'s15',name:'몸이 계속 피곤하고 무거워요',vol:'high',cats:['통증','내과'],types:['한의원','한방병원','내과'],diseases:['만성피로','철결핍성빈혈','갑상선기능저하증'],note:'수면, 스트레스, 식사, 월경, 체중 변화, 복용약과 검사 이력을 함께 살피는 폭넓은 검색 의도입니다.'}
+  {id:'s14',name:'머리가 자주 아프고 목이 뻣뻣해요',vol:'high',cats:['두통/어지럼','통증'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['긴장성두통','경추성두통','목디스크'],note:'두통 위치와 지속 시간, 목 움직임, 빛·소리 민감도, 신경학적 증상을 함께 확인해야 합니다.',redFlags:'갑자기 시작된 극심한 두통, 마비·말 어눌함·의식 변화, 발열과 목 경직이 동반되면 즉시 진료가 필요할 수 있습니다.'},
+  {id:'s15',name:'몸이 계속 피곤하고 무거워요',vol:'high',cats:['통증','내과'],types:['한의원','한방병원','내과'],diseases:['철결핍성빈혈','갑상선기능저하증'],note:'수면, 스트레스, 식사, 월경, 체중 변화, 복용약과 검사 이력을 함께 살피는 폭넓은 검색 의도입니다.'}
 ];
 
 // 네이버 검색광고 키워드 도구 실측값: 2026-06-18 다운로드, PC+모바일 월간검색수 합계.
@@ -2698,7 +2698,10 @@ function parseBrief(){
   var resultEl=document.getElementById('brief-result');
   if(!raw){parsedEl.innerHTML='';resultEl.innerHTML='<div class="empty">키워드 조합을 붙여넣고 근거 자료 불러오기를 눌러주세요.</div>';return;}
 
-  var diseases=getAllDiseases();
+  var allTopics=getAllDiseases();
+  var symptomHit=findObservedSymptomInput(raw);
+  var foundSymptomTopics=findInText(raw,allTopics.filter(function(d){return topicKind(d)==='symptom';}),'name');
+  var diseases=allTopics.filter(function(d){return topicKind(d)==='disease';});
   var products=getAllProducts();
   var foundDis=findInText(raw,diseases,'name');
   var directProd=findInText(raw,products,'name');
@@ -2711,17 +2714,31 @@ function parseBrief(){
   // 파싱 칩 표시
   var chips='';
   if(inferredTypes.length){inferredTypes.forEach(function(t){chips+='<span class="parsed-chip hit">과목 <b>'+esc(t)+'</b></span>';});}
-  if(foundDis.length){foundDis.forEach(function(d){chips+='<span class="parsed-chip hit">질환 <b>'+esc(d.name)+'</b></span>';});}
+  if(symptomHit){chips+='<span class="parsed-chip">증상 검색어 <b>'+esc(symptomHit.query.text)+'</b></span>';}
+  foundSymptomTopics.forEach(function(d){if(!symptomHit||symptomHit.query.text!==d.name)chips+='<span class="parsed-chip">증상 <b>'+esc(d.name)+'</b></span>';});
+  if(foundDis.length){foundDis.forEach(function(d){chips+='<span class="parsed-chip hit">질환 <b>'+esc(d.name)+'</b> · '+esc(diseaseVolumeLabel(d))+'</span>';});}
   if(foundProd.length){foundProd.forEach(function(p){chips+='<span class="parsed-chip hit">연결 시술 <b>'+esc(productDisplayName(p))+'</b></span>';});}
-  if(!foundDis.length&&!foundProd.length){chips='<span class="parsed-chip miss">DB에서 일치하는 질환·시술을 찾지 못했습니다</span>';}
+  if(!foundDis.length&&!foundProd.length&&!symptomHit&&!foundSymptomTopics.length){chips='<span class="parsed-chip miss">DB에서 일치하는 질환·증상·시술을 찾지 못했습니다</span>';}
   parsedEl.innerHTML=chips;
 
   // 결과 카드
   var html='';
-  if(!foundDis.length&&!foundProd.length){
+  if(!foundDis.length&&!foundProd.length&&!symptomHit&&!foundSymptomTopics.length){
     html='<div class="empty">입력 문장에서 DB에 등록된 질환·시술명을 찾지 못했습니다.<br>질환명·시술명 일부를 더 구체적으로 입력하거나, 관리자 DB에 해당 항목이 있는지 확인하세요.</div>';
     resultEl.innerHTML=html;return;
   }
+
+  if(symptomHit){
+    var symptomCandidates=symptomDiseaseCandidates(symptomHit.symptom);
+    html+='<div class="adv warn"><div class="adv-title">증상 검색어가 감지되었습니다</div><div class="adv-msg"><b>'+esc(symptomHit.query.text)+'</b>은 질환명이 아니라 환자가 검색하는 증상 표현입니다. '+
+      (foundDis.length?'함께 입력된 질환 <b>'+foundDis.map(function(d){return esc(d.name);}).join(', ')+'</b>을 기준으로 정론 자료를 불러옵니다.':'키워드 마이닝에서 질환 후보를 하나 선택한 뒤 <b>증상 검색어 + 질환명</b>을 함께 복사해 주세요.')+
+      (symptomCandidates.length?'<br><br><b>연결 가능 질환 후보:</b> '+symptomCandidates.map(function(d){return esc(d.name);}).join(', '):'')+
+      '</div></div>';
+  }else if(foundSymptomTopics.length&&!foundDis.length){
+    html+='<div class="adv warn"><div class="adv-title">증상명만 입력되었습니다</div><div class="adv-msg"><b>'+foundSymptomTopics.map(function(d){return esc(d.name);}).join(', ')+'</b>은 질환 확정값이 아닙니다. 키워드 마이닝에서 관련 질환을 선택한 뒤 질환명을 함께 붙여넣어 주세요.</div></div>';
+  }
+
+  if(!foundDis.length&&!foundProd.length){resultEl.innerHTML=html;return;}
 
   if(foundDis.length&&foundProd.length){
     html+='<div class="brief-idea-bar">';
@@ -2872,9 +2889,10 @@ function renderBriefComboCard(disease,product){
 function renderBriefCard(kind,item){
   var blocks=parseNoteBlocks(item.note);
   var srcBadge=item.src==='claude'?'Claude 기본 DB':'커스텀 입력';
+  var volumeBadge=kind==='질환'?'<span class="verify-flag">'+esc(diseaseVolumeLabel(item))+'</span>':'';
   var h='<div class="brief-card">';
   h+='<div class="brief-card-head"><div><div class="brief-card-kind">'+kind+'</div><div class="brief-card-name">'+esc(item.name)+'</div></div>';
-  h+='<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end"><button class="btn btn-sm btn-accent" onclick="openBriefSingleIdeaDrawer(&quot;'+escAttr(kind)+'&quot;,&quot;'+escAttr(item.id)+'&quot;)">원고 예시안</button><span class="verify-flag">검수 전 · '+srcBadge+'</span></div></div>';
+  h+='<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end">'+volumeBadge+'<button class="btn btn-sm btn-accent" onclick="openBriefSingleIdeaDrawer(&quot;'+escAttr(kind)+'&quot;,&quot;'+escAttr(item.id)+'&quot;)">원고 예시안</button><span class="verify-flag">검수 전 · '+srcBadge+'</span></div></div>';
   h+='<div class="brief-card-body">';
   blocks.forEach(function(b){
     h+='<div class="brief-block"><span class="brief-block-label">'+esc(b.label)+'</span><div class="brief-block-text">'+esc(b.text)+'</div></div>';
@@ -4102,6 +4120,16 @@ function pickObservedSymptomQuery(symptom){
   var rows=symptom&&AUBE_SYMPTOM_QUERIES[symptom.id];
   return rows&&rows.length?pick(rows):{text:symptom?symptom.name:'',volume:0};
 }
+function findObservedSymptomInput(raw){
+  var best=null;
+  AUBE_SYMPTOMS.forEach(function(symptom){
+    (AUBE_SYMPTOM_QUERIES[symptom.id]||[]).forEach(function(query){
+      if(raw.indexOf(query.text)<0)return;
+      if(!best||query.text.length>best.query.text.length)best={symptom:symptom,query:query};
+    });
+  });
+  return best;
+}
 
 function pickRegionAndCats(){
   if(!selectedClient)return{region:'지역',cats:['통증']};
@@ -4134,18 +4162,51 @@ function pickDept(){
   var arr=found.depts.split(',').map(function(x){return x.trim();}).filter(Boolean);
   return pick(arr);
 }
-var NON_DISEASE_TOPIC_NAMES=[
-  '도수치료','운동치료','물리치료',
-  '고압산소치료','산소치료','이온치료','수치료','자기장치료','레이저치료',
-  '신장분사치료','견인치료','골밀도검사'
+var AUBE_SYMPTOM_TOPIC_NAMES=[
+  '허리통증','목통증','어깨통증','무릎통증','견갑통증','등통증','손목통증','발목통증','만성피로','두통',
+  '손발저림','어지럼증','손떨림','보행장애','근력저하','코막힘','이명','난청','생리통','생리불순',
+  '교통사고 목통증','교통사고 허리통증','항암 부작용','암 통증 관리','피부탄력','주름','모공','홍조','색소침착'
 ];
-function isNonDiseaseTopic(d){
-  return !!(d&&d.name&&NON_DISEASE_TOPIC_NAMES.indexOf(d.name)>=0);
+var AUBE_SERVICE_TOPIC_NAMES=[
+  '건강검진','위내시경','대장내시경','수액치료','비만관리','예방접종','금연상담',
+  '다이어트','체중감량','산후보약','산후조리','소아성장','키성장','성장판검사',
+  '도수치료','운동치료','물리치료','수술 후 재활','스포츠 재활',
+  '보톡스','필러','리프팅','피부 관리','레이저 토닝','피코레이저','IPL','써마지','울쎄라','실리프팅','물광주사','피부과 다이어트','지방분해주사','눈밑지방재배치','쁘띠성형',
+  '쌍꺼풀','코성형','코재수술','안면윤곽','지방흡입','가슴성형','안면거상','눈재수술','양악수술',
+  '라식','라섹','스마일라식','노안교정','드림렌즈','렌즈삽입술',
+  '여성검진','HPV예방접종','피임상담','성병검사','포경수술',
+  '임플란트','임플란트 재수술','뼈이식','치아교정','투명교정','부분교정','크라운','라미네이트','치아미백','사랑니 발치','스케일링','신경치료','틀니','수면치료','턱관절치료','소아치과',
+  '제모','왁싱','점 제거'
+];
+var AUBE_SEARCH_VOLUMES={
+  '족저근막염':93100,'도수치료':86700,'이석증':84000,'갑상선기능저하증':67490,'건강검진':62500,'뇌경색':47320,
+  '역류성식도염':45950,'과민성대장증후군':38740,'통풍':37630,'손목터널증후군':35180,'요로결석':33020,
+  '어깨통증':31770,'공황장애':31580,'무릎통증':28560,'척추측만증':25290,'허리통증':23510,'이명':21970,
+  '우울증':21510,'오십견':20410,'편두통':18760,'위염':17370,'골다공증':17030,'목디스크':16500,'허리디스크':16230,
+  '불면증':15750,'두통':14520,'손목통증':13920,'퇴행성관절염':13610,'등통증':12470,'좌골신경통':12380,
+  '이상근증후군':11870,'거북목':10680,'발목통증':10000,'어지럼증':9880,'척추전방전위증':8760,'테니스엘보':8740,
+  '일자목':8660,'군발두통':8500,'목통증':7750,'만성피로':7180,'척추관협착증':5390,'안면마비':5370,
+  '경추성두통':4750,'긴장성두통':4070,'턱관절치료':2410,'손발저림':1850,'압박골절':1610,'안면신경마비':1510,
+  '팔꿈치터널증후군':1500,'수면무호흡':1380,'만성두통':1140,'역류성인후두염':1070,'디스크내장증':910,
+  '과민성장증후군':760,'만성소화불량':670,'수면치료':500,'회전근개손상':280
+};
+function topicKind(d){
+  if(!d||!d.name)return 'unknown';
+  if(d.kind)return d.kind;
+  if(AUBE_SYMPTOM_TOPIC_NAMES.indexOf(d.name)>=0)return 'symptom';
+  if(AUBE_SERVICE_TOPIC_NAMES.indexOf(d.name)>=0||d.cat==='미용'||d.cat==='암')return 'service';
+  return 'disease';
+}
+function isNonDiseaseTopic(d){return topicKind(d)!=='disease';}
+function diseaseSearchVolume(d){return d&&AUBE_SEARCH_VOLUMES[d.name]||0;}
+function diseaseVolumeLabel(d){
+  var volume=diseaseSearchVolume(d);
+  return volume?'네이버 월간 약 '+volume.toLocaleString('ko-KR')+'회':'검색량 데이터 미수집';
 }
 function pickDisease(cats){
   var all=getAllDiseases();
   var pool=cats&&cats.length?all.filter(function(d){return cats.indexOf(d.cat)>=0;}):all;
-  pool=pool.filter(function(d){return !isNonDiseaseTopic(d);});
+  pool=pool.filter(function(d){return topicKind(d)==='disease';});
   // 병원 타입에 맞지 않는 질환 필터링
   if(selectedClient){
     var isHanbang=selectedClient.type==='한의원'||selectedClient.type==='한방병원';
@@ -4507,7 +4568,7 @@ function directProductCandidatesForDisease(dis){
 function symptomDiseaseCandidates(symptom){
   if(!symptom)return[];
   var all=getAllDiseases();
-  return symptom.diseases.map(function(name){return all.find(function(d){return d.name===name;});}).filter(Boolean);
+  return symptom.diseases.map(function(name){return all.find(function(d){return d.name===name;});}).filter(function(d){return d&&topicKind(d)==='disease';});
 }
 
 function renderSymptomPath(symptom){
@@ -4583,8 +4644,7 @@ function roll(n){
       if(!dis){alert('해당 카테고리에 등록된 질환이 없습니다. DB를 확인해 주세요.');return;}
       ST.symptom=null;ST.symptomQuery=null;ST.symptomVolume=0;ST.disease=dis;
       document.getElementById('v3').textContent=dis.name;
-      var vl={high:'검색량 높음 — 경쟁 주의',med:'검색량 중간',low:'검색량 낮음 — 조합 필수'};
-      document.getElementById('s3').textContent=vl[dis.vol]||'';
+      document.getElementById('s3').textContent=diseaseVolumeLabel(dis);
       document.getElementById('btn3').classList.add('active');
       var pr=pickProduct(dis.name);ST.product=pr;
       if(pr){document.getElementById('v4').textContent=productDisplayName(pr);document.getElementById('s4').textContent='질환 자동 매칭';document.getElementById('btn4').classList.add('active');}
@@ -4620,7 +4680,7 @@ function rollAll(){
     document.getElementById('v4').textContent='질환 후보를 먼저 선택';document.getElementById('s4').textContent='자동 확정하지 않음';document.getElementById('btn4').classList.remove('active');
     document.getElementById('result-card').style.display='none';renderSymptomPath(symptom);return;
   }
-  var dis=pickDisease(rc.cats);if(!dis){alert('해당 카테고리에 등록된 질환이 없습니다.');return;}ST.symptom=null;ST.symptomQuery=null;ST.symptomVolume=0;ST.disease=dis;document.getElementById('v3').textContent=dis.name;var vl={high:'검색량 높음 — 경쟁 주의',med:'검색량 중간',low:'검색량 낮음 — 조합 필수'};document.getElementById('s3').textContent=vl[dis.vol]||'';document.getElementById('btn3').classList.add('active');
+  var dis=pickDisease(rc.cats);if(!dis){alert('해당 카테고리에 등록된 질환이 없습니다.');return;}ST.symptom=null;ST.symptomQuery=null;ST.symptomVolume=0;ST.disease=dis;document.getElementById('v3').textContent=dis.name;document.getElementById('s3').textContent=diseaseVolumeLabel(dis);document.getElementById('btn3').classList.add('active');
   var pr=pickProduct(dis.name);ST.product=pr;if(pr){document.getElementById('v4').textContent=productDisplayName(pr);document.getElementById('s4').textContent='질환 자동 매칭';document.getElementById('btn4').classList.add('active');}else{document.getElementById('v4').textContent='없음';document.getElementById('s4').textContent='해당 시술 없음';document.getElementById('btn4').classList.remove('active');}
   showResult();
 }
@@ -4675,8 +4735,9 @@ function showResult(){
     advHtml+='<div class="adv"><div class="adv-title">실제 증상 검색어 연결 근거</div><div class="adv-msg"><b>'+esc(topic)+'</b>'+(ST.symptomVolume?'은 네이버 검색광고 기준 월간 약 <b>'+ST.symptomVolume.toLocaleString('ko-KR')+'회</b> 검색된 표현입니다. ':'은 실제 생활 언어형 검색 표현입니다. ')+'내부 정규화 증상은 <b>'+esc(symptom.name)+'</b>, 현재 선택한 연결 질환은 <b>'+esc(dis.name)+'</b>입니다. 원고에서는 다른 가능성과 진료에서 확인하는 기준을 함께 설명하세요. '+esc(symptom.note||'')+'</div></div>';
     if(symptom.redFlags)advHtml+='<div class="adv warn"><div class="adv-title">위험 신호 우선 확인</div><div class="adv-msg">'+esc(symptom.redFlags)+'</div></div>';
   }
-  if(dis.vol==='low')advHtml+='<div class="adv warn"><div class="adv-title">검색량 주의</div><div class="adv-msg"><b>'+dis.name+'</b>은 단독 검색량이 낮습니다. 지역+과목+증상 구체화 조합으로 롱테일을 공략하세요.'+(dis.note?' '+dis.note:'')+'</div></div>';
-  if(dis.vol==='high')advHtml+='<div class="adv"><div class="adv-title">경쟁도 안내</div><div class="adv-msg"><b>'+dis.name+'</b>은 검색량이 높은 만큼 경쟁도도 높습니다. 정보 격차형 제목이나 지역+증상 구체화로 차별화하세요.'+(dis.note?' '+dis.note:'')+'</div></div>';
+  var disVolume=diseaseSearchVolume(dis);
+  if(disVolume&&disVolume<1000)advHtml+='<div class="adv warn"><div class="adv-title">검색량 주의</div><div class="adv-msg"><b>'+dis.name+'</b>은 네이버 월간 검색량이 약 <b>'+disVolume.toLocaleString('ko-KR')+'회</b>로 단독 수요가 작습니다. 지역+과목+증상 구체화 조합으로 롱테일을 공략하세요.'+(dis.note?' '+dis.note:'')+'</div></div>';
+  if(disVolume>=10000)advHtml+='<div class="adv"><div class="adv-title">경쟁도 안내</div><div class="adv-msg"><b>'+dis.name+'</b>은 네이버 월간 검색량이 약 <b>'+disVolume.toLocaleString('ko-KR')+'회</b>로 수요가 큰 편입니다. 정보 격차형 제목이나 지역+증상 구체화로 차별화하세요.'+(dis.note?' '+dis.note:'')+'</div></div>';
   if(prod&&prod.note&&!triggered.some(function(t){return t.msg.includes(prod.name);})) {
     var priorityTokens=clientPriorityTokens(selectedClient);
     var matchedPriority=priorityTokens.filter(function(k){return signalHas([k],prod);}).slice(0,5);
