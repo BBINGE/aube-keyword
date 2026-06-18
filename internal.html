@@ -2700,14 +2700,27 @@ function parseBrief(){
   if(!raw){parsedEl.innerHTML='';resultEl.innerHTML='<div class="empty">키워드 조합을 붙여넣고 근거 자료 불러오기를 눌러주세요.</div>';return;}
 
   var allTopics=getAllDiseases();
-  var symptomHit=findObservedSymptomInput(raw);
+  var symptomHits=findObservedSymptomInputs(raw);
+  var symptomHit=symptomHits[0]||null;
   var foundSymptomTopics=findInText(raw,allTopics.filter(function(d){return topicKind(d)==='symptom';}),'name');
   var diseases=allTopics.filter(function(d){return topicKind(d)==='disease';});
   var products=getAllProducts();
   var foundDis=findInText(raw,diseases,'name');
+  var directFoundDis=foundDis.slice();
   var directProd=findInText(raw,products,'name');
   var directProductKeys=dedupeProductsForDisplay(directProd).map(function(p){return canonicalProductKey(p);});
   foundDis=foundDis.filter(function(d){return directProductKeys.indexOf(d.name)<0;});
+  directFoundDis=directFoundDis.filter(function(d){return directProductKeys.indexOf(d.name)<0;});
+  var symptomCandidates=[];
+  if(!foundDis.length){
+    symptomHits.forEach(function(hit){
+      symptomDiseaseCandidates(hit.symptom).forEach(function(d){
+        if(!symptomCandidates.some(function(x){return x.id===d.id;}))symptomCandidates.push(d);
+      });
+    });
+    foundDis=symptomCandidates.slice();
+  }
+  var inferredDiseaseMode=!directFoundDis.length&&symptomCandidates.length>0;
   var related=findRelatedProducts(raw,products,foundDis,directProd);
   var foundProd=dedupeProductsForDisplay(related.items);
   var inferredTypes=related.inferredTypes;
@@ -2715,9 +2728,9 @@ function parseBrief(){
   // 파싱 칩 표시
   var chips='';
   if(inferredTypes.length){inferredTypes.forEach(function(t){chips+='<span class="parsed-chip hit">과목 <b>'+esc(t)+'</b></span>';});}
-  if(symptomHit){chips+='<span class="parsed-chip">증상 검색어 <b>'+esc(symptomHit.query.text)+'</b></span>';}
+  symptomHits.forEach(function(hit){chips+='<span class="parsed-chip">증상 검색어 <b>'+esc(hit.query.text)+'</b></span>';});
   foundSymptomTopics.forEach(function(d){if(!symptomHit||symptomHit.query.text!==d.name)chips+='<span class="parsed-chip">증상 <b>'+esc(d.name)+'</b></span>';});
-  if(foundDis.length){foundDis.forEach(function(d){chips+='<span class="parsed-chip hit">질환 <b>'+esc(d.name)+'</b> · '+esc(diseaseVolumeLabel(d))+'</span>';});}
+  if(foundDis.length){foundDis.forEach(function(d){chips+='<span class="parsed-chip hit">'+(inferredDiseaseMode?'관련 질환 후보':'질환')+' <b>'+esc(d.name)+'</b> · '+esc(diseaseVolumeLabel(d))+'</span>';});}
   if(foundProd.length){foundProd.forEach(function(p){chips+='<span class="parsed-chip hit">연결 시술 <b>'+esc(productDisplayName(p))+'</b></span>';});}
   if(!foundDis.length&&!foundProd.length&&!symptomHit&&!foundSymptomTopics.length){chips='<span class="parsed-chip miss">DB에서 일치하는 질환·증상·시술을 찾지 못했습니다</span>';}
   parsedEl.innerHTML=chips;
@@ -2730,13 +2743,15 @@ function parseBrief(){
   }
 
   if(symptomHit){
-    var symptomCandidates=symptomDiseaseCandidates(symptomHit.symptom);
-    html+='<div class="adv warn"><div class="adv-title">증상 검색어가 감지되었습니다</div><div class="adv-msg"><b>'+esc(symptomHit.query.text)+'</b>은 질환명이 아니라 환자가 검색하는 증상 표현입니다. '+
-      (foundDis.length?'함께 입력된 질환 <b>'+foundDis.map(function(d){return esc(d.name);}).join(', ')+'</b>을 기준으로 정론 자료를 불러옵니다.':'키워드 마이닝에서 질환 후보를 하나 선택한 뒤 <b>증상 검색어 + 질환명</b>을 함께 복사해 주세요.')+
-      (symptomCandidates.length?'<br><br><b>연결 가능 질환 후보:</b> '+symptomCandidates.map(function(d){return esc(d.name);}).join(', '):'')+
-      '</div></div>';
+    if(inferredDiseaseMode){
+      html+='<div class="adv"><div class="adv-title">증상에서 관련 질환 근거를 함께 불러왔습니다</div><div class="adv-msg"><b>'+esc(symptomHits.map(function(hit){return hit.query.text;}).join(', '))+'</b>은 질환명이 아니라 환자가 검색하는 증상 표현입니다. 제목을 다시 복사해 올 필요 없이, 이 증상과 연결될 수 있는 <b>'+symptomCandidates.map(function(d){return esc(d.name);}).join(', ')+'</b>의 정론 자료와 관련 상품·시술을 후보로 펼쳤습니다.<br><br><b>의학적 연결:</b> '+symptomHits.map(function(hit){return '<b>'+esc(hit.symptom.name)+'</b> — '+esc(hit.symptom.note);}).join('<br>')+'<br><br>아래 질환은 확정 진단이 아닌 원고 기획용 감별 후보입니다. 원고에서는 증상의 위치·양상·동반 증상과 진료에서 확인하는 기준을 함께 설명하세요.</div></div>';
+      var redFlags=symptomHits.map(function(hit){return hit.symptom.redFlags;}).filter(Boolean);
+      if(redFlags.length)html+='<div class="adv warn"><div class="adv-title">먼저 확인할 위험 신호</div><div class="adv-msg">'+redFlags.map(esc).join('<br>')+'</div></div>';
+    }else{
+      html+='<div class="adv warn"><div class="adv-title">증상 검색어가 함께 감지되었습니다</div><div class="adv-msg"><b>'+esc(symptomHit.query.text)+'</b>은 증상 표현이며, 함께 입력된 질환 <b>'+directFoundDis.map(function(d){return esc(d.name);}).join(', ')+'</b>을 기준으로 기존 정론 자료를 불러옵니다.</div></div>';
+    }
   }else if(foundSymptomTopics.length&&!foundDis.length){
-    html+='<div class="adv warn"><div class="adv-title">증상명만 입력되었습니다</div><div class="adv-msg"><b>'+foundSymptomTopics.map(function(d){return esc(d.name);}).join(', ')+'</b>은 질환 확정값이 아닙니다. 키워드 마이닝에서 관련 질환을 선택한 뒤 질환명을 함께 붙여넣어 주세요.</div></div>';
+    html+='<div class="adv warn"><div class="adv-title">증상명만 입력되었습니다</div><div class="adv-msg"><b>'+foundSymptomTopics.map(function(d){return esc(d.name);}).join(', ')+'</b>은 질환 확정값이 아닙니다. 현재 증상 연결 DB에 감별 후보가 등록되지 않아 자동 확장하지 않았습니다. 관련 질환을 직접 입력하거나 관리자 DB에서 증상 연결 항목을 보완해 주세요.</div></div>';
   }
 
   if(!foundDis.length&&!foundProd.length){resultEl.innerHTML=html;return;}
@@ -2745,12 +2760,13 @@ function parseBrief(){
     html+='<div class="brief-idea-bar">';
     foundDis.forEach(function(d){
       foundProd.forEach(function(p){
+        if(inferredDiseaseMode&&!productMatchesDisease(p,d))return;
         html+='<button class="btn btn-sm btn-accent" onclick="openBriefIdeaDrawer(&quot;'+escAttr(d.id)+'&quot;,&quot;'+escAttr(p.id)+'&quot;)">원고 예시안 · '+esc(d.name)+' × '+esc(p.name)+'</button>';
       });
     });
     html+='</div>';
   }
-  foundDis.forEach(function(d){html+=renderBriefCard('질환',d);});
+  foundDis.forEach(function(d){html+=renderBriefCard(inferredDiseaseMode?'관련 질환 후보':'질환',d);});
   foundProd.forEach(function(p){html+=renderBriefCard('시술 / 상품',p);});
   resultEl.innerHTML=html;
 }
@@ -4121,15 +4137,31 @@ function pickObservedSymptomQuery(symptom){
   var rows=symptom&&AUBE_SYMPTOM_QUERIES[symptom.id];
   return rows&&rows.length?pick(rows):{text:symptom?symptom.name:'',volume:0};
 }
-function findObservedSymptomInput(raw){
-  var best=null;
+function normalizeSymptomMatchText(value){
+  return String(value||'').toLowerCase().replace(/[\s\-_/.,!?()[\]{}:;'"“”‘’·]+/g,'');
+}
+function findObservedSymptomInputs(raw){
+  var normalizedRaw=normalizeSymptomMatchText(raw);
+  var hits=[];
   AUBE_SYMPTOMS.forEach(function(symptom){
+    var best=null;
     (AUBE_SYMPTOM_QUERIES[symptom.id]||[]).forEach(function(query){
-      if(raw.indexOf(query.text)<0)return;
-      if(!best||query.text.length>best.query.text.length)best={symptom:symptom,query:query};
+      var normalizedQuery=normalizeSymptomMatchText(query.text);
+      if(!normalizedQuery||normalizedRaw.indexOf(normalizedQuery)<0)return;
+      if(!best||normalizedQuery.length>normalizeSymptomMatchText(best.query.text).length)best={symptom:symptom,query:query};
     });
+    var normalizedName=normalizeSymptomMatchText(symptom.name);
+    if(!best&&normalizedName&&normalizedRaw.indexOf(normalizedName)>=0){
+      best={symptom:symptom,query:{text:symptom.name,volume:0}};
+    }
+    if(best)hits.push(best);
   });
-  return best;
+  return hits.sort(function(a,b){
+    return normalizeSymptomMatchText(b.query.text).length-normalizeSymptomMatchText(a.query.text).length;
+  });
+}
+function findObservedSymptomInput(raw){
+  return findObservedSymptomInputs(raw)[0]||null;
 }
 
 function pickRegionAndCats(){
