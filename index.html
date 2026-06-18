@@ -1816,6 +1816,15 @@ function getAllIssues(){
   var custom=load(KEY_ISSUES,[]);
   return CLAUDE_ISSUES.concat(custom);
 }
+function normalizeClinicType(type){
+  var aliases={
+    '가정의학과':'내과',
+    '마취통증의학과':'통증의학과',
+    '비뇨의학과':'비뇨기과',
+    '여성의원':'산부인과'
+  };
+  return aliases[type]||type;
+}
 
 // ===== NAV =====
 function startCinemaVideoBg(){
@@ -3994,7 +4003,8 @@ function pickDept(){
     return pick(selectedClient.fixedDepts);
   }
   var all=getAllDepts();
-  var found=all.find(function(d){return d.type===selectedClient.type;});
+  var clientType=normalizeClinicType(selectedClient.type);
+  var found=all.find(function(d){return normalizeClinicType(d.type)===clientType;});
   if(!found)return selectedClient.type;
   var arr=found.depts.split(',').map(function(x){return x.trim();}).filter(Boolean);
   return pick(arr);
@@ -4315,7 +4325,7 @@ function pickProduct(diseaseName){
   if(signal&&signal.avoid){excludes=excludes.concat(signal.avoid);}
   var typeProducts=all.filter(function(p){
     if(isServiceLineOnlyProduct(p))return false;
-    if(p.type!==selectedClient.type)return false;
+    if(normalizeClinicType(p.type)!==normalizeClinicType(selectedClient.type))return false;
     if(p.surg && !selectedClient.surg)return false;   // 수술 불가 클라이언트 → 수술 시술 제외
     if(p.equip && !selectedClient.equip)return false; // 영상장비 미보유 → MRI·CT 검사 제외
     if(productMissingEquipment(p,selectedClient).length)return false; // 필수 장비 미확인 → 장비 기반 시술 제외
