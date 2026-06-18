@@ -816,7 +816,10 @@
       <div class="divider"></div>
       <div id="issue-alerts"></div>
       <div id="advice-area"></div>
-      <button class="copy-btn" onclick="copyResult()">전체 복사</button>
+      <div class="btn-row">
+        <button class="copy-btn" style="margin-top:0" onclick="copyResult()">전체 복사</button>
+        <button class="btn btn-accent" onclick="openBriefFromMining()">의학 정론에서 제목 아이디어 보기</button>
+      </div>
     </div>
   </div>
 </div>
@@ -4670,8 +4673,8 @@ function roll(n){
       document.getElementById('v4').textContent='질환 후보를 먼저 선택';
       document.getElementById('s4').textContent='자동 확정하지 않음';
       document.getElementById('btn4').classList.remove('active');
-      document.getElementById('result-card').style.display='none';
       renderSymptomPath(symptom);
+      if(ST.region&&ST.dept)showResult();
     }else{
       var dis=pickDisease(cats);
       if(!dis){alert('해당 카테고리에 등록된 질환이 없습니다. DB를 확인해 주세요.');return;}
@@ -4699,7 +4702,7 @@ function roll(n){
       else{document.getElementById('v4').textContent='—';document.getElementById('s4').textContent='해당 시술 없음';document.getElementById('btn4').classList.remove('active');}
     }
   }
-  if(ST.region&&ST.dept&&ST.disease&&ST.product)showResult();
+  if(ST.region&&ST.dept&&(ST.symptom||ST.disease))showResult();
 }
 function rollAll(){
   if(!selectedClient){alert('먼저 클라이언트를 선택해 주세요.');return;}
@@ -4711,7 +4714,7 @@ function rollAll(){
     var query=pickObservedSymptomQuery(symptom);ST.symptom=symptom;ST.symptomQuery=query.text;ST.symptomVolume=query.volume;ST.disease=null;ST.product=null;
     document.getElementById('v3').textContent=query.text;document.getElementById('s3').textContent=(query.volume?'월간 약 '+query.volume.toLocaleString('ko-KR')+'회 · ':'')+'질환 후보를 선택하세요';document.getElementById('btn3').classList.add('active');
     document.getElementById('v4').textContent='질환 후보를 먼저 선택';document.getElementById('s4').textContent='자동 확정하지 않음';document.getElementById('btn4').classList.remove('active');
-    document.getElementById('result-card').style.display='none';renderSymptomPath(symptom);return;
+    renderSymptomPath(symptom);showResult();return;
   }
   var dis=pickDisease(rc.cats);if(!dis){alert('해당 카테고리에 등록된 질환이 없습니다.');return;}ST.symptom=null;ST.symptomQuery=null;ST.symptomVolume=0;ST.disease=dis;document.getElementById('v3').textContent=dis.name;document.getElementById('s3').textContent=diseaseVolumeLabel(dis);document.getElementById('btn3').classList.add('active');
   var pr=pickProduct(dis.name);ST.product=pr;if(pr){document.getElementById('v4').textContent=productDisplayName(pr);document.getElementById('s4').textContent='질환 자동 매칭';document.getElementById('btn4').classList.add('active');}else{document.getElementById('v4').textContent='없음';document.getElementById('s4').textContent='해당 시술 없음';document.getElementById('btn4').classList.remove('active');}
@@ -4738,17 +4741,26 @@ function showResult(){
   document.getElementById('advice-area').innerHTML='';
   document.getElementById('combo-chips').innerHTML='';
   var hasProduct=prod!==null;
-  var topic=symptom?(ST.symptomQuery||symptom.name):dis.name;
+  var topic=symptom?(ST.symptomQuery||symptom.name):(dis?dis.name:'');
+  var symptomCandidates=symptom?symptomDiseaseCandidates(symptom):[];
   document.getElementById('combo-main').textContent=r+' '+dept+' '+topic;
   var variants=[
     {t:r+' '+topic+' '+dept,star:true},
     {t:r+' '+topic+' 원인',star:false},
+    {t:r+' '+topic+' 관련 질환',star:false},
     {t:r+' '+topic+' 어느 병원',star:false},
-    {t:r+' '+dis.name+' 증상',star:false},
-    {t:r+' '+dis.name+' 치료',star:false},
-    {t:r+' '+dis.name+' 비용',star:false}
+    {t:r+' '+topic+' 치료',star:false}
   ];
-  if(symptom)variants.splice(1,0,{t:r+' '+topic+' '+dis.name,star:true});
+  if(dis){
+    variants.push({t:r+' '+dis.name+' 증상',star:false});
+    variants.push({t:r+' '+dis.name+' 치료',star:false});
+    variants.push({t:r+' '+dis.name+' 비용',star:false});
+    if(symptom)variants.splice(1,0,{t:r+' '+topic+' '+dis.name,star:true});
+  }else if(symptom){
+    symptomCandidates.forEach(function(candidate){
+      variants.push({t:r+' '+topic+' '+candidate.name,star:true});
+    });
+  }
   if(prod){
     variants.splice(2,0,{t:r+' '+topic+' '+productDisplayName(prod),star:true});
     variants.splice(3,0,{t:r+' '+dis.name+' '+productDisplayName(prod),star:true});
@@ -4757,7 +4769,7 @@ function showResult(){
   document.getElementById('combo-chips').innerHTML=variants.map(function(v){
     return '<span class="chip'+(v.star?' star':'')+'" onclick="copyChip(this)">'+v.t+'</span>';
   }).join('');
-  var allKws=[r,dept,topic,dis.name,prod?productDisplayName(prod):''].join(' ').toLowerCase();
+  var allKws=[r,dept,topic,dis?dis.name:'',prod?productDisplayName(prod):''].join(' ').toLowerCase();
   var triggered=getAllIssues().filter(function(iss){return iss.kw.split(',').map(function(k){return k.trim();}).some(function(k){return allKws.includes(k.toLowerCase());});});
   document.getElementById('issue-alerts').innerHTML=triggered.map(function(iss){
     var isW=iss.level==='warn';var isD=iss.level==='danger';
@@ -4765,10 +4777,11 @@ function showResult(){
   }).join('');
   var advHtml='';
   if(symptom){
-    advHtml+='<div class="adv"><div class="adv-title">실제 증상 검색어 연결 근거</div><div class="adv-msg"><b>'+esc(topic)+'</b>'+(ST.symptomVolume?'은 네이버 검색광고 기준 월간 약 <b>'+ST.symptomVolume.toLocaleString('ko-KR')+'회</b> 검색된 표현입니다. ':'은 실제 생활 언어형 검색 표현입니다. ')+'내부 정규화 증상은 <b>'+esc(symptom.name)+'</b>, 현재 선택한 연결 질환은 <b>'+esc(dis.name)+'</b>입니다. 원고에서는 다른 가능성과 진료에서 확인하는 기준을 함께 설명하세요. '+esc(symptom.note||'')+'</div></div>';
+    var symptomConnection=dis?'현재 선택한 연결 질환은 <b>'+esc(dis.name)+'</b>입니다.':'연결 가능 질환 후보는 <b>'+symptomCandidates.map(function(candidate){return esc(candidate.name);}).join(', ')+'</b>입니다.';
+    advHtml+='<div class="adv"><div class="adv-title">실제 증상 검색어 연결 근거</div><div class="adv-msg"><b>'+esc(topic)+'</b>'+(ST.symptomVolume?'은 네이버 검색광고 기준 월간 약 <b>'+ST.symptomVolume.toLocaleString('ko-KR')+'회</b> 검색된 표현입니다. ':'은 실제 생활 언어형 검색 표현입니다. ')+'내부 정규화 증상은 <b>'+esc(symptom.name)+'</b>, '+symptomConnection+' 원고에서는 질환을 단정하지 말고 다른 가능성과 진료에서 확인하는 기준을 함께 설명하세요. '+esc(symptom.note||'')+'</div></div>';
     if(symptom.redFlags)advHtml+='<div class="adv warn"><div class="adv-title">위험 신호 우선 확인</div><div class="adv-msg">'+esc(symptom.redFlags)+'</div></div>';
   }
-  var disVolume=diseaseSearchVolume(dis);
+  var disVolume=dis?diseaseSearchVolume(dis):0;
   if(disVolume&&disVolume<1000)advHtml+='<div class="adv warn"><div class="adv-title">검색량 주의</div><div class="adv-msg"><b>'+dis.name+'</b>은 네이버 월간 검색량이 약 <b>'+disVolume.toLocaleString('ko-KR')+'회</b>로 단독 수요가 작습니다. 지역+과목+증상 구체화 조합으로 롱테일을 공략하세요.'+(dis.note?' '+dis.note:'')+'</div></div>';
   if(disVolume>=10000)advHtml+='<div class="adv"><div class="adv-title">경쟁도 안내</div><div class="adv-msg"><b>'+dis.name+'</b>은 네이버 월간 검색량이 약 <b>'+disVolume.toLocaleString('ko-KR')+'회</b>로 수요가 큰 편입니다. 정보 격차형 제목이나 지역+증상 구체화로 차별화하세요.'+(dis.note?' '+dis.note:'')+'</div></div>';
   if(prod&&prod.note&&!triggered.some(function(t){return t.msg.includes(prod.name);})) {
@@ -4801,6 +4814,14 @@ function copyResult(){
   var advs=Array.from(document.querySelectorAll('.adv-msg')).map(function(a){return a.textContent;}).join('\n');
   navigator.clipboard.writeText('[메인 키워드]\n'+main+'\n\n[변형 조합]\n'+chips+'\n\n[실무 제언]\n'+advs);
   var btn=document.querySelector('.copy-btn');btn.textContent='복사됨 ✓';setTimeout(function(){btn.textContent='전체 복사';},2000);
+}
+function openBriefFromMining(){
+  var main=document.getElementById('combo-main').textContent.trim();
+  var parts=[main,ST.disease?ST.disease.name:'',ST.product?productDisplayName(ST.product):''].filter(Boolean);
+  document.getElementById('brief-input').value=parts.filter(function(value,index,arr){return arr.indexOf(value)===index;}).join(' ');
+  var briefTab=Array.from(document.querySelectorAll('.nav-tab')).find(function(tab){return tab.getAttribute('onclick')&&tab.getAttribute('onclick').indexOf("'brief'")>=0;});
+  goPage('brief',briefTab);
+  setTimeout(parseBrief,60);
 }
 
 initSync();
