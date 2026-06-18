@@ -547,6 +547,12 @@
   .cinema-video-bg,#aube-drone-bg,.ptc-field{display:none!important;}
   /* v9: 전면 배경 요소만 정지 */
   .cinema-video-bg,#aube-drone-bg,.ptc-field,.ptc-field *,#aube-drone-bg *{animation:none!important;transition:none!important;}
+  /* 원장님 전달용 공개 설문 모드 */
+  body.public-survey nav{justify-content:center;padding-left:24px;padding-right:24px;}
+  body.public-survey .nav-tabs,body.public-survey .nav-right{display:none!important;}
+  body.public-survey .page:not(#page-survey){display:none!important;}
+  body.public-survey #page-survey{display:block;}
+  body.public-survey .nav-brand{justify-content:center;text-align:left;}
 </style>
 </head>
 <body>
@@ -2204,11 +2210,24 @@ else document.addEventListener('DOMContentLoaded',function(){});
 function findNavTab(id){
   return document.querySelector(".nav-tab[onclick*=\""+id+"\"]");
 }
+function isPublicSurveyMode(){
+  var params=new URLSearchParams(location.search||'');
+  return params.get('view')==='survey'||/aube-survey-public/i.test(location.pathname||'');
+}
+function applyPublicSurveyMode(){
+  if(!isPublicSurveyMode())return;
+  document.body.classList.add('public-survey');
+  document.title='AUBE 콘텐츠 진단 설문';
+  var sub=document.querySelector('.nav-logo-sub');
+  if(sub)sub.textContent='원장님 콘텐츠 진단 설문';
+}
 function currentRoute(){
+  if(isPublicSurveyMode())return 'survey';
   var h=(location.hash||'').replace('#','');
   return ['survey','gen','brief','staff','admin'].indexOf(h)>=0?h:'gen';
 }
 function initRoute(){
+  applyPublicSurveyMode();
   var id=currentRoute();
   var tab=findNavTab(id);
   if(id==='survey'){setActivePage('survey',tab);return;}
