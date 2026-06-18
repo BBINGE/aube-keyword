@@ -792,7 +792,7 @@
       <div class="symptom-path" id="symptom-path-panel">
         <div class="symptom-path-head">
           <div><div class="symptom-path-title" id="symptom-path-title">증상에서 연결 경로 찾기</div><div class="symptom-path-desc" id="symptom-path-desc">증상을 먼저 생성하면 관련 질환 후보가 표시됩니다.</div></div>
-          <div class="symptom-path-badge">진단이 아닌 기획 후보</div>
+          <div class="symptom-path-badge" id="symptom-path-badge">진단이 아닌 기획 후보</div>
         </div>
         <div class="symptom-redflag" id="symptom-redflag"></div>
         <div class="candidate-section"><div class="candidate-label">연결 가능 질환 후보군</div><div class="candidate-list" id="symptom-disease-candidates"><div class="candidate-empty">③ 증상을 먼저 생성해 주세요.</div></div></div>
@@ -1798,6 +1798,25 @@ var AUBE_SYMPTOMS=[
   {id:'s14',name:'머리가 자주 아프고 목이 뻣뻣해요',vol:'high',cats:['두통/어지럼','통증'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['긴장성두통','경추성두통','목통증'],note:'두통 위치와 지속 시간, 목 움직임, 빛·소리 민감도, 신경학적 증상을 함께 확인해야 합니다.',redFlags:'갑자기 시작된 극심한 두통, 마비·말 어눌함·의식 변화, 발열과 목 경직이 동반되면 즉시 진료가 필요할 수 있습니다.'},
   {id:'s15',name:'몸이 계속 피곤하고 무거워요',vol:'high',cats:['통증','내과'],types:['한의원','한방병원','내과'],diseases:['만성피로','철결핍성빈혈','갑상선기능저하증'],note:'수면, 스트레스, 식사, 월경, 체중 변화, 복용약과 검사 이력을 함께 살피는 폭넓은 검색 의도입니다.'}
 ];
+
+// 네이버 검색광고 키워드 도구 실측값: 2026-06-18 다운로드, PC+모바일 월간검색수 합계.
+// 원문 검색어는 화면 출력용이며, 의료 매칭은 위의 정규화 증상 개념을 통해서만 수행한다.
+var AUBE_SYMPTOM_QUERIES={
+  s1:[{text:'어깨통증',volume:31770},{text:'왼쪽어깨통증',volume:7610},{text:'오른쪽어깨통증',volume:5040},{text:'어깨팔통증',volume:500}],
+  s2:[{text:'어깨결림',volume:1760},{text:'어깨근육통증',volume:900},{text:'어깨저림',volume:570},{text:'목어깨결림',volume:730}],
+  s3:[{text:'왼쪽팔저림',volume:4320},{text:'팔저림원인',volume:2840},{text:'팔저림',volume:2710},{text:'목디스크팔저림',volume:1390}],
+  s4:[{text:'손끝저림',volume:8110},{text:'손저림원인',volume:7280},{text:'손저림',volume:4410},{text:'손가락저림',volume:4270},{text:'손이저려요',volume:250}],
+  s5:[{text:'허리통증',volume:23510},{text:'다리저림',volume:9140},{text:'허리통증다리저림',volume:1860},{text:'허리가너무아파요',volume:1560}],
+  s6:[{text:'다리저림',volume:9140},{text:'왼쪽다리저림',volume:780},{text:'다리가저려요',volume:210},{text:'팔다리저림',volume:2100}],
+  s7:[{text:'발바닥통증',volume:50580},{text:'발바닥저림원인',volume:2290},{text:'발바닥저림',volume:1930},{text:'발목안쪽통증',volume:1520}],
+  s8:[{text:'무릎통증',volume:28560},{text:'무릎안쪽통증',volume:12750},{text:'무릎뒤쪽통증',volume:10250},{text:'오른쪽무릎통증',volume:1740},{text:'무릎이아파요',volume:830}],
+  s9:[{text:'오른쪽등통증',volume:20500},{text:'왼쪽등통증',volume:18780},{text:'견갑골통증',volume:4050},{text:'날개뼈통증',volume:830},{text:'등가운데통증',volume:10680}],
+  s11:[{text:'심장두근거림',volume:10520},{text:'가슴이답답한증상',volume:8600},{text:'가슴이찌릿찌릿',volume:3250},{text:'가슴답답함',volume:2440},{text:'가슴두근거림',volume:910}],
+  s12:[{text:'잠이안올때',volume:3710},{text:'잠안올때',volume:2990},{text:'잠이안오는이유',volume:2200},{text:'밤에잠이안올때',volume:510},{text:'잠이안와요',volume:440}],
+  s13:[{text:'소화불량',volume:6570},{text:'소화불량복부팽만',volume:3330},{text:'속이더부룩할때',volume:3170},{text:'속쓰림',volume:4580},{text:'속쓰림원인',volume:7440}],
+  s14:[{text:'뒷목통증',volume:8160},{text:'뒷목뻐근',volume:3240},{text:'머리가아파요',volume:2200},{text:'목어깨통증',volume:2150},{text:'목어깨결림',volume:730}],
+  s15:[{text:'만성피로',volume:7180},{text:'피로',volume:3160},{text:'만성피로증상',volume:1750},{text:'만성피로원인',volume:1180}]
+};
 
 var CLAUDE_ISSUES=[
   {id:'ci1',kw:'도수치료,관리급여',level:'danger',title:'도수치료 관리급여 편입 이슈',msg:'2026년 하반기 도수치료가 관리급여로 편입 예정입니다. 회당 3.8~6.8만원 상한, 치료기간 15회 제한 논의 중. 키워드 전략 변경 전 관리자에게 반드시 확인하세요.',src:'보건복지부, 2026.03'},
@@ -4034,7 +4053,7 @@ function selectClient(id){
 }
 
 // ===== 핵심 알고리즘 =====
-var ST={region:null,cats:null,dept:null,symptom:null,disease:null,product:null};
+var ST={region:null,cats:null,dept:null,symptom:null,symptomQuery:null,symptomVolume:0,disease:null,product:null};
 var miningMode='disease';
 function setMiningMode(mode){
   miningMode=mode==='symptom'?'symptom':'disease';
@@ -4050,12 +4069,20 @@ function pickSymptom(cats){
   var pool=AUBE_SYMPTOMS.filter(function(s){
     var catMatch=!cats||!cats.length||s.cats.some(function(c){return cats.indexOf(c)>=0;});
     var typeMatch=!clientType||s.types.map(normalizeClinicType).indexOf(clientType)>=0;
-    return catMatch&&typeMatch;
+    var hasObserved=AUBE_SYMPTOM_QUERIES[s.id]&&AUBE_SYMPTOM_QUERIES[s.id].length;
+    return catMatch&&typeMatch&&hasObserved;
   });
   if(!pool.length){
-    pool=AUBE_SYMPTOMS.filter(function(s){return !clientType||s.types.map(normalizeClinicType).indexOf(clientType)>=0;});
+    pool=AUBE_SYMPTOMS.filter(function(s){
+      var hasObserved=AUBE_SYMPTOM_QUERIES[s.id]&&AUBE_SYMPTOM_QUERIES[s.id].length;
+      return hasObserved&&(!clientType||s.types.map(normalizeClinicType).indexOf(clientType)>=0);
+    });
   }
   return pick(pool)||null;
+}
+function pickObservedSymptomQuery(symptom){
+  var rows=symptom&&AUBE_SYMPTOM_QUERIES[symptom.id];
+  return rows&&rows.length?pick(rows):{text:symptom?symptom.name:'',volume:0};
 }
 
 function pickRegionAndCats(){
@@ -4468,8 +4495,9 @@ function symptomDiseaseCandidates(symptom){
 function renderSymptomPath(symptom){
   var panel=document.getElementById('symptom-path-panel');
   panel.classList.add('show');
-  document.getElementById('symptom-path-title').textContent=symptom?symptom.name:'증상에서 연결 경로 찾기';
-  document.getElementById('symptom-path-desc').textContent=symptom?symptom.note:'증상을 먼저 생성하면 관련 질환 후보가 표시됩니다.';
+  document.getElementById('symptom-path-title').textContent=symptom?(ST.symptomQuery||symptom.name):'증상에서 연결 경로 찾기';
+  document.getElementById('symptom-path-desc').textContent=symptom?'정규화 증상: '+symptom.name+' · '+symptom.note:'증상을 먼저 생성하면 관련 질환 후보가 표시됩니다.';
+  document.getElementById('symptom-path-badge').textContent=symptom&&ST.symptomVolume?'네이버 월간 약 '+ST.symptomVolume.toLocaleString('ko-KR')+'회':'진단이 아닌 기획 후보';
   var red=document.getElementById('symptom-redflag');
   red.textContent=symptom&&symptom.redFlags?'먼저 확인할 위험 신호: '+symptom.redFlags:'';
   red.classList.toggle('show',!!(symptom&&symptom.redFlags));
@@ -4522,9 +4550,10 @@ function roll(n){
     if(miningMode==='symptom'){
       var symptom=pickSymptom(cats);
       if(!symptom){alert('이 병원 유형에 연결된 증상 DB가 없습니다.');return;}
-      ST.symptom=symptom;ST.disease=null;ST.product=null;
-      document.getElementById('v3').textContent=symptom.name;
-      document.getElementById('s3').textContent='생활 언어 검색 · 질환 후보를 선택하세요';
+      var query=pickObservedSymptomQuery(symptom);
+      ST.symptom=symptom;ST.symptomQuery=query.text;ST.symptomVolume=query.volume;ST.disease=null;ST.product=null;
+      document.getElementById('v3').textContent=query.text;
+      document.getElementById('s3').textContent=(query.volume?'월간 약 '+query.volume.toLocaleString('ko-KR')+'회 · ':'')+'질환 후보를 선택하세요';
       document.getElementById('btn3').classList.add('active');
       document.getElementById('v4').textContent='질환 후보를 먼저 선택';
       document.getElementById('s4').textContent='자동 확정하지 않음';
@@ -4534,7 +4563,7 @@ function roll(n){
     }else{
       var dis=pickDisease(cats);
       if(!dis){alert('해당 카테고리에 등록된 질환이 없습니다. DB를 확인해 주세요.');return;}
-      ST.symptom=null;ST.disease=dis;
+      ST.symptom=null;ST.symptomQuery=null;ST.symptomVolume=0;ST.disease=dis;
       document.getElementById('v3').textContent=dis.name;
       var vl={high:'검색량 높음 — 경쟁 주의',med:'검색량 중간',low:'검색량 낮음 — 조합 필수'};
       document.getElementById('s3').textContent=vl[dis.vol]||'';
@@ -4568,23 +4597,24 @@ function rollAll(){
   var d=pickDept();ST.dept=d;document.getElementById('v2').textContent=d;document.getElementById('s2').textContent='병원 유형 연관 과목';document.getElementById('btn2').classList.add('active');
   if(miningMode==='symptom'){
     var symptom=pickSymptom(rc.cats);if(!symptom){alert('이 병원 유형에 연결된 증상 DB가 없습니다.');return;}
-    ST.symptom=symptom;ST.disease=null;ST.product=null;
-    document.getElementById('v3').textContent=symptom.name;document.getElementById('s3').textContent='생활 언어 검색 · 질환 후보를 선택하세요';document.getElementById('btn3').classList.add('active');
+    var query=pickObservedSymptomQuery(symptom);ST.symptom=symptom;ST.symptomQuery=query.text;ST.symptomVolume=query.volume;ST.disease=null;ST.product=null;
+    document.getElementById('v3').textContent=query.text;document.getElementById('s3').textContent=(query.volume?'월간 약 '+query.volume.toLocaleString('ko-KR')+'회 · ':'')+'질환 후보를 선택하세요';document.getElementById('btn3').classList.add('active');
     document.getElementById('v4').textContent='질환 후보를 먼저 선택';document.getElementById('s4').textContent='자동 확정하지 않음';document.getElementById('btn4').classList.remove('active');
     document.getElementById('result-card').style.display='none';renderSymptomPath(symptom);return;
   }
-  var dis=pickDisease(rc.cats);if(!dis){alert('해당 카테고리에 등록된 질환이 없습니다.');return;}ST.symptom=null;ST.disease=dis;document.getElementById('v3').textContent=dis.name;var vl={high:'검색량 높음 — 경쟁 주의',med:'검색량 중간',low:'검색량 낮음 — 조합 필수'};document.getElementById('s3').textContent=vl[dis.vol]||'';document.getElementById('btn3').classList.add('active');
+  var dis=pickDisease(rc.cats);if(!dis){alert('해당 카테고리에 등록된 질환이 없습니다.');return;}ST.symptom=null;ST.symptomQuery=null;ST.symptomVolume=0;ST.disease=dis;document.getElementById('v3').textContent=dis.name;var vl={high:'검색량 높음 — 경쟁 주의',med:'검색량 중간',low:'검색량 낮음 — 조합 필수'};document.getElementById('s3').textContent=vl[dis.vol]||'';document.getElementById('btn3').classList.add('active');
   var pr=pickProduct(dis.name);ST.product=pr;if(pr){document.getElementById('v4').textContent=productDisplayName(pr);document.getElementById('s4').textContent='질환 자동 매칭';document.getElementById('btn4').classList.add('active');}else{document.getElementById('v4').textContent='없음';document.getElementById('s4').textContent='해당 시술 없음';document.getElementById('btn4').classList.remove('active');}
   showResult();
 }
 function resetBtns(){
-  ST={region:null,cats:null,dept:null,symptom:null,disease:null,product:null};
+  ST={region:null,cats:null,dept:null,symptom:null,symptomQuery:null,symptomVolume:0,disease:null,product:null};
   ['1','2','3','4'].forEach(function(n){document.getElementById('v'+n).textContent='클릭하여 생성';document.getElementById('s'+n).textContent='—';document.getElementById('btn'+n).classList.remove('active');});
   document.getElementById('result-card').style.display='none';
   var panel=document.getElementById('symptom-path-panel');
   panel.classList.toggle('show',miningMode==='symptom');
   document.getElementById('symptom-path-title').textContent='증상에서 연결 경로 찾기';
   document.getElementById('symptom-path-desc').textContent='증상을 먼저 생성하면 관련 질환 후보가 표시됩니다.';
+  document.getElementById('symptom-path-badge').textContent='진단이 아닌 기획 후보';
   document.getElementById('symptom-redflag').classList.remove('show');
   document.getElementById('symptom-disease-candidates').innerHTML='<div class="candidate-empty">③ 증상을 먼저 생성해 주세요.</div>';
   document.getElementById('symptom-product-candidates').innerHTML='<div class="candidate-empty">질환 후보를 선택하면 병원 과목에 맞는 상품·시술이 표시됩니다.</div>';
@@ -4597,7 +4627,7 @@ function showResult(){
   document.getElementById('advice-area').innerHTML='';
   document.getElementById('combo-chips').innerHTML='';
   var hasProduct=prod!==null;
-  var topic=symptom?symptom.name:dis.name;
+  var topic=symptom?(ST.symptomQuery||symptom.name):dis.name;
   document.getElementById('combo-main').textContent=r+' '+dept+' '+topic;
   var variants=[
     {t:r+' '+topic+' '+dept,star:true},
@@ -4624,7 +4654,7 @@ function showResult(){
   }).join('');
   var advHtml='';
   if(symptom){
-    advHtml+='<div class="adv"><div class="adv-title">증상 검색어 연결 근거</div><div class="adv-msg"><b>'+esc(symptom.name)+'</b>은 진단명이 아니라 환자가 사용하는 생활 언어입니다. 현재 선택한 연결 질환은 <b>'+esc(dis.name)+'</b>이며, 원고에서는 다른 가능성과 진료에서 확인하는 기준을 함께 설명하세요. '+esc(symptom.note||'')+'</div></div>';
+    advHtml+='<div class="adv"><div class="adv-title">실제 증상 검색어 연결 근거</div><div class="adv-msg"><b>'+esc(topic)+'</b>'+(ST.symptomVolume?'은 네이버 검색광고 기준 월간 약 <b>'+ST.symptomVolume.toLocaleString('ko-KR')+'회</b> 검색된 표현입니다. ':'은 실제 생활 언어형 검색 표현입니다. ')+'내부 정규화 증상은 <b>'+esc(symptom.name)+'</b>, 현재 선택한 연결 질환은 <b>'+esc(dis.name)+'</b>입니다. 원고에서는 다른 가능성과 진료에서 확인하는 기준을 함께 설명하세요. '+esc(symptom.note||'')+'</div></div>';
     if(symptom.redFlags)advHtml+='<div class="adv warn"><div class="adv-title">위험 신호 우선 확인</div><div class="adv-msg">'+esc(symptom.redFlags)+'</div></div>';
   }
   if(dis.vol==='low')advHtml+='<div class="adv warn"><div class="adv-title">검색량 주의</div><div class="adv-msg"><b>'+dis.name+'</b>은 단독 검색량이 낮습니다. 지역+과목+증상 구체화 조합으로 롱테일을 공략하세요.'+(dis.note?' '+dis.note:'')+'</div></div>';
