@@ -153,6 +153,26 @@
   .kw-btn.active .kv{color:var(--accent);}
   .kw-btn .ks{font-size:11px;color:var(--text3);margin-top:4px;}
   .kw-btn.active .ks{color:var(--accent);}
+  .mining-mode{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;margin-bottom:14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);}
+  .mining-mode-copy{font-size:12px;color:var(--text2);line-height:1.55;}
+  .mining-mode-actions{display:flex;gap:6px;flex:0 0 auto;}
+  .mining-mode-btn{border:1px solid var(--border);background:#fff;color:var(--text2);border-radius:99px;padding:7px 12px;font:600 12px/1.2 inherit;cursor:pointer;}
+  .mining-mode-btn.active{border-color:var(--accent);background:var(--accent-bg);color:var(--accent);}
+  .symptom-path{display:none;margin:16px 0 4px;padding:18px;border:1px solid var(--accent-border);border-radius:var(--radius);background:linear-gradient(180deg,#fbfdff,#f4f9ff);}
+  .symptom-path.show{display:block;}
+  .symptom-path-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px;}
+  .symptom-path-title{font-size:14px;font-weight:800;color:var(--text);}
+  .symptom-path-desc{font-size:12px;color:var(--text2);line-height:1.65;margin-top:4px;}
+  .symptom-path-badge{font-size:10px;font-weight:800;color:var(--accent);background:#fff;border:1px solid var(--accent-border);border-radius:99px;padding:5px 9px;white-space:nowrap;}
+  .symptom-redflag{display:none;margin:10px 0 14px;padding:10px 12px;border-left:3px solid var(--red);border-radius:0 var(--radius-sm) var(--radius-sm) 0;background:var(--red-bg);color:var(--text2);font-size:12px;line-height:1.65;}
+  .symptom-redflag.show{display:block;}
+  .candidate-section+ .candidate-section{margin-top:15px;padding-top:15px;border-top:1px solid var(--border);}
+  .candidate-label{font-size:11px;font-weight:800;color:var(--text3);letter-spacing:.04em;margin-bottom:8px;}
+  .candidate-list{display:flex;flex-wrap:wrap;gap:8px;}
+  .candidate-btn{border:1px solid var(--border);background:#fff;color:var(--text2);border-radius:9px;padding:9px 12px;font:600 12px/1.35 inherit;cursor:pointer;text-align:left;}
+  .candidate-btn:hover{border-color:var(--accent-border);color:var(--accent);}
+  .candidate-btn.active{border-color:var(--accent);background:var(--accent-bg);color:var(--accent);box-shadow:0 0 0 2px rgba(47,128,237,.08);}
+  .candidate-empty{font-size:12px;color:var(--text3);line-height:1.65;}
   .combo-main{font-size:22px;font-weight:700;color:var(--text);margin-bottom:12px;line-height:1.4;letter-spacing:-.02em;}
   .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
   .chip{font-size:12px;padding:4px 12px;border-radius:99px;border:1px solid var(--border);color:var(--text2);background:var(--surface2);cursor:pointer;transition:all .1s;}
@@ -490,6 +510,8 @@
   .brief-disclaimer-mini b{color:var(--text2);}
   @media(max-width:600px){
     .row2,.kw-grid,.client-list{grid-template-columns:1fr;}
+    .mining-mode{align-items:flex-start;flex-direction:column;}
+    .symptom-path-head{flex-direction:column;}
     .row3{grid-template-columns:1fr 1fr;}
     nav{height:auto;min-height:56px;padding:8px 16px;gap:8px;align-items:flex-start;flex-wrap:wrap;}
     .nav-brand{max-width:100%;}
@@ -754,11 +776,27 @@
   <div id="gen-body" style="display:none">
     <div class="card">
       <div class="card-title">키워드 조합 생성</div>
+      <div class="mining-mode">
+        <div class="mining-mode-copy"><b>검색 출발점</b><br>질환명을 직접 조합하거나, 환자가 실제로 말하는 증상에서 관련 질환을 좁혀보세요.</div>
+        <div class="mining-mode-actions">
+          <button class="mining-mode-btn active" id="mode-disease" type="button" onclick="setMiningMode('disease')">질환 중심</button>
+          <button class="mining-mode-btn" id="mode-symptom" type="button" onclick="setMiningMode('symptom')">증상 중심</button>
+        </div>
+      </div>
       <div class="kw-grid">
         <button class="kw-btn" id="btn1" onclick="roll(1)"><div class="kl">① 지역</div><div class="kv" id="v1">클릭하여 생성</div><div class="ks" id="s1">—</div></button>
         <button class="kw-btn" id="btn2" onclick="roll(2)"><div class="kl">② 과목</div><div class="kv" id="v2">클릭하여 생성</div><div class="ks" id="s2">—</div></button>
         <button class="kw-btn" id="btn3" onclick="roll(3)"><div class="kl">③ 질환 / 증상</div><div class="kv" id="v3">클릭하여 생성</div><div class="ks" id="s3">—</div></button>
         <button class="kw-btn" id="btn4" onclick="roll(4)"><div class="kl">④ 핵심 상품 / 시술</div><div class="kv" id="v4">클릭하여 생성</div><div class="ks" id="s4">—</div></button>
+      </div>
+      <div class="symptom-path" id="symptom-path-panel">
+        <div class="symptom-path-head">
+          <div><div class="symptom-path-title" id="symptom-path-title">증상에서 연결 경로 찾기</div><div class="symptom-path-desc" id="symptom-path-desc">증상을 먼저 생성하면 관련 질환 후보가 표시됩니다.</div></div>
+          <div class="symptom-path-badge">진단이 아닌 기획 후보</div>
+        </div>
+        <div class="symptom-redflag" id="symptom-redflag"></div>
+        <div class="candidate-section"><div class="candidate-label">연결 가능 질환 후보군</div><div class="candidate-list" id="symptom-disease-candidates"><div class="candidate-empty">③ 증상을 먼저 생성해 주세요.</div></div></div>
+        <div class="candidate-section"><div class="candidate-label">선택한 질환의 상품·시술 후보군</div><div class="candidate-list" id="symptom-product-candidates"><div class="candidate-empty">질환 후보를 선택하면 병원 과목에 맞는 상품·시술이 표시됩니다.</div></div></div>
       </div>
       <div class="btn-row">
         <button class="btn btn-accent" onclick="rollAll()">키워드 조합 추출</button>
@@ -1739,6 +1777,26 @@ var CLAUDE_DEPTS=[
   {id:'cd13',type:'안과',depts:'안과'},
   {id:'cd14',type:'산부인과',depts:'산부인과,여성의원,여성클리닉'},
   {id:'cd15',type:'비뇨기과',depts:'비뇨의학과,비뇨기과,남성의원'}
+];
+
+// 환자가 실제로 검색하는 생활 언어를 질환 후보로 연결하는 증상 DB.
+// 증상은 진단명이 아니므로 상품에 직접 연결하지 않고 반드시 질환 후보를 거친다.
+var AUBE_SYMPTOMS=[
+  {id:'s1',name:'팔이 안 올라가요',vol:'high',cats:['통증','재활'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['오십견','회전근개손상','어깨통증'],note:'팔을 스스로 들기 어려운지, 다른 사람이 들어줘도 제한되는지, 외상이나 힘 빠짐이 있는지에 따라 관련 질환이 달라질 수 있습니다.'},
+  {id:'s2',name:'어깨가 밤에 더 아파요',vol:'high',cats:['통증','재활'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['회전근개손상','오십견','어깨통증'],note:'야간통은 어깨 질환에서 자주 호소되지만 통증 위치와 운동 제한 양상을 함께 확인해야 합니다.'},
+  {id:'s3',name:'목에서 팔까지 저려요',vol:'high',cats:['통증','척추','말초신경'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['목디스크','목통증','손발저림'],note:'목 움직임과 팔 저림의 관계, 감각 저하와 근력 약화 여부를 함께 확인하는 검색 의도입니다.',redFlags:'팔이나 손의 힘이 갑자기 떨어지거나 보행 이상이 동반되면 신속한 진료가 필요할 수 있습니다.'},
+  {id:'s4',name:'손이 저리고 감각이 둔해요',vol:'high',cats:['말초신경','통증'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['손목터널증후군','목디스크','손발저림'],note:'어느 손가락이 저린지, 밤에 심한지, 목 통증이 동반되는지가 질환 후보를 좁히는 단서가 됩니다.'},
+  {id:'s5',name:'허리가 찌릿하고 다리까지 당겨요',vol:'high',cats:['통증','척추','말초신경'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['허리디스크','좌골신경통','이상근증후군'],note:'허리에서 엉덩이·다리로 이어지는 통증의 경로와 자세에 따른 변화를 함께 확인해야 합니다.',redFlags:'다리 마비, 대소변 장애, 회음부 감각 저하가 있으면 즉시 진료가 필요한 위험 신호일 수 있습니다.'},
+  {id:'s6',name:'조금 걸으면 다리가 저려요',vol:'high',cats:['척추','통증','말초신경'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['척추관협착증','허리디스크','손발저림'],note:'걷다가 쉬면 나아지는지, 허리를 굽힐 때 편한지, 혈관 질환 위험이 있는지를 구분하는 콘텐츠에 적합합니다.'},
+  {id:'s7',name:'아침에 발바닥이 아파요',vol:'high',cats:['재활','통증'],types:['정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['족저근막염','발목통증'],note:'아침 첫발 통증, 오래 서 있는 생활, 최근 운동량 변화와 신발 환경을 함께 살펴보는 검색 의도입니다.'},
+  {id:'s8',name:'계단에서 무릎이 아파요',vol:'high',cats:['통증','재활'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['무릎통증','퇴행성관절염'],note:'계단을 오를 때와 내려갈 때, 붓기·잠김·외상 여부에 따라 원인 후보가 달라질 수 있습니다.'},
+  {id:'s9',name:'날개뼈 안쪽이 아파요',vol:'med',cats:['통증','척추'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['견갑통증','등통증','목디스크'],note:'오래 앉는 자세와 목 움직임, 팔 저림 동반 여부를 함께 확인하는 생활 언어형 검색어입니다.'},
+  {id:'s10',name:'교통사고 뒤 목과 허리가 뻐근해요',vol:'med',cats:['교통사고','통증'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['교통사고후유증','교통사고 목통증','교통사고 허리통증'],note:'사고 시점, 충격 방향, 두통·어지럼·저림 같은 동반 증상과 검사 필요성을 함께 설명하는 검색 의도입니다.'},
+  {id:'s11',name:'가슴이 답답하고 두근거려요',vol:'high',cats:['공황/불면','내과'],types:['한의원','한방병원','내과'],diseases:['화병','공황장애','역류성식도염'],note:'정서적 긴장, 식사와의 관계, 지속 시간 등 여러 가능성을 열어두고 진료 방향을 안내해야 하는 증상입니다.',redFlags:'가슴 통증, 호흡곤란, 식은땀, 실신, 턱·팔로 퍼지는 통증이 있으면 한방 상품을 연결하기 전에 응급·심혈관 평가가 우선될 수 있습니다.',manualProduct:true},
+  {id:'s12',name:'잠들기 어렵고 자주 깨요',vol:'high',cats:['공황/불면'],types:['한의원','한방병원'],diseases:['불면증','화병'],note:'잠드는 데 걸리는 시간, 자주 깨는지, 기상 시간과 낮 기능, 카페인·복용약을 함께 살피는 검색 의도입니다.'},
+  {id:'s13',name:'소화가 안 되고 더부룩해요',vol:'high',cats:['소아성장','내과'],types:['한의원','한방병원','내과'],diseases:['만성소화불량','과민성대장증후군','위염'],note:'식후 불편감, 복통·배변 변화, 체중 감소와 출혈 같은 경고 증상을 구분해야 합니다.',redFlags:'원인 모를 체중 감소, 반복되는 구토, 검은 변이나 혈변, 삼킴곤란이 있으면 검사가 우선될 수 있습니다.'},
+  {id:'s14',name:'머리가 자주 아프고 목이 뻣뻣해요',vol:'high',cats:['두통/어지럼','통증'],types:['신경외과','정형외과','통증의학과','재활의학과','한의원','한방병원'],diseases:['긴장성두통','경추성두통','목통증'],note:'두통 위치와 지속 시간, 목 움직임, 빛·소리 민감도, 신경학적 증상을 함께 확인해야 합니다.',redFlags:'갑자기 시작된 극심한 두통, 마비·말 어눌함·의식 변화, 발열과 목 경직이 동반되면 즉시 진료가 필요할 수 있습니다.'},
+  {id:'s15',name:'몸이 계속 피곤하고 무거워요',vol:'high',cats:['통증','내과'],types:['한의원','한방병원','내과'],diseases:['만성피로','철결핍성빈혈','갑상선기능저하증'],note:'수면, 스트레스, 식사, 월경, 체중 변화, 복용약과 검사 이력을 함께 살피는 폭넓은 검색 의도입니다.'}
 ];
 
 var CLAUDE_ISSUES=[
@@ -3976,7 +4034,29 @@ function selectClient(id){
 }
 
 // ===== 핵심 알고리즘 =====
-var ST={region:null,cats:null,dept:null,disease:null,product:null};
+var ST={region:null,cats:null,dept:null,symptom:null,disease:null,product:null};
+var miningMode='disease';
+function setMiningMode(mode){
+  miningMode=mode==='symptom'?'symptom':'disease';
+  document.getElementById('mode-disease').classList.toggle('active',miningMode==='disease');
+  document.getElementById('mode-symptom').classList.toggle('active',miningMode==='symptom');
+  document.querySelector('#btn3 .kl').textContent=miningMode==='symptom'?'③ 환자 증상':'③ 질환';
+  resetBtns();
+  if(miningMode==='symptom')document.getElementById('symptom-path-panel').classList.add('show');
+}
+
+function pickSymptom(cats){
+  var clientType=selectedClient?normalizeClinicType(selectedClient.type):'';
+  var pool=AUBE_SYMPTOMS.filter(function(s){
+    var catMatch=!cats||!cats.length||s.cats.some(function(c){return cats.indexOf(c)>=0;});
+    var typeMatch=!clientType||s.types.map(normalizeClinicType).indexOf(clientType)>=0;
+    return catMatch&&typeMatch;
+  });
+  if(!pool.length){
+    pool=AUBE_SYMPTOMS.filter(function(s){return !clientType||s.types.map(normalizeClinicType).indexOf(clientType)>=0;});
+  }
+  return pick(pool)||null;
+}
 
 function pickRegionAndCats(){
   if(!selectedClient)return{region:'지역',cats:['통증']};
@@ -4360,12 +4440,125 @@ function pickProduct(diseaseName){
   return null;
 }
 
+function directProductCandidatesForDisease(dis){
+  if(!selectedClient||!dis)return[];
+  var signal=getClientRevenueSignal(selectedClient);
+  var excludes=(selectedClient.exclude||[]).slice();
+  if(signal&&signal.avoid)excludes=excludes.concat(signal.avoid);
+  return getAllProducts().filter(function(p){
+    if(isServiceLineOnlyProduct(p))return false;
+    if(normalizeClinicType(p.type)!==normalizeClinicType(selectedClient.type))return false;
+    if(p.surg&&!selectedClient.surg)return false;
+    if(p.equip&&!selectedClient.equip)return false;
+    if(productMissingEquipment(p,selectedClient).length)return false;
+    if(excludes.some(function(e){return p.name.indexOf(e)>=0;}))return false;
+    if(!p.match||p.match.split(',').map(function(x){return x.trim();}).indexOf(dis.name)<0)return false;
+    return isProductDiseaseAllowed(p,dis);
+  }).sort(function(a,b){
+    return productPriorityScore(b,selectedClient,signal)-productPriorityScore(a,selectedClient,signal)||productDisplayName(a).localeCompare(productDisplayName(b),'ko');
+  });
+}
+
+function symptomDiseaseCandidates(symptom){
+  if(!symptom)return[];
+  var all=getAllDiseases();
+  return symptom.diseases.map(function(name){return all.find(function(d){return d.name===name;});}).filter(Boolean);
+}
+
+function renderSymptomPath(symptom){
+  var panel=document.getElementById('symptom-path-panel');
+  panel.classList.add('show');
+  document.getElementById('symptom-path-title').textContent=symptom?symptom.name:'증상에서 연결 경로 찾기';
+  document.getElementById('symptom-path-desc').textContent=symptom?symptom.note:'증상을 먼저 생성하면 관련 질환 후보가 표시됩니다.';
+  var red=document.getElementById('symptom-redflag');
+  red.textContent=symptom&&symptom.redFlags?'먼저 확인할 위험 신호: '+symptom.redFlags:'';
+  red.classList.toggle('show',!!(symptom&&symptom.redFlags));
+  var disEl=document.getElementById('symptom-disease-candidates');
+  var candidates=symptomDiseaseCandidates(symptom);
+  disEl.innerHTML=candidates.length?candidates.map(function(d){
+    return '<button type="button" class="candidate-btn'+(ST.disease&&ST.disease.id===d.id?' active':'')+'" onclick="selectSymptomDisease(\''+d.id+'\')">'+esc(d.name)+'</button>';
+  }).join(''):'<div class="candidate-empty">현재 DB에서 연결 가능한 질환 후보를 찾지 못했습니다.</div>';
+  renderSymptomProductCandidates();
+}
+
+function renderSymptomProductCandidates(){
+  var el=document.getElementById('symptom-product-candidates');
+  if(!ST.disease){el.innerHTML='<div class="candidate-empty">질환 후보를 선택하면 병원 과목에 맞는 상품·시술이 표시됩니다.</div>';return;}
+  var products=directProductCandidatesForDisease(ST.disease);
+  el.innerHTML=products.length?products.map(function(p){
+    return '<button type="button" class="candidate-btn'+(ST.product&&String(ST.product.id)===String(p.id)?' active':'')+'" onclick="selectSymptomProduct(\''+String(p.id)+'\')">'+esc(productDisplayName(p))+'</button>';
+  }).join(''):'<div class="candidate-empty">이 병원 과목과 운영 조건에서 직접 연결된 상품·시술이 없습니다. 질환 정보형 키워드로 진행하세요.</div>';
+}
+
+function selectSymptomDisease(id){
+  var dis=getAllDiseases().find(function(d){return String(d.id)===String(id);});
+  if(!dis)return;
+  ST.disease=dis;ST.product=null;
+  document.getElementById('s3').textContent='연결 질환: '+dis.name;
+  document.getElementById('v4').textContent='후보를 선택해 주세요';
+  document.getElementById('s4').textContent='과목·운영 조건 반영';
+  document.getElementById('btn4').classList.remove('active');
+  renderSymptomPath(ST.symptom);
+  if(ST.region&&ST.dept)showResult();
+}
+
+function selectSymptomProduct(id){
+  var product=getAllProducts().find(function(p){return String(p.id)===String(id);});
+  if(!product)return;
+  ST.product=product;
+  document.getElementById('v4').textContent=productDisplayName(product);
+  document.getElementById('s4').textContent='선택한 질환 직접 매칭';
+  document.getElementById('btn4').classList.add('active');
+  renderSymptomProductCandidates();
+  if(ST.region&&ST.dept)showResult();
+}
+
 function roll(n){
   if(!selectedClient){alert('먼저 클라이언트를 선택해 주세요.');return;}
   if(n===1){var rc=pickRegionAndCats();ST.region=rc.region;ST.cats=rc.cats;document.getElementById('v1').textContent=rc.region;document.getElementById('s1').textContent=rc.cats.join(' · ');document.getElementById('btn1').classList.add('active');}
   if(n===2){var d=pickDept();ST.dept=d;document.getElementById('v2').textContent=d;document.getElementById('s2').textContent='병원 유형 연관 과목';document.getElementById('btn2').classList.add('active');}
-  if(n===3){var cats=ST.cats||ALL_CATS;var dis=pickDisease(cats);if(!dis){alert('해당 카테고리에 등록된 질환이 없습니다. DB를 확인해 주세요.');return;}ST.disease=dis;document.getElementById('v3').textContent=dis.name;var vl={high:'검색량 높음 — 경쟁 주의',med:'검색량 중간',low:'검색량 낮음 — 조합 필수'};document.getElementById('s3').textContent=vl[dis.vol]||'';document.getElementById('btn3').classList.add('active');var pr=pickProduct(dis.name);ST.product=pr;if(pr){document.getElementById('v4').textContent=productDisplayName(pr);document.getElementById('s4').textContent='질환 자동 매칭';document.getElementById('btn4').classList.add('active');}else{document.getElementById('v4').textContent='—';document.getElementById('s4').textContent='해당 시술 없음';document.getElementById('btn4').classList.remove('active');}}
-  if(n===4){var pr2=pickProduct((ST.disease||{name:''}).name);ST.product=pr2;if(pr2){document.getElementById('v4').textContent=productDisplayName(pr2);document.getElementById('s4').textContent='매칭 재선택';document.getElementById('btn4').classList.add('active');}else{document.getElementById('v4').textContent='—';document.getElementById('s4').textContent='해당 시술 없음';document.getElementById('btn4').classList.remove('active');}}
+  if(n===3){
+    var cats=ST.cats||ALL_CATS;
+    if(miningMode==='symptom'){
+      var symptom=pickSymptom(cats);
+      if(!symptom){alert('이 병원 유형에 연결된 증상 DB가 없습니다.');return;}
+      ST.symptom=symptom;ST.disease=null;ST.product=null;
+      document.getElementById('v3').textContent=symptom.name;
+      document.getElementById('s3').textContent='생활 언어 검색 · 질환 후보를 선택하세요';
+      document.getElementById('btn3').classList.add('active');
+      document.getElementById('v4').textContent='질환 후보를 먼저 선택';
+      document.getElementById('s4').textContent='자동 확정하지 않음';
+      document.getElementById('btn4').classList.remove('active');
+      document.getElementById('result-card').style.display='none';
+      renderSymptomPath(symptom);
+    }else{
+      var dis=pickDisease(cats);
+      if(!dis){alert('해당 카테고리에 등록된 질환이 없습니다. DB를 확인해 주세요.');return;}
+      ST.symptom=null;ST.disease=dis;
+      document.getElementById('v3').textContent=dis.name;
+      var vl={high:'검색량 높음 — 경쟁 주의',med:'검색량 중간',low:'검색량 낮음 — 조합 필수'};
+      document.getElementById('s3').textContent=vl[dis.vol]||'';
+      document.getElementById('btn3').classList.add('active');
+      var pr=pickProduct(dis.name);ST.product=pr;
+      if(pr){document.getElementById('v4').textContent=productDisplayName(pr);document.getElementById('s4').textContent='질환 자동 매칭';document.getElementById('btn4').classList.add('active');}
+      else{document.getElementById('v4').textContent='—';document.getElementById('s4').textContent='해당 시술 없음';document.getElementById('btn4').classList.remove('active');}
+    }
+  }
+  if(n===4){
+    if(miningMode==='symptom'){
+      if(!ST.disease){alert('먼저 연결 가능 질환 후보를 선택해 주세요.');return;}
+      var candidates=directProductCandidatesForDisease(ST.disease);
+      var pr2=pick(candidates)||null;
+      ST.product=pr2;
+      if(pr2){document.getElementById('v4').textContent=productDisplayName(pr2);document.getElementById('s4').textContent='후보군 내 재선택';document.getElementById('btn4').classList.add('active');}
+      else{document.getElementById('v4').textContent='—';document.getElementById('s4').textContent='직접 매칭 시술 없음';document.getElementById('btn4').classList.remove('active');}
+      renderSymptomProductCandidates();if(ST.region&&ST.dept)showResult();
+    }else{
+      var pr3=pickProduct((ST.disease||{name:''}).name);ST.product=pr3;
+      if(pr3){document.getElementById('v4').textContent=productDisplayName(pr3);document.getElementById('s4').textContent='매칭 재선택';document.getElementById('btn4').classList.add('active');}
+      else{document.getElementById('v4').textContent='—';document.getElementById('s4').textContent='해당 시술 없음';document.getElementById('btn4').classList.remove('active');}
+    }
+  }
   if(ST.region&&ST.dept&&ST.disease&&ST.product)showResult();
 }
 function rollAll(){
@@ -4373,46 +4566,67 @@ function rollAll(){
   var rc=pickRegionAndCats();ST.region=rc.region;ST.cats=rc.cats;
   document.getElementById('v1').textContent=rc.region;document.getElementById('s1').textContent=rc.cats.join(' · ');document.getElementById('btn1').classList.add('active');
   var d=pickDept();ST.dept=d;document.getElementById('v2').textContent=d;document.getElementById('s2').textContent='병원 유형 연관 과목';document.getElementById('btn2').classList.add('active');
-  var dis=pickDisease(rc.cats);if(!dis){alert('해당 카테고리에 등록된 질환이 없습니다.');return;}ST.disease=dis;document.getElementById('v3').textContent=dis.name;var vl={high:'검색량 높음 — 경쟁 주의',med:'검색량 중간',low:'검색량 낮음 — 조합 필수'};document.getElementById('s3').textContent=vl[dis.vol]||'';document.getElementById('btn3').classList.add('active');
+  if(miningMode==='symptom'){
+    var symptom=pickSymptom(rc.cats);if(!symptom){alert('이 병원 유형에 연결된 증상 DB가 없습니다.');return;}
+    ST.symptom=symptom;ST.disease=null;ST.product=null;
+    document.getElementById('v3').textContent=symptom.name;document.getElementById('s3').textContent='생활 언어 검색 · 질환 후보를 선택하세요';document.getElementById('btn3').classList.add('active');
+    document.getElementById('v4').textContent='질환 후보를 먼저 선택';document.getElementById('s4').textContent='자동 확정하지 않음';document.getElementById('btn4').classList.remove('active');
+    document.getElementById('result-card').style.display='none';renderSymptomPath(symptom);return;
+  }
+  var dis=pickDisease(rc.cats);if(!dis){alert('해당 카테고리에 등록된 질환이 없습니다.');return;}ST.symptom=null;ST.disease=dis;document.getElementById('v3').textContent=dis.name;var vl={high:'검색량 높음 — 경쟁 주의',med:'검색량 중간',low:'검색량 낮음 — 조합 필수'};document.getElementById('s3').textContent=vl[dis.vol]||'';document.getElementById('btn3').classList.add('active');
   var pr=pickProduct(dis.name);ST.product=pr;if(pr){document.getElementById('v4').textContent=productDisplayName(pr);document.getElementById('s4').textContent='질환 자동 매칭';document.getElementById('btn4').classList.add('active');}else{document.getElementById('v4').textContent='없음';document.getElementById('s4').textContent='해당 시술 없음';document.getElementById('btn4').classList.remove('active');}
   showResult();
 }
 function resetBtns(){
-  ST={region:null,cats:null,dept:null,disease:null,product:null};
+  ST={region:null,cats:null,dept:null,symptom:null,disease:null,product:null};
   ['1','2','3','4'].forEach(function(n){document.getElementById('v'+n).textContent='클릭하여 생성';document.getElementById('s'+n).textContent='—';document.getElementById('btn'+n).classList.remove('active');});
   document.getElementById('result-card').style.display='none';
+  var panel=document.getElementById('symptom-path-panel');
+  panel.classList.toggle('show',miningMode==='symptom');
+  document.getElementById('symptom-path-title').textContent='증상에서 연결 경로 찾기';
+  document.getElementById('symptom-path-desc').textContent='증상을 먼저 생성하면 관련 질환 후보가 표시됩니다.';
+  document.getElementById('symptom-redflag').classList.remove('show');
+  document.getElementById('symptom-disease-candidates').innerHTML='<div class="candidate-empty">③ 증상을 먼저 생성해 주세요.</div>';
+  document.getElementById('symptom-product-candidates').innerHTML='<div class="candidate-empty">질환 후보를 선택하면 병원 과목에 맞는 상품·시술이 표시됩니다.</div>';
 }
 function showResult(){
   try{
-  var r=ST.region,dept=ST.dept,dis=ST.disease,prod=ST.product;
+  var r=ST.region,dept=ST.dept,symptom=ST.symptom,dis=ST.disease,prod=ST.product;
   // 매번 결과 초기화 후 새로 그리기
   document.getElementById('issue-alerts').innerHTML='';
   document.getElementById('advice-area').innerHTML='';
   document.getElementById('combo-chips').innerHTML='';
   var hasProduct=prod!==null;
-  document.getElementById('combo-main').textContent=r+' '+dept+' '+dis.name;
+  var topic=symptom?symptom.name:dis.name;
+  document.getElementById('combo-main').textContent=r+' '+dept+' '+topic;
   var variants=[
-    {t:r+' '+dis.name+' '+dept,star:true},
+    {t:r+' '+topic+' '+dept,star:true},
+    {t:r+' '+topic+' 원인',star:false},
+    {t:r+' '+topic+' 어느 병원',star:false},
+    {t:r+' '+dis.name+' 증상',star:false},
     {t:r+' '+dis.name+' 치료',star:false},
-    {t:r+' '+dis.name+' 잘하는 곳',star:false},
-    {t:r+' '+dis.name+' 잘 낫는 곳',star:false},
-    {t:r+' '+dis.name+' 비용',star:false},
-    {t:r+' '+dis.name+' 원인',star:false}
+    {t:r+' '+dis.name+' 비용',star:false}
   ];
+  if(symptom)variants.splice(1,0,{t:r+' '+topic+' '+dis.name,star:true});
   if(prod){
-    variants.splice(2,0,{t:r+' '+dis.name+' '+productDisplayName(prod),star:true});
+    variants.splice(2,0,{t:r+' '+topic+' '+productDisplayName(prod),star:true});
+    variants.splice(3,0,{t:r+' '+dis.name+' '+productDisplayName(prod),star:true});
     variants.splice(4,0,{t:r+' '+dept+' '+productDisplayName(prod),star:false});
   }
   document.getElementById('combo-chips').innerHTML=variants.map(function(v){
     return '<span class="chip'+(v.star?' star':'')+'" onclick="copyChip(this)">'+v.t+'</span>';
   }).join('');
-  var allKws=[r,dept,dis.name,prod?productDisplayName(prod):''].join(' ').toLowerCase();
+  var allKws=[r,dept,topic,dis.name,prod?productDisplayName(prod):''].join(' ').toLowerCase();
   var triggered=getAllIssues().filter(function(iss){return iss.kw.split(',').map(function(k){return k.trim();}).some(function(k){return allKws.includes(k.toLowerCase());});});
   document.getElementById('issue-alerts').innerHTML=triggered.map(function(iss){
     var isW=iss.level==='warn';var isD=iss.level==='danger';
     return '<div class="issue-alert'+(isW?' warn':'')+'"><div class="issue-alert-title"><span class="issue-badge '+(isW?'warn':isD?'':'info')+'">'+{danger:'경고',warn:'주의',info:'안내'}[iss.level]+'</span>'+iss.title+(iss.src?' <span style="font-size:10px;font-weight:400;color:var(--text3)">'+iss.src+'</span>':'')+'</div><div class="issue-alert-msg">'+iss.msg+'</div></div>';
   }).join('');
   var advHtml='';
+  if(symptom){
+    advHtml+='<div class="adv"><div class="adv-title">증상 검색어 연결 근거</div><div class="adv-msg"><b>'+esc(symptom.name)+'</b>은 진단명이 아니라 환자가 사용하는 생활 언어입니다. 현재 선택한 연결 질환은 <b>'+esc(dis.name)+'</b>이며, 원고에서는 다른 가능성과 진료에서 확인하는 기준을 함께 설명하세요. '+esc(symptom.note||'')+'</div></div>';
+    if(symptom.redFlags)advHtml+='<div class="adv warn"><div class="adv-title">위험 신호 우선 확인</div><div class="adv-msg">'+esc(symptom.redFlags)+'</div></div>';
+  }
   if(dis.vol==='low')advHtml+='<div class="adv warn"><div class="adv-title">검색량 주의</div><div class="adv-msg"><b>'+dis.name+'</b>은 단독 검색량이 낮습니다. 지역+과목+증상 구체화 조합으로 롱테일을 공략하세요.'+(dis.note?' '+dis.note:'')+'</div></div>';
   if(dis.vol==='high')advHtml+='<div class="adv"><div class="adv-title">경쟁도 안내</div><div class="adv-msg"><b>'+dis.name+'</b>은 검색량이 높은 만큼 경쟁도도 높습니다. 정보 격차형 제목이나 지역+증상 구체화로 차별화하세요.'+(dis.note?' '+dis.note:'')+'</div></div>';
   if(prod&&prod.note&&!triggered.some(function(t){return t.msg.includes(prod.name);})) {
