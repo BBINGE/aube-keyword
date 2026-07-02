@@ -3346,6 +3346,41 @@ function staffMonthLabel(key){
   if(parts.length===2)return parts[0]+'년 '+Number(parts[1])+'월';
   return key||'저장본';
 }
+function staffMonthKeyFromDateKey(dateKey){
+  dateKey=Number(dateKey);
+  if(!dateKey)return '';
+  var y=Math.floor(dateKey/10000);
+  var m=Math.floor((dateKey%10000)/100);
+  if(!y||!m)return '';
+  return y+'-'+String(m).padStart(2,'0');
+}
+function staffNormalizeMonthKey(value){
+  var raw=String(value||'').trim();
+  if(!raw)return '';
+  var y=staffCurrentYear(),m=null,match;
+  match=raw.match(/(\d{4})\s*[-./년]\s*(\d{1,2})/);
+  if(match){y=Number(match[1]);m=Number(match[2]);}
+  else{
+    match=raw.match(/(\d{1,2})\s*월?/);
+    if(match)m=Number(match[1]);
+  }
+  if(!y||!m||m<1||m>12)return '';
+  return y+'-'+String(m).padStart(2,'0');
+}
+function staffClientMonthKey(c){
+  var fixedMonth=staffNormalizeMonthKey(c&&c.archiveMonth);
+  if(fixedMonth)return fixedMonth;
+  var counts={};
+  (c&&c.items||[]).forEach(function(row){
+    var monthKey=staffMonthKeyFromDateKey(parseStaffPublishDate(row.publishDate));
+    if(monthKey)counts[monthKey]=(counts[monthKey]||0)+1;
+  });
+  var keys=Object.keys(counts).sort(function(a,b){
+    if(counts[b]!==counts[a])return counts[b]-counts[a];
+    return a.localeCompare(b);
+  });
+  return keys[0]||staffCurrentMonthKey();
+}
 function cloneStaffRows(rows){
   return JSON.parse(JSON.stringify(rows||[]));
 }
@@ -3512,7 +3547,7 @@ function renderStaffDetail(){
   var el=document.getElementById('staff-detail');
   if(!c){el.innerHTML='<div class="staff-empty">클라이언트를 선택하세요.</div>';return;}
   var p=staffProgress(c);
-  var currentMonth=staffCurrentMonthKey();
+  var currentMonth=staffClientMonthKey(c);
   var currentDeadline=(c.monthlyDeadlines&&c.monthlyDeadlines[currentMonth])||'';
   var cols=[];
   var colHeads='';
@@ -3533,6 +3568,7 @@ function renderStaffDetail(){
     '<div class="staff-detail-head"><div><div class="staff-detail-title">'+esc(c.name)+'</div><div class="staff-detail-sub">URL 입력률 기준으로 진행률이 계산됩니다.</div></div><button class="btn btn-sm" onclick="closeStaffModal()">닫기</button></div>'+
     '<div class="staff-stat-grid"><div class="staff-stat"><div class="staff-stat-k">Progress</div><div class="staff-stat-v">'+p.pct+'%</div></div><div class="staff-stat"><div class="staff-stat-k">URL</div><div class="staff-stat-v">'+p.filled+' / '+p.target+'</div></div></div>'+
     '<div class="row3"><div class="fg"><label>클라이언트명</label><input type="text" value="'+escHtml(c.name||'')+'" oninput="updateStaffClient(&quot;'+c.id+'&quot;,&quot;name&quot;,this.value)" onblur="renderStaffBoard();renderStaffDetail()"/></div><div class="fg"><label>목표 블로그 수</label><input type="text" value="'+escHtml(c.targetCount||'')+'" oninput="updateStaffClient(&quot;'+c.id+'&quot;,&quot;targetCount&quot;,this.value)" onblur="renderStaffBoard();renderStaffDetail()"/></div><div class="fg"><label>담당자</label><input type="text" value="'+escHtml(c.assignee||'')+'" placeholder="예: 한시원" oninput="updateStaffClient(&quot;'+c.id+'&quot;,&quot;assignee&quot;,this.value)" onblur="renderStaffBoard();renderStaffDetail()"/></div></div>'+
+    '<div class="fg" style="margin-bottom:12px"><label>저장 기준월</label><input type="text" value="'+escHtml(c.archiveMonth||'')+'" placeholder="예: 2026-07 또는 7월" oninput="updateStaffArchiveMonth(&quot;'+c.id+'&quot;,this.value)" onblur="renderStaffBoard();renderStaffDetail()"/></div>'+
     '<div class="fg" style="margin-bottom:12px"><label>'+staffMonthLabel(currentMonth)+' 마감일</label><input type="text" value="'+escHtml(currentDeadline)+'" placeholder="예: 06월 25일" oninput="updateStaffDeadline(&quot;'+c.id+'&quot;,this.value)" onblur="renderStaffBoard();renderStaffDetail()"/></div>'+
     archiveHtml+
     '<div class="btn-row"><button class="btn btn-accent" onclick="addStaffRows(&quot;'+c.id+'&quot;,1)">행 추가</button><button class="btn" onclick="addStaffRows(&quot;'+c.id+'&quot;,5)">5행 추가</button><button class="btn" onclick="sortStaffClientByDate(&quot;'+c.id+'&quot;)">날짜순 정렬</button><button class="btn" onclick="exportStaffCsv(&quot;'+c.id+'&quot;)">CSV 내보내기</button></div>'+
@@ -3544,16 +3580,22 @@ function updateStaffClient(clientId,key,value){
   c[key]=key==='targetCount'?(parseInt(value,10)||0):value;
   saveStaffData(data);
 }
+function updateStaffArchiveMonth(clientId,value){
+  var data=normalizeStaffData();
+  var c=data.find(function(x){return x.id===clientId;});if(!c)return;
+  c.archiveMonth=value;
+  saveStaffData(data);
+}
 function updateStaffDeadline(clientId,value){
   var data=normalizeStaffData();
   var c=data.find(function(x){return x.id===clientId;});if(!c)return;
   if(!c.monthlyDeadlines||Array.isArray(c.monthlyDeadlines))c.monthlyDeadlines={};
-  c.monthlyDeadlines[staffCurrentMonthKey()]=value;
+  c.monthlyDeadlines[staffClientMonthKey(c)]=value;
   saveStaffData(data);
 }
 function renderStaffArchivePanel(c){
   var archives=(c.monthlyArchives||[]).slice().sort(function(a,b){return String(b.monthKey).localeCompare(String(a.monthKey));});
-  var currentMonth=staffCurrentMonthKey();
+  var currentMonth=staffClientMonthKey(c);
   var pills=archives.length?archives.map(function(a){
     return '<button type="button" class="staff-month-pill" onclick="showStaffArchive(&quot;'+c.id+'&quot;,&quot;'+escHtml(a.monthKey)+'&quot;,this)">'+esc(a.monthLabel||staffMonthLabel(a.monthKey))+'</button>';
   }).join(''):'<span class="staff-note">아직 저장된 월 데이터가 없습니다.</span>';
@@ -3567,7 +3609,7 @@ function saveStaffCurrentMonth(clientId){
   var data=normalizeStaffData();
   var c=data.find(function(x){return x.id===clientId;});if(!c)return;
   if(!Array.isArray(c.monthlyArchives))c.monthlyArchives=[];
-  var monthKey=staffCurrentMonthKey();
+  var monthKey=staffClientMonthKey(c);
   var deadline=(c.monthlyDeadlines&&c.monthlyDeadlines[monthKey])||'';
   var snapshot={
     monthKey:monthKey,
