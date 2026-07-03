@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -3447,7 +3447,7 @@ function renderStaffBoard(){
   if(!staffSelectedClientId||!data.some(function(c){return c.id===staffSelectedClientId;}))staffSelectedClientId=data[0].id;
   document.getElementById('staff-client-panel').innerHTML=data.map(function(c){
     var p=staffProgress(c);
-    var currentMonth=staffCurrentMonthKey();
+    var currentMonth=staffClientMonthKey(c);
     var dday=staffDdayLabel(c.monthlyDeadlines&&c.monthlyDeadlines[currentMonth]);
     return '<div class="staff-client-card '+(c.id===staffSelectedClientId?'active':'')+'" draggable="true" data-staff-client-id="'+escHtml(c.id)+'" onclick="openStaffWork(&quot;'+c.id+'&quot;)" ondragstart="startStaffClientDrag(event,&quot;'+c.id+'&quot;)" ondragover="overStaffClientDrag(event,&quot;'+c.id+'&quot;)" ondragleave="leaveStaffClientDrag(event)" ondrop="dropStaffClientDrag(event,&quot;'+c.id+'&quot;)" ondragend="endStaffClientDrag(event)">'+
       (dday?'<div class="staff-dday">'+esc(dday)+'</div>':'')+
@@ -3568,10 +3568,10 @@ function renderStaffDetail(){
     '<div class="staff-detail-head"><div><div class="staff-detail-title">'+esc(c.name)+'</div><div class="staff-detail-sub">URL 입력률 기준으로 진행률이 계산됩니다.</div></div><button class="btn btn-sm" onclick="closeStaffModal()">닫기</button></div>'+
     '<div class="staff-stat-grid"><div class="staff-stat"><div class="staff-stat-k">Progress</div><div class="staff-stat-v">'+p.pct+'%</div></div><div class="staff-stat"><div class="staff-stat-k">URL</div><div class="staff-stat-v">'+p.filled+' / '+p.target+'</div></div></div>'+
     '<div class="row3"><div class="fg"><label>클라이언트명</label><input type="text" value="'+escHtml(c.name||'')+'" oninput="updateStaffClient(&quot;'+c.id+'&quot;,&quot;name&quot;,this.value)" onblur="renderStaffBoard();renderStaffDetail()"/></div><div class="fg"><label>목표 블로그 수</label><input type="text" value="'+escHtml(c.targetCount||'')+'" oninput="updateStaffClient(&quot;'+c.id+'&quot;,&quot;targetCount&quot;,this.value)" onblur="renderStaffBoard();renderStaffDetail()"/></div><div class="fg"><label>담당자</label><input type="text" value="'+escHtml(c.assignee||'')+'" placeholder="예: 한시원" oninput="updateStaffClient(&quot;'+c.id+'&quot;,&quot;assignee&quot;,this.value)" onblur="renderStaffBoard();renderStaffDetail()"/></div></div>'+
-    '<div class="fg" style="margin-bottom:12px"><label>저장 기준월</label><input type="text" value="'+escHtml(c.archiveMonth||'')+'" placeholder="예: 2026-07 또는 7월" oninput="updateStaffArchiveMonth(&quot;'+c.id+'&quot;,this.value)" onblur="renderStaffBoard();renderStaffDetail()"/></div>'+
+    '<div class="fg" style="margin-bottom:12px"><label>저장 기준월</label><div style="display:flex;gap:8px;align-items:center"><input type="text" style="flex:1" value="'+escHtml(c.archiveMonth||'')+'" placeholder="예: 2026-07 또는 7월" oninput="updateStaffArchiveMonth(&quot;'+c.id+'&quot;,this.value)" onblur="renderStaffBoard();renderStaffDetail()"/><button type="button" class="btn" onclick="setStaffArchiveMonthToCurrent(&quot;'+c.id+'&quot;)">이번 달</button></div></div>'+
     '<div class="fg" style="margin-bottom:12px"><label>'+staffMonthLabel(currentMonth)+' 마감일</label><input type="text" value="'+escHtml(currentDeadline)+'" placeholder="예: 06월 25일" oninput="updateStaffDeadline(&quot;'+c.id+'&quot;,this.value)" onblur="renderStaffBoard();renderStaffDetail()"/></div>'+
     archiveHtml+
-    '<div class="btn-row"><button class="btn btn-accent" onclick="addStaffRows(&quot;'+c.id+'&quot;,1)">행 추가</button><button class="btn" onclick="addStaffRows(&quot;'+c.id+'&quot;,5)">5행 추가</button><button class="btn" onclick="sortStaffClientByDate(&quot;'+c.id+'&quot;)">날짜순 정렬</button><button class="btn" onclick="exportStaffCsv(&quot;'+c.id+'&quot;)">CSV 내보내기</button></div>'+
+    '<div class="btn-row"><button class="btn btn-accent" onclick="addStaffRows(&quot;'+c.id+'&quot;,1)">행 추가</button><button class="btn" onclick="addStaffRows(&quot;'+c.id+'&quot;,5)">5행 추가</button><button class="btn" onclick="sortStaffClientByDate(&quot;'+c.id+'&quot;)">날짜순 정렬</button><button class="btn btn-danger" onclick="clearStaffRows(&quot;'+c.id+'&quot;)">표 지우기</button><button class="btn" onclick="exportStaffCsv(&quot;'+c.id+'&quot;)">CSV 내보내기</button></div>'+
     '<div class="staff-table-wrap"><table class="staff-table"><thead><tr><th>No</th><th>발행일자</th><th>주제/키워드</th><th>URL</th><th>실제 검색량</th><th>노출 순위</th>'+colHeads+'</tr></thead><tbody>'+(rows||'<tr><td colspan="'+(6+cols.length)+'"><div class="empty">행이 없습니다.</div></td></tr>')+'</tbody></table></div>';
 }
 function updateStaffClient(clientId,key,value){
@@ -3585,6 +3585,14 @@ function updateStaffArchiveMonth(clientId,value){
   var c=data.find(function(x){return x.id===clientId;});if(!c)return;
   c.archiveMonth=value;
   saveStaffData(data);
+}
+function setStaffArchiveMonthToCurrent(clientId){
+  var data=normalizeStaffData();
+  var c=data.find(function(x){return x.id===clientId;});if(!c)return;
+  c.archiveMonth=staffCurrentMonthKey();
+  saveStaffData(data);
+  renderStaffBoard();
+  renderStaffDetail();
 }
 function updateStaffDeadline(clientId,value){
   var data=normalizeStaffData();
@@ -3673,6 +3681,18 @@ function addStaffRows(clientId,count){
   var c=data.find(function(x){return x.id===clientId;});if(!c)return;
   for(var i=0;i<count;i++)c.items.push(staffBlankItem());
   saveStaffData(data);renderStaffBoard();renderStaffDetail();
+}
+function clearStaffRows(clientId){
+  if(!confirm('현재 작업표의 행 내용을 모두 지울까요? 월별 저장본은 삭제되지 않습니다.'))return;
+  var data=normalizeStaffData();
+  var c=data.find(function(x){return x.id===clientId;});if(!c)return;
+  var count=Math.max(Number(c.targetCount)||0,(c.items||[]).length,1);
+  c.archiveMonth=staffCurrentMonthKey();
+  c.items=[];
+  for(var i=0;i<count;i++)c.items.push(staffBlankItem());
+  saveStaffData(data);
+  renderStaffBoard();
+  renderStaffDetail();
 }
 function deleteStaffRow(clientId,rowId){
   if(!confirm('이 행을 삭제할까요?'))return;
